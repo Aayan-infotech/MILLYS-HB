@@ -80,12 +80,12 @@ class Button extends StatelessWidget {
   final double fontSize;
 
   const Button({
-    Key? key,
+    super.key,
     required this.onTap,
     required this.width,
     required this.text,
     required this.fontSize,
-  }) : super(key: key);
+  });
 
   @override
   Widget build(BuildContext context) {

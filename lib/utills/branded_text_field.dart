@@ -46,7 +46,7 @@ class _BrandedTextFieldState extends State<BrandedTextField> {
 
   @override
   Widget build(BuildContext context) {
-    return Container(
+    return SizedBox(
       height: widget.height,
       child: TextFormField(
         validator: widget.validator,
@@ -63,7 +63,7 @@ class _BrandedTextFieldState extends State<BrandedTextField> {
         onChanged: widget.onChanged,
         obscureText: widget.isPassword ? _isObscured : false,
         decoration: InputDecoration(
-          fillColor: Color.fromARGB(255, 226, 226, 245),
+          fillColor: const Color.fromARGB(255, 226, 226, 245),
           filled: widget.isFilled,
           border: const OutlineInputBorder(
             borderRadius: BorderRadius.all(
@@ -119,7 +119,7 @@ class _BrandedTextFieldState extends State<BrandedTextField> {
               : null,
           labelStyle: Theme.of(context).textTheme.bodyMedium!.copyWith(
               fontWeight: FontWeight.w500,
-              color: Color.fromRGBO(103, 103, 103, 1),
+              color: const Color.fromRGBO(103, 103, 103, 1),
               fontSize: 12),
           contentPadding: const EdgeInsets.all(12),
         ),

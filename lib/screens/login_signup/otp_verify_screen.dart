@@ -2,10 +2,8 @@
 
 import 'dart:async';
 
-import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:millyshb/utills/branded_primary_button.dart';
-import 'package:millyshb/utills/colors.dart';
 import 'package:millyshb/utills/miscellaneous.dart';
 import 'package:sms_autofill/sms_autofill.dart';
 
@@ -15,8 +13,7 @@ class OTPVerifyScreen extends StatefulWidget {
   final String mobile;
   final bool isWeb;
 
-  const OTPVerifyScreen({Key? key, this.isWeb = false, required this.mobile})
-      : super(key: key);
+  const OTPVerifyScreen({super.key, this.isWeb = false, required this.mobile});
   static const routeName = '/otp-verify';
 
   @override
@@ -113,7 +110,7 @@ class _OTPVerifyScreenState extends State<OTPVerifyScreen> {
         Scaffold(
           appBar: AppBar(
             centerTitle: true,
-            title: Text(
+            title: const Text(
               'Enter OTP',
               style: TextStyle(
                   color: Colors.black,
@@ -138,8 +135,8 @@ class _OTPVerifyScreenState extends State<OTPVerifyScreen> {
                       autoFocus: true,
                       codeLength: 5,
                       decoration: BoxLooseDecoration(
-                          bgColorBuilder: FixedColorBuilder(
-                              Color.fromARGB(255, 226, 226, 247)!),
+                          bgColorBuilder: const FixedColorBuilder(
+                              Color.fromARGB(255, 226, 226, 247)),
                           radius: const Radius.circular(8),
                           strokeColorBuilder:
                               const FixedColorBuilder(Colors.black)),
@@ -204,11 +201,11 @@ class _OTPVerifyScreenState extends State<OTPVerifyScreen> {
                 //     ],
                 //   ),
                 // ),
-                SizedBox(
+                const SizedBox(
                   height: 20,
                 ),
-                Padding(
-                  padding: const EdgeInsets.symmetric(horizontal: 21),
+                const Padding(
+                  padding: EdgeInsets.symmetric(horizontal: 21),
                   child: Text.rich(
                     TextSpan(
                       children: [

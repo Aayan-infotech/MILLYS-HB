@@ -1,11 +1,17 @@
 import 'package:flutter/material.dart';
 import 'package:millyshb/screens/nav_screen.dart';
+import 'package:millyshb/screens/splash/store_splash.dart';
 import 'package:millyshb/utills/branded_primary_button.dart';
 
 class StoreCard extends StatefulWidget {
   String name;
   String imagePath;
-  StoreCard({required this.imagePath, required this.name, super.key});
+  bool isFood;
+  StoreCard(
+      {this.isFood = false,
+      required this.imagePath,
+      required this.name,
+      super.key});
 
   @override
   State<StoreCard> createState() => _StoreCardState();
@@ -15,7 +21,7 @@ class _StoreCardState extends State<StoreCard> {
   @override
   Widget build(BuildContext context) {
     return Card(
-      color: Color.fromARGB(255, 218, 218, 248),
+      color: const Color.fromARGB(255, 218, 218, 248),
       child: Row(
         crossAxisAlignment: CrossAxisAlignment.start,
         mainAxisAlignment: MainAxisAlignment.spaceBetween,
@@ -39,13 +45,14 @@ class _StoreCardState extends State<StoreCard> {
             child: Column(
               children: [
                 Padding(
-                  padding: EdgeInsets.only(top: 10),
+                  padding: const EdgeInsets.only(top: 10),
                   child: Text(
                     widget.name,
-                    style: TextStyle(fontSize: 20, fontWeight: FontWeight.w600),
+                    style: const TextStyle(
+                        fontSize: 20, fontWeight: FontWeight.w600),
                   ),
                 ),
-                SizedBox(
+                const SizedBox(
                   height: 20,
                 ),
                 SizedBox(
@@ -55,10 +62,21 @@ class _StoreCardState extends State<StoreCard> {
                         isEnabled: true,
                         name: "Shopping",
                         onPressed: () {
-                          Navigator.of(context)
-                              .push(MaterialPageRoute(builder: (context) {
-                            return NavScreen();
-                          }));
+                          if (widget.isFood) {
+                            Navigator.of(context)
+                                .push(MaterialPageRoute(builder: (context) {
+                              return StoreSplashScreen(
+                                isFood: widget.isFood,
+                              );
+                            }));
+                          } else {
+                            Navigator.of(context)
+                                .push(MaterialPageRoute(builder: (context) {
+                              return StoreSplashScreen(
+                                isFood: widget.isFood,
+                              );
+                            }));
+                          }
                         }))
               ],
             ),

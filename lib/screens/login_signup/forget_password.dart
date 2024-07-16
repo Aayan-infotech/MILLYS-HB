@@ -2,7 +2,6 @@ import 'package:flutter/material.dart';
 import 'package:millyshb/screens/login_signup/otp_verify_screen.dart';
 import 'package:millyshb/utills/branded_primary_button.dart';
 import 'package:millyshb/utills/branded_text_field.dart';
-import 'package:millyshb/utills/colors.dart';
 
 class ForgetPasswordScreen extends StatefulWidget {
   const ForgetPasswordScreen({super.key});
@@ -12,7 +11,7 @@ class ForgetPasswordScreen extends StatefulWidget {
 }
 
 class _ForgetPasswordScreenState extends State<ForgetPasswordScreen> {
-  TextEditingController _emailController = TextEditingController();
+  final TextEditingController _emailController = TextEditingController();
 
   @override
   Widget build(BuildContext context) {
@@ -20,7 +19,7 @@ class _ForgetPasswordScreenState extends State<ForgetPasswordScreen> {
       appBar: AppBar(
         automaticallyImplyLeading: true,
         centerTitle: true,
-        title: Text(
+        title: const Text(
           "Forget Password?",
           style: TextStyle(
               color: Colors.black, fontSize: 24.0, fontWeight: FontWeight.w700),
@@ -54,21 +53,21 @@ class _ForgetPasswordScreenState extends State<ForgetPasswordScreen> {
             //     ],
             //   ),
             // ),
-            SizedBox(
+            const SizedBox(
               height: 50,
             ),
             BrandedTextField(
               controller: _emailController,
               labelText: "Enter your mail address",
-              prefix: Icon(
+              prefix: const Icon(
                 Icons.email,
                 size: 20,
               ),
             ),
-            SizedBox(
+            const SizedBox(
               height: 30,
             ),
-            Text.rich(
+            const Text.rich(
               TextSpan(
                 children: [
                   TextSpan(
@@ -90,7 +89,7 @@ class _ForgetPasswordScreenState extends State<ForgetPasswordScreen> {
                 ],
               ),
             ),
-            SizedBox(
+            const SizedBox(
               height: 30,
             ),
             BrandedPrimaryButton(
@@ -99,7 +98,7 @@ class _ForgetPasswordScreenState extends State<ForgetPasswordScreen> {
                 onPressed: () {
                   Navigator.of(context)
                       .push(MaterialPageRoute(builder: (context) {
-                    return OTPVerifyScreen(
+                    return const OTPVerifyScreen(
                       mobile: "",
                     );
                   }));

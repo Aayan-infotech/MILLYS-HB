@@ -15,8 +15,8 @@ class LoginScreen extends StatefulWidget {
 }
 
 class _LoginScreenState extends State<LoginScreen> {
-  TextEditingController _userNameController = TextEditingController();
-  TextEditingController _emailController = TextEditingController();
+  final TextEditingController _userNameController = TextEditingController();
+  final TextEditingController _emailController = TextEditingController();
   final TapGestureRecognizer _tapGestureRecognizer = TapGestureRecognizer();
   bool isRemember = false;
 
@@ -113,7 +113,7 @@ class _LoginScreenState extends State<LoginScreen> {
                   size: 16,
                 ),
               ),
-              SizedBox(
+              const SizedBox(
                 height: 5,
               ),
               Align(
@@ -122,10 +122,10 @@ class _LoginScreenState extends State<LoginScreen> {
                     onTap: () {
                       Navigator.of(context)
                           .push(MaterialPageRoute(builder: (context) {
-                        return ForgetPasswordScreen();
+                        return const ForgetPasswordScreen();
                       }));
                     },
-                    child: Text(
+                    child: const Text(
                       "Forget Password?",
                       style: TextStyle(
                           fontSize: 12,
@@ -133,7 +133,7 @@ class _LoginScreenState extends State<LoginScreen> {
                           color: Color.fromRGBO(53, 53, 100, 1)),
                     )),
               ),
-              SizedBox(
+              const SizedBox(
                 height: 30,
               ),
               BrandedPrimaryButton(
@@ -142,10 +142,10 @@ class _LoginScreenState extends State<LoginScreen> {
                   onPressed: () {
                     Navigator.of(context)
                         .push(MaterialPageRoute(builder: (context) {
-                      return SelectStoreScreen();
+                      return const SelectStoreScreen();
                     }));
                   }),
-              SizedBox(
+              const SizedBox(
                 height: 50,
               ),
               Align(
@@ -175,7 +175,7 @@ class _LoginScreenState extends State<LoginScreen> {
                             // Handle the click event here
                             Navigator.of(context)
                                 .push(MaterialPageRoute(builder: (context) {
-                              return SignUpScreen();
+                              return const SignUpScreen();
                             }));
                             // You can navigate to another screen or perform any action here
                           },

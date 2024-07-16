@@ -1,5 +1,4 @@
 import 'package:flutter/material.dart';
-import 'package:millyshb/screens/login_signup/forget_password.dart';
 import 'package:millyshb/utills/branded_primary_button.dart';
 import 'package:millyshb/utills/branded_text_field.dart';
 import 'package:millyshb/utills/colors.dart';
@@ -12,9 +11,11 @@ class SignUpScreen extends StatefulWidget {
 }
 
 class _SignUpScreenState extends State<SignUpScreen> {
-  TextEditingController _userNameController = TextEditingController();
-  TextEditingController _emailController = TextEditingController();
-  TextEditingController _ageController = TextEditingController();
+  final TextEditingController _userNameController = TextEditingController();
+  final TextEditingController _passwordController = TextEditingController();
+  final TextEditingController _confirmPasswordController = TextEditingController();
+  final TextEditingController _emailController = TextEditingController();
+  final TextEditingController _ageController = TextEditingController();
   final _formKey = GlobalKey<FormState>();
   String? _selectedGender;
   bool isRemember = false;
@@ -24,7 +25,7 @@ class _SignUpScreenState extends State<SignUpScreen> {
     return Scaffold(
       appBar: AppBar(
         centerTitle: true,
-        title: Text(
+        title: const Text(
           "Create an account",
           style: TextStyle(
               color: Colors.black, fontSize: 24.0, fontWeight: FontWeight.w700),
@@ -40,7 +41,7 @@ class _SignUpScreenState extends State<SignUpScreen> {
                 mainAxisAlignment: MainAxisAlignment.center,
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
-                  SizedBox(
+                  const SizedBox(
                     height: 30,
                   ),
                   BrandedTextField(
@@ -77,7 +78,8 @@ class _SignUpScreenState extends State<SignUpScreen> {
                           child: DropdownButtonFormField<String>(
                             value: _selectedGender,
                             decoration: InputDecoration(
-                              fillColor: Color.fromARGB(255, 226, 226, 245),
+                              fillColor:
+                                  const Color.fromARGB(255, 226, 226, 245),
                               filled: true,
                               border: const OutlineInputBorder(
                                 borderRadius: BorderRadius.all(
@@ -113,11 +115,11 @@ class _SignUpScreenState extends State<SignUpScreen> {
                                   .bodyMedium!
                                   .copyWith(
                                       fontWeight: FontWeight.w500,
-                                      color: Color.fromRGBO(103, 103, 103, 1),
+                                      color: const Color.fromRGBO(103, 103, 103, 1),
                                       fontSize: 12),
                               contentPadding: const EdgeInsets.all(12),
-                              prefixIcon: Padding(
-                                padding: const EdgeInsets.all(12),
+                              prefixIcon: const Padding(
+                                padding: EdgeInsets.all(12),
                                 child: Icon(
                                   Icons.person,
                                   size: 16,
@@ -180,7 +182,7 @@ class _SignUpScreenState extends State<SignUpScreen> {
                   ),
                   BrandedTextField(
                     isPassword: true,
-                    controller: _userNameController,
+                    controller: _passwordController,
                     labelText: "Password",
                     prefix: const Icon(
                       Icons.lock,
@@ -192,14 +194,14 @@ class _SignUpScreenState extends State<SignUpScreen> {
                   ),
                   BrandedTextField(
                     isPassword: true,
-                    controller: _userNameController,
+                    controller: _confirmPasswordController,
                     labelText: "ConfirmPassword",
                     prefix: const Icon(
                       Icons.lock,
                       size: 16,
                     ),
                   ),
-                  SizedBox(
+                  const SizedBox(
                     height: 10,
                   ),
                   Padding(

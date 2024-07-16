@@ -24,12 +24,13 @@ class _SelectStoreScreenState extends State<SelectStoreScreen> {
         child: Column(
           mainAxisAlignment: MainAxisAlignment.start,
           children: [
-            SizedBox(
+            const SizedBox(
               height: 30,
             ),
             StoreCard(
               name: "Dry food /\nFrozen food",
               imagePath: "assets/images/cosmetics.png",
+              isFood: true,
             ),
             StoreCard(
                 name: "Cosmetics\nProducts",

@@ -1,7 +1,5 @@
-import 'dart:convert';
 
 import 'package:flutter/material.dart';
-import 'package:millyshb/screens/login_signup/login_screen.dart';
 import 'package:millyshb/screens/splash/welcome_screen.dart';
 
 // import 'package:animated_text/animated_text.dart';
@@ -16,10 +14,10 @@ class SplashScreen extends StatefulWidget {
 class SplashScreenState extends State<SplashScreen> {
   SplashScreenState();
 
-  bool _showProgress = true;
+  final bool _showProgress = true;
   navigate() {
     Navigator.of(context).pushAndRemoveUntil(
-      MaterialPageRoute(builder: (context) => WelcomeScreen()),
+      MaterialPageRoute(builder: (context) => const WelcomeScreen()),
       (route) => false, // Replace false with your predicate condition
     );
 

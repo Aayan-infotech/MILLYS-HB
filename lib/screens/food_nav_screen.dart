@@ -1,19 +1,17 @@
 import 'package:flutter/material.dart';
 import 'package:millyshb/screens/food_feed_screen.dart';
 import 'package:millyshb/screens/home_screen.dart';
-import 'package:millyshb/screens/product_details_screens.dart';
-import 'package:millyshb/screens/shopping_bag.dart';
 import 'package:millyshb/utills/colors.dart';
 
-class NavScreen extends StatefulWidget {
+class FoodNavScreen extends StatefulWidget {
   final bool isFood;
-  const NavScreen({this.isFood = false, super.key});
+  const FoodNavScreen({this.isFood = false, super.key});
 
   @override
-  State<NavScreen> createState() => _NavScreenState();
+  State<FoodNavScreen> createState() => _FoodNavScreenState();
 }
 
-class _NavScreenState extends State<NavScreen> {
+class _FoodNavScreenState extends State<FoodNavScreen> {
   int _page = 0;
   late PageController pageController; // for tabs animation
 
@@ -26,9 +24,7 @@ class _NavScreenState extends State<NavScreen> {
   }
 
   List<Widget> homeScreenItems = [
-    const HomeScreen(),
-    ProdeuctDetailsScreen(),
-    ShoppingBagScreen()
+    FoodFeedscreen(),
   ];
   @override
   void dispose() {

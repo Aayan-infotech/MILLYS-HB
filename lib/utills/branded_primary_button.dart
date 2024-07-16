@@ -8,12 +8,12 @@ class BrandedPrimaryButton extends StatelessWidget {
   final bool isUnfocus;
 
   const BrandedPrimaryButton({
-    Key? key,
+    super.key,
     this.isUnfocus = false,
     required this.name,
     required this.onPressed,
     this.isEnabled = false,
-  }) : super(key: key);
+  });
 
   @override
   Widget build(BuildContext context) {
@@ -29,7 +29,7 @@ class BrandedPrimaryButton extends StatelessWidget {
                       isUnfocus ? Pallete.whiteColor : Pallete.accentColor,
                   elevation: 0,
                   shape: RoundedRectangleBorder(
-                    side: BorderSide(
+                    side: const BorderSide(
                       color: Pallete.accentColor,
                     ),
                     borderRadius: BorderRadius.circular(6.0),
