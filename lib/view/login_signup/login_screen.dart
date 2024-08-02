@@ -30,11 +30,12 @@ class _LoginScreenState extends State<LoginScreen> {
   final TapGestureRecognizer _tapGestureRecognizer = TapGestureRecognizer();
 
   bool isRemember = false;
+  bool isLoading = false;
 
   @override
   Widget build(BuildContext context) {
     final userProvider = Provider.of<UserProvider>(context);
-    return userProvider.isLoading
+    return isLoading
         ? loadingIndicator()
         : Scaffold(
             appBar: AppBar(
@@ -94,6 +95,11 @@ class _LoginScreenState extends State<LoginScreen> {
                       controller: _passwordController,
                       labelText: "Password",
                       isPassword: true,
+                      onChanged: (value) {
+                        if (value.length > 3) {
+                          setState(() {});
+                        }
+                      },
                       prefix: const Icon(
                         Icons.lock,
                         size: 16,
@@ -129,17 +135,26 @@ class _LoginScreenState extends State<LoginScreen> {
                       height: 30,
                     ),
                     BrandedPrimaryButton(
-                        isEnabled: true,
-                        name: "Login",
-                        onPressed: () async {
-                          SharedPrefUtil.setValue(isLogedIn, true);
-                          if (widget.isbottomSheet) {
-                            Navigator.of(context).pop();
-                          } else {
-                            userProvider.login(_userNameController.text,
-                                _passwordController.text, context);
-                          }
-                        }),
+                      isEnabled: _passwordController.text.isNotEmpty,
+                      name: "Login",
+                      onPressed: () async {
+                        setState(() {
+                          isLoading = true;
+                        });
+                        SharedPrefUtil.setValue(isLogedIn, true);
+                        if (widget.isbottomSheet) {
+                          userProvider.login(_userNameController.text,
+                              _passwordController.text, context);
+                          Navigator.of(context).pop();
+                        } else {
+                          await userProvider.login(_userNameController.text,
+                              _passwordController.text, context);
+                        }
+                        setState(() {
+                          isLoading = false;
+                        });
+                      },
+                    ),
                     const SizedBox(
                       height: 50,
                     ),

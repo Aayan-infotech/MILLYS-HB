@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:millyshb/view/address_screen.dart';
+import 'package:millyshb/view/address/address_screen.dart';
 import 'package:millyshb/configs/components/branded_primary_button.dart';
 import 'package:millyshb/view/product/order_summery_screen.dart';
 
@@ -88,7 +88,7 @@ class _CheckOutScreenState extends State<CheckOutScreen> {
                                         Navigator.of(context).push(
                                             MaterialPageRoute(
                                                 builder: (context) {
-                                          return AddressScreen();
+                                          return AddressInputScreen();
                                         }));
                                       },
                                       icon: const Icon(Icons.add,

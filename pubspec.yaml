@@ -46,6 +46,8 @@ dependencies:
   exponential_back_off: ^0.1.0+2
   badges:
   intl_phone_field:
+  image_picker: ^1.1.2
+  path_provider: ^2.1.4
 
 dev_dependencies:
   flutter_test:

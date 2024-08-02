@@ -133,6 +133,7 @@ class WelcomeScreenState extends State<WelcomeScreen> {
                   GestureDetector(
                     onTap: () {
                       SharedPrefUtil.setValue(isLogedIn, false);
+                      
                       Navigator.of(context)
                           .push(MaterialPageRoute(builder: (context) {
                         return const SelectStoreScreen();

@@ -24,7 +24,8 @@ class LoginAPIs extends ApiBase {
       'email': user.email,
       'mobileNumber': user.mobileNumber,
       'age': user.age.toString(),
-      'password': user.password
+      'password': user.password,
+      'gender':user.gender
     };
 
     return await CallHelper().postWithData('api/user/register', data, {});
@@ -45,11 +46,11 @@ class LoginAPIs extends ApiBase {
     return await CallHelper().get('business/$mobile/existence/$mobile');
   }
 
-  Future<ApiResponseWithData<Map<String, dynamic>>>
-      getLoggedInUserDetails() async {
-    return await CallHelper()
-        .getWithData('business/$companySymbol/details', {});
-  }
+  // Future<ApiResponseWithData<Map<String, dynamic>>>
+  //     getLoggedInUserDetails() async {
+  //   return await CallHelper()
+  //       .getWithData('business/$companySymbol/details', {});
+  // }
 
   Future<ApiResponse> passwordReset(String mobile, String password) async {
     Map<String, String> data = {

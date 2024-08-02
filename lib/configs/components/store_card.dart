@@ -11,7 +11,7 @@ class StoreCard extends StatefulWidget {
   final String imagePath;
   final bool isFood;
 
-  StoreCard({
+  const StoreCard({
     this.isFood = false,
     required this.imagePath,
     required this.name,
@@ -50,21 +50,28 @@ class _StoreCardState extends State<StoreCard> {
                   height: MediaQuery.of(context).size.height * .15,
                   child: ClipRRect(
                     borderRadius: BorderRadius.circular(16),
-                    child: Image(image: AssetImage(widget.imagePath)),
+                    child: Image(image: NetworkImage(widget.imagePath)),
                   ),
                 ),
               ),
               Padding(
                 padding: const EdgeInsets.only(right: 16),
                 child: Column(
+                  crossAxisAlignment: CrossAxisAlignment.start,
                   children: [
                     Padding(
                       padding: const EdgeInsets.only(top: 10),
-                      child: Text(
-                        widget.name,
-                        style: const TextStyle(
-                          fontSize: 20,
-                          fontWeight: FontWeight.w600,
+                      child: SizedBox(
+                        width: SizeConfig.screenWidth * 0.4,
+                        child: Text(
+                          widget.name
+                              .trim(), // This will trim leading and trailing spaces
+                          maxLines: 2,
+                          textAlign: TextAlign.left, // Align text to the left
+                          style: const TextStyle(
+                            fontSize: 20,
+                            fontWeight: FontWeight.w600,
+                          ),
                         ),
                       ),
                     ),

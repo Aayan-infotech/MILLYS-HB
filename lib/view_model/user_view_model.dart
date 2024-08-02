@@ -1,5 +1,9 @@
-import 'package:flutter/foundation.dart';
+import 'dart:convert';
+
 import 'package:flutter/material.dart';
+import 'package:millyshb/configs/components/constants.dart';
+import 'package:millyshb/configs/components/pdf_api.dart';
+import 'package:millyshb/configs/components/user_constext_data.dart';
 import 'package:millyshb/configs/network/call_helper.dart';
 import 'package:millyshb/configs/network/server_calls/user_api.dart';
 import 'package:millyshb/models/user_model.dart';
@@ -15,22 +19,39 @@ class UserProvider with ChangeNotifier {
   // Getter to check loading state
   bool get isLoading => _isLoading;
 
+  // Setter to update the current user
+  set user(User? user) {
+    _user = user;
+    notifyListeners();
+  }
+
   login(String userNameOrEmail, String password, BuildContext context) async {
     _setLoading(true);
     ApiResponseWithData response =
         await LoginAPIs().login(userNameOrEmail, password);
     if (response.success) {
       _user = User.fromJson(response.data['data']);
+       await UserContextData.setCurrentUserAndFetchUserData(context);
+
+      PDFApi.saveFileToLocalDirectory(
+          jsonEncode(_user!.toJson()), userDetailsLocalFilePath);
       Navigator.of(context).push(MaterialPageRoute(builder: (context) {
         return const SelectStoreScreen();
       }));
     } else {
-      ScaffoldMessenger.of(context).showSnackBar(
-        const SnackBar(
-          content: Text('Internal server error'),
-          backgroundColor: Colors.red,
-        ),
-      );
+      _showSnackBar(context, 'Internal server error', Colors.red);
+    }
+    _setLoading(false);
+  }
+
+  userSignup(User user, BuildContext context) async {
+    _setLoading(true);
+    ApiResponseWithData response = await LoginAPIs().signUp(user);
+    if (response.success) {
+      _showSnackBar(context, 'User Registered', Colors.green);
+      Navigator.of(context).pop();
+    } else {
+      _showSnackBar(context, response.message, Colors.red);
     }
     _setLoading(false);
   }
@@ -40,24 +61,15 @@ class UserProvider with ChangeNotifier {
     notifyListeners();
   }
 
-  userSignup(User user, BuildContext context) async {
-    _setLoading(true);
-    ApiResponseWithData response = await LoginAPIs().signUp(user);
-    if (response.success) {
-      ScaffoldMessenger.of(context).showSnackBar(
-        const SnackBar(
-          content: Text('User Registered'),
-          backgroundColor: Colors.green,
-        ),
-      );
-    } else {
+  void _showSnackBar(
+      BuildContext context, String message, Color backgroundColor) {
+    WidgetsBinding.instance.addPostFrameCallback((_) {
       ScaffoldMessenger.of(context).showSnackBar(
         SnackBar(
-          content: Text(response.message),
-          backgroundColor: Colors.red,
+          content: Text(message),
+          backgroundColor: backgroundColor,
         ),
       );
-    }
-    _setLoading(false);
+    });
   }
 }

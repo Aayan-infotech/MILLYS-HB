@@ -3,6 +3,8 @@ import 'package:flutter/material.dart';
 import 'package:millyshb/configs/components/branded_primary_button.dart';
 import 'package:millyshb/configs/components/branded_text_field.dart';
 import 'package:millyshb/configs/theme/colors.dart';
+import 'package:millyshb/view_model/user_view_model.dart';
+import 'package:provider/provider.dart';
 
 class ProfilePage extends StatefulWidget {
   final bool isWeb;
@@ -22,16 +24,14 @@ class _ProfilePageState extends State<ProfilePage> {
   String profilePicPath = '';
   bool isImageLoading = false;
   String picture = '';
+  bool isEdit = false;
 
   Uint8List? _bytesData;
 
   @override
   void initState() {
     super.initState();
-   
   }
-
-
 
   void receiveCroppedImage(String data) async {
     setState(() {
@@ -53,22 +53,37 @@ class _ProfilePageState extends State<ProfilePage> {
 
   @override
   Widget build(BuildContext context) {
+    final userProvider = Provider.of<UserProvider>(context, listen: false);
+    nameController.text = userProvider.user!.userName;
+    mobileController.text = userProvider.user!.mobileNumber;
+    emailController.text = userProvider.user!.email;
+
     return Scaffold(
+      backgroundColor: Colors.white,
       appBar: AppBar(
-        backgroundColor: Colors.white,
         forceMaterialTransparency: true,
         elevation: 0,
         leading: BackButton(onPressed: () {
           Navigator.of(context).pop();
         }),
         centerTitle: true,
-        title: Text(
+        title: const Text(
           'Profile',
           // style: Theme.of(context)
           //     .appBarTheme
           //     .titleTextStyle!
           //     .copyWith(color: Pallete.black87),
         ),
+        actions: [
+          // IconButton(
+          //   icon: isEdit ? Icon(Icons.done) : Icon(Icons.edit),
+          //   onPressed: () {
+          //     setState(() {
+          //       isEdit = isEdit ? false : true;
+          //     });
+          //   },
+          // )
+        ],
       ),
       body: Padding(
         padding: widget.isWeb
@@ -130,30 +145,8 @@ class _ProfilePageState extends State<ProfilePage> {
                     ),
                     Center(
                       child: TextButton(
-                        onPressed: () async {
-                          // if (kIsWeb) {
-                          //   XFile? pickedImageFile = await ImagePicker()
-                          //       .pickImage(source: ImageSource.gallery);
-
-                          //   if (pickedImageFile != null) {
-                          //     List<int> imageBytes =
-                          //         await pickedImageFile.readAsBytes();
-                          //     _bytesData = Uint8List.fromList(imageBytes);
-
-                          //     await uploadImageForWeb(pickedImageFile);
-                          //     setState(() {});
-                          //   }
-                          // } else {
-                          //   profilePicPath =
-                          //       await CropImage().uploadImage(context, 200, 200);
-                          //   if (profilePicPath != null) {
-                          //     receiveCroppedImage(profilePicPath);
-                          //   }
-                          // }
-
-                          // setState(() {});
-                        },
-                        child: Text(
+                        onPressed: () async {},
+                        child: const Text(
                           "Upload Image",
                         ),
                       ),
@@ -194,31 +187,6 @@ class _ProfilePageState extends State<ProfilePage> {
           ),
         ),
       ),
-      persistentFooterButtons: [
-        Container(
-          margin: const EdgeInsets.only(left: 10, right: 10, bottom: 20),
-          child: SizedBox(
-              width: MediaQuery.of(context).size.width,
-              height: 50,
-              child: BrandedPrimaryButton(
-                  isEnabled: true,
-                  name: 'Save',
-                  onPressed: () {
-                    // showDialog(
-                    //   context: context,
-                    //   builder: (BuildContext context) {
-                    //     return SuccessAndErrorDialougeBox(
-                    //       isWeb: widget.isWeb,
-                    //       subTitle: 'Profile updated successfully',
-                    //       isSuccess: true,
-                    //       title: 'Success',
-                    //       action: () {},
-                    //     );
-                    //   },
-                    // );
-                  })),
-        ),
-      ],
     );
   }
 }

@@ -28,21 +28,41 @@ class _PhoneEditFieldState extends State<PhoneEditField> {
       style: Theme.of(context).textTheme.bodyMedium!.copyWith(
           fontSize: 14, fontWeight: FontWeight.w500, color: Pallete.textColor),
       decoration: InputDecoration(
-        focusedBorder: const OutlineInputBorder(
-          borderSide: BorderSide(color: Pallete.accentColor),
-        ),
-        labelText: 'Phone Number',
-        labelStyle: Theme.of(context)
-            .textTheme
-            .bodyMedium!
-            .copyWith(color: Pallete.textColor.withOpacity(.5)),
-        enabledBorder: OutlineInputBorder(
-          borderRadius: BorderRadius.circular(10),
-          borderSide: BorderSide(
-            color: Pallete.outLineColor,
-            width: 1,
+        fillColor: Colors.grey
+            .withOpacity(.15), //const Color.fromARGB(255, 226, 226, 245),
+        filled: true,
+        border: const OutlineInputBorder(
+          borderRadius: BorderRadius.all(
+            Radius.circular(8),
           ),
         ),
+        disabledBorder: const OutlineInputBorder(
+          borderSide: BorderSide(color: Pallete.disableButtonTextColor),
+          borderRadius: BorderRadius.all(
+            Radius.circular(8),
+          ),
+        ),
+        focusedBorder: const OutlineInputBorder(
+          borderSide: BorderSide(
+              color: Pallete.accentColor), // Change the color as desired
+          borderRadius: BorderRadius.all(
+            Radius.circular(8),
+          ),
+        ),
+        enabledBorder: OutlineInputBorder(
+          borderSide: BorderSide(
+              color: Pallete.outLineColor), // Change the color as desired
+          borderRadius: const BorderRadius.all(
+            Radius.circular(8),
+          ),
+        ),
+        hintText: "Phone Number",
+
+        hintStyle: Theme.of(context).textTheme.bodyMedium!.copyWith(
+            fontWeight: FontWeight.w500,
+            color: const Color.fromRGBO(103, 103, 103, 1),
+            fontSize: 12),
+        contentPadding: const EdgeInsets.all(12),
       ),
 
       enabled: widget.enabled,

@@ -5,8 +5,11 @@ import 'package:millyshb/configs/routes/routes_names.dart';
 import 'package:millyshb/configs/theme/app_theme.dart';
 import 'package:millyshb/configs/components/shared_preferences.dart';
 import 'package:millyshb/configs/components/size_config.dart';
+import 'package:millyshb/view/select_store_screen.dart';
 import 'package:millyshb/view/splash/splash_screen.dart';
+import 'package:millyshb/view_model/address_view_model.dart';
 import 'package:millyshb/view_model/cart_view_model.dart';
+import 'package:millyshb/view_model/product_view_model.dart';
 import 'package:millyshb/view_model/select_store_view_model.dart';
 import 'package:millyshb/view_model/theme_viewmodel.dart';
 import 'package:millyshb/view_model/user_view_model.dart';
@@ -20,6 +23,8 @@ void main() {
         ChangeNotifierProvider(create: (_) => SelectStoreProvider()),
         ChangeNotifierProvider(create: (_) => CartProvider()),
         ChangeNotifierProvider(create: (_) => UserProvider()),
+        ChangeNotifierProvider(create: (_) => AddressProvider()),
+        ChangeNotifierProvider(create: (_) => ProductProvider()),
       ],
       child: const MyApp(),
     ),

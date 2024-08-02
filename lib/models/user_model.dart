@@ -4,7 +4,7 @@ class User {
   String id;
   String userName;
   String mobileNumber;
-  int age;
+  String age;
   String gender;
   String email;
   String password;
@@ -24,19 +24,19 @@ class User {
       id: json['id'] ?? "",
       userName: json['userName'] ?? "",
       mobileNumber: json['mobileNumber'] ?? "",
-      age: json['age'] ?? "",
+      age: json['age'].toString() ?? "",
       gender: json['gender'] ?? "",
       email: json['email'] ?? "",
     );
   }
 
   // Method to convert a User instance to JSON
-  Map<String, dynamic> toJson() {
+  Map<String, String> toJson() {
     return {
       'id': id,
       'userName': userName,
       'mobileNumber': mobileNumber,
-      'age': age,
+      'age': age.toString(),
       'gender': gender,
       'email': email,
       'password': password

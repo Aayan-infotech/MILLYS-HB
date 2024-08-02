@@ -58,7 +58,7 @@ class _StoreSplashScreenState extends State<StoreSplashScreen>
             child: child,
           );
         },
-        transitionDuration: Duration(milliseconds: 1000),
+        transitionDuration: const Duration(milliseconds: 1000),
       ),
     );
  
