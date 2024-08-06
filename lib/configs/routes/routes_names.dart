@@ -8,5 +8,6 @@ class RoutesName {
   static const String home = 'home_screen';
   static const String shoppingBag = 'shopping_bag';
   static const String selectSlot = 'select_slot';
+  static const String productList = 'product_list';
   static const String productDetailsScreen = 'product_details_screen';
 }

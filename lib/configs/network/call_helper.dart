@@ -172,6 +172,58 @@ class CallHelper {
     return returnValue;
   }
 
+  Future<ApiResponse> put(String urlSuffix, Map<String, String> body) async {
+    /// The result will be of type [Either<Exception, Response>]
+    final result = await exponentialBackOff.start<http.Response>(
+      // Make a request
+      () async {
+        return http
+            .put(Uri.parse('$url$urlSuffix'),
+                body: body, headers: await getHeaders())
+            .timeout(Duration(seconds: timeoutInSeconds));
+      },
+      // Retry on SocketException or TimeoutException and other then that the process
+      // will stop and return with the error
+      retryIf: (e) => e is SocketException || e is TimeoutException,
+    );
+
+    var returnValue = ApiResponse(internalServerErrorMessage, false);
+
+    result.fold(
+      (error) {
+        //do nothing
+      },
+      (response) {
+        var message = internalServerErrorMessage;
+        if (kDebugMode) {
+          print('Server Response${response.body}');
+        }
+        //handle timeout case
+        if (response.statusCode == 408) {
+          return ApiResponse(message, false);
+        }
+
+        if (response.body.isNotEmpty) {
+          var decodedResponse = jsonDecode(response.body);
+
+          try {
+            message = decodedResponse['message'] ?? internalServerErrorMessage;
+          } catch (ex) {
+            //do nothing
+          }
+        }
+
+        if (response.statusCode == 200) {
+          returnValue = ApiResponse(message, true);
+        } else {
+          returnValue = ApiResponse(message, false);
+        }
+      },
+    );
+
+    return returnValue;
+  }
+
   Future<ApiResponse> post(String urlSuffix, Map<String, String> body) async {
     /// The result will be of type [Either<Exception, Response>]
     final result = await exponentialBackOff.start<http.Response>(

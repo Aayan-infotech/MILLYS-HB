@@ -8,6 +8,7 @@ class User {
   String gender;
   String email;
   String password;
+  String token;
   User(
       {required this.id,
       required this.userName,
@@ -15,11 +16,14 @@ class User {
       required this.age,
       required this.gender,
       required this.email,
+      required this.token,
+
       required this.password});
 
   // Factory method to create a User from JSON
   factory User.fromJson(Map<String, dynamic> json) {
     return User(
+      token: json["token"]??"",
       password: json['password'] ?? "",
       id: json['id'] ?? "",
       userName: json['userName'] ?? "",

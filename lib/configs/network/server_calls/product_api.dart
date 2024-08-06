@@ -6,35 +6,6 @@ import 'package:millyshb/models/user_model.dart';
 class ProductAPIs extends ApiBase {
   ProductAPIs() : super();
 
-  Future<ApiResponseWithData<Map<String, dynamic>>> saveAddress(
-      Address address) async {
-    Map<String, String> data = {
-      'userId': address.userId,
-      'houseNumber': address.houseNumber,
-      'state': address.state,
-      'city': address.city,
-      'pincode': address.postalCode,
-      'contactNumber': address.mobileNumber
-    };
-
-    return await CallHelper().postWithData('api/address/add', data, {});
-  }
-
-  Future<ApiResponseWithData<Map<String, dynamic>>> editAddress(
-      Address address) async {
-    Map<String, String> data = {
-      'userId': address.userId,
-      'houseNumber': address.houseNumber,
-      'state': address.state,
-      'city': address.city,
-      'pincode': address.postalCode,
-      'contactNumber': address.mobileNumber
-    };
-
-    return await CallHelper()
-        .postWithData('api/address/update/${address.addressId}', data, {});
-  }
-
   Future<ApiResponseWithData<Map<String, dynamic>>> getCategories() async {
     return await CallHelper().getWithData('api/category/get', {});
   }
@@ -42,6 +13,36 @@ class ProductAPIs extends ApiBase {
   Future<ApiResponseWithData<Map<String, dynamic>>> getSubCategoriesById(
       String id) async {
     return await CallHelper().getWithData('api/category/get/${id}', {});
+  }
+
+  Future<ApiResponseWithData<Map<String, dynamic>>> getFavoriteProduct(
+      String id) async {
+    return await CallHelper().getWithData('api/favorite/get/${id}', {});
+  }
+
+  Future<ApiResponseWithData<Map<String, dynamic>>> getProductById(
+      String id) async {
+    return await CallHelper().getWithData('api/product/subcategory/${id}', {});
+  }
+
+  Future<ApiResponseWithData<Map<String, dynamic>>> addFavorite(
+      String productId, String userId) async {
+    Map<String, String> data = {
+      'userId': userId,
+      'productId': productId,
+    };
+
+    return await CallHelper().postWithData('api/favorite/add', data, {});
+  }
+
+  Future<ApiResponse> removeFavorite(
+      String productId, String userId) async {
+    Map<String, String> data = {
+      'userId': userId,
+      'productId': productId,
+    };
+
+    return await CallHelper().delete('api/favorite/delete', data, );
   }
 
   Future<ApiResponse> deleteAddress(String userId) async {

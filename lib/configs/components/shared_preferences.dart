@@ -1,5 +1,5 @@
+import 'package:millyshb/configs/components/constants.dart';
 import 'package:shared_preferences/shared_preferences.dart';
-
 
 //This wrapper over SharedPreferences is needed as flutter doesn't provide
 //non-async method for getting preferences. This is becoming a problem as
@@ -15,11 +15,8 @@ class SharedPrefUtil {
     return preferences;
   }
 
-
-
-
   static void setPushNotiicationRelatedPermissions(bool value) {
-   // setValue(pushNotificationsRelatedPermissionsGranted, value);
+    // setValue(pushNotificationsRelatedPermissionsGranted, value);
   }
 
   static void logIn(companyId, userRole, user, domain, email, number) {
@@ -38,7 +35,8 @@ class SharedPrefUtil {
   }
 
   static void logOut() {
-    // clearValue(companySymbolSharedPrefName);
+    clearValue(isLogedIn);
+
     // clearValue(isLogedinSharedPrefName);
     // clearValue(loggedInUserCitySharedPrefName);
     // clearValue(roleSharedPref);
@@ -104,9 +102,6 @@ class SharedPrefUtil {
         return defaultValue;
     }
   }
-
-
-
 
   static setStringListValue(String key, List<String> value) {
     preferences.setStringList(key, value);

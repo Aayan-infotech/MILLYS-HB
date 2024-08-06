@@ -322,6 +322,7 @@ class _SignUpScreenState extends State<SignUpScreen> {
                           name: "Create Account",
                           onPressed: () {
                             User user = User(
+                              token: '',
                               id: "",
                               userName: _userNameController.text,
                               mobileNumber: _mobileNumberController.text,

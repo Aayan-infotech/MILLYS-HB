@@ -31,32 +31,32 @@ class LoginAPIs extends ApiBase {
     return await CallHelper().postWithData('api/user/register', data, {});
   }
 
-  Future<ApiResponse> sendOTP(String mobile) async {
-    return await CallHelper().get('otp/$mobile/generate-otp');
-  }
 
-  Future<ApiResponse> verifyOTP(String mobile, String otp) async {
+  //
+ Future<ApiResponse> sendOTO( String email) async {
+    Map<String, String> data = {
+      'email': email,
+    };
+    return await CallHelper().post('api/auth/send-email', data);
+  }
+Future<ApiResponseWithData<Map<String, dynamic>>> verifyOTP( String otp) async {
     Map<String, String> data = {
       'otp': otp,
     };
-    return await CallHelper().post('otp/$mobile/verify-otp', data);
+    return await CallHelper().postWithData('api/auth/verifyOTP', data,{});
   }
 
   Future<ApiResponse> checkUserExistence(String mobile) async {
     return await CallHelper().get('business/$mobile/existence/$mobile');
   }
 
-  // Future<ApiResponseWithData<Map<String, dynamic>>>
-  //     getLoggedInUserDetails() async {
-  //   return await CallHelper()
-  //       .getWithData('business/$companySymbol/details', {});
-  // }
 
-  Future<ApiResponse> passwordReset(String mobile, String password) async {
+  Future<ApiResponse> passwordReset(String token, String password) async {
     Map<String, String> data = {
-      'password': password,
-      'mobile': mobile,
+      'newPassword': password,
+      'token': token,
     };
-    return await CallHelper().post('business/$mobile/password', data);
+    
+    return await CallHelper().post('api/auth/reset-password', data);
   }
 }

@@ -1,5 +1,7 @@
 // ignore_for_file: camel_case_types
 
+import 'dart:ui';
+
 import 'package:flutter/material.dart';
 import 'package:flutter_spinkit/flutter_spinkit.dart';
 import 'package:millyshb/configs/theme/colors.dart';
@@ -19,20 +21,35 @@ class MillysHBTheme {
 }
 
 class loadingIndicator extends StatelessWidget {
-  const loadingIndicator({
+  final bool isTransParent;
+
+  loadingIndicator({
+    this.isTransParent = false,
     super.key,
   });
 
   @override
   Widget build(BuildContext context) {
-    return Container(
-      color: Colors.white,
-      child: const Center(
-        child: SpinKitFadingCircle(
-          color: Pallete.accentColor,
-          size: 30.0,
+    return Stack(
+      children: [
+        if (isTransParent)
+          BackdropFilter(
+            filter: ImageFilter.blur(sigmaX: 5.0, sigmaY: 5.0),
+            child: Container(
+              color: Colors.transparent,
+            ),
+          )
+        else
+          Container(
+            color: Colors.white,
+          ),
+        const Center(
+          child: SpinKitFadingCircle(
+            color: Colors.blueAccent, // Replace with your Pallete.accentColor
+            size: 30.0,
+          ),
         ),
-      ),
+      ],
     );
   }
 }

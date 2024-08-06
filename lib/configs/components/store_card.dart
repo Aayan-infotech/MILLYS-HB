@@ -1,20 +1,20 @@
 import 'package:flutter/material.dart';
 import 'package:millyshb/configs/components/size_config.dart';
+import 'package:millyshb/models/category_model.dart';
 import 'package:millyshb/view/nav_screen.dart';
 import 'package:millyshb/view/splash/store_splash.dart';
 import 'package:millyshb/configs/components/branded_primary_button.dart';
+import 'package:millyshb/view_model/product_view_model.dart';
 import 'package:millyshb/view_model/select_store_view_model.dart';
 import 'package:provider/provider.dart';
 
 class StoreCard extends StatefulWidget {
-  final String name;
-  final String imagePath;
   final bool isFood;
+  ProductCategory category;
 
-  const StoreCard({
+  StoreCard({
     this.isFood = false,
-    required this.imagePath,
-    required this.name,
+    required this.category,
     super.key,
   });
 
@@ -50,7 +50,8 @@ class _StoreCardState extends State<StoreCard> {
                   height: MediaQuery.of(context).size.height * .15,
                   child: ClipRRect(
                     borderRadius: BorderRadius.circular(16),
-                    child: Image(image: NetworkImage(widget.imagePath)),
+                    child:
+                        Image(image: NetworkImage(widget.category.pictureUrl)),
                   ),
                 ),
               ),
@@ -64,7 +65,7 @@ class _StoreCardState extends State<StoreCard> {
                       child: SizedBox(
                         width: SizeConfig.screenWidth * 0.4,
                         child: Text(
-                          widget.name
+                          widget.category.title
                               .trim(), // This will trim leading and trailing spaces
                           maxLines: 2,
                           textAlign: TextAlign.left, // Align text to the left
@@ -87,6 +88,9 @@ class _StoreCardState extends State<StoreCard> {
                           isEnabled: true,
                           name: "Shopping",
                           onPressed: () {
+                            Provider.of<ProductProvider>(context, listen: false)
+                                .selectedCategoryId = widget.category.id;
+                            print(widget.category.id);
                             if (widget.isFood) {
                               Provider.of<SelectStoreProvider>(context,
                                       listen: false)

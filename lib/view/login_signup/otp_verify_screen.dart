@@ -5,15 +5,17 @@ import 'dart:async';
 import 'package:flutter/material.dart';
 import 'package:millyshb/configs/components/branded_primary_button.dart';
 import 'package:millyshb/configs/components/miscellaneous.dart';
+import 'package:millyshb/configs/network/server_calls/user_api.dart';
+import 'package:millyshb/view/settings/update_password.dart';
 import 'package:sms_autofill/sms_autofill.dart';
 
 enum OTPVerifyScreenContext { register, passwordReset }
 
 class OTPVerifyScreen extends StatefulWidget {
-  final String mobile;
+  final String email;
   final bool isWeb;
 
-  const OTPVerifyScreen({super.key, this.isWeb = false, required this.mobile});
+  const OTPVerifyScreen({super.key, this.isWeb = false, required this.email});
   static const routeName = '/otp-verify';
 
   @override
@@ -33,13 +35,13 @@ class _OTPVerifyScreenState extends State<OTPVerifyScreen> {
   String _code = "";
   bool isNewUser = false;
   List<TextEditingController> controllers =
-      List.generate(4, (_) => TextEditingController());
+      List.generate(3, (_) => TextEditingController());
   List<FocusNode> focusNodes = List.generate(4, (_) => FocusNode());
 
   @override
   void initState() {
     super.initState();
-    //  listenOtp();
+
     startResendTimer();
   }
 
@@ -50,6 +52,22 @@ class _OTPVerifyScreenState extends State<OTPVerifyScreen> {
   //     // });
   //   });
   // }
+  otpVerify(String otp) async {
+    var response = await LoginAPIs().verifyOTP(otp);
+
+    if (response.success) {
+      String token = response.data['token'];
+
+ 
+      Navigator.push(
+        context,
+        MaterialPageRoute(
+            builder: (context) => UpdatePasswordScreen(
+                  token: token,
+                )),
+      );
+    }
+  }
 
   @override
   void dispose() {
@@ -104,7 +122,7 @@ class _OTPVerifyScreenState extends State<OTPVerifyScreen> {
   Widget build(BuildContext context) {
     double width = MediaQuery.of(context).size.width;
 
-    String mobileNumberToDisplay = widget.mobile;
+    String mobileNumberToDisplay = widget.email;
     return Stack(
       children: [
         Scaffold(
@@ -134,7 +152,7 @@ class _OTPVerifyScreenState extends State<OTPVerifyScreen> {
                     height: 50,
                     child: PinFieldAutoFill(
                       autoFocus: true,
-                      codeLength: 5,
+                      codeLength: 4,
                       decoration: BoxLooseDecoration(
                           bgColorBuilder: const FixedColorBuilder(
                               Color.fromARGB(255, 226, 226, 247)),
@@ -147,7 +165,6 @@ class _OTPVerifyScreenState extends State<OTPVerifyScreen> {
                           _code = code;
                           isEnable = true;
                         });
-                        // otpVerify();
                       },
                       onCodeChanged: (code) {
                         if (code!.length == 4) {
@@ -157,7 +174,7 @@ class _OTPVerifyScreenState extends State<OTPVerifyScreen> {
                           _code = code;
                         });
 
-                        if (code.length == 5) {
+                        if (code.length == 4) {
                           FocusScope.of(context).requestFocus(FocusNode());
                         }
                       },
@@ -240,8 +257,7 @@ class _OTPVerifyScreenState extends State<OTPVerifyScreen> {
                   child: BrandedPrimaryButton(
                     name: 'Submit',
                     onPressed: () {
-                      Navigator.of(context).pop();
-                      Navigator.of(context).pop();
+                      otpVerify(_code);
                     },
                     isEnabled: true,
                   ),
@@ -264,7 +280,7 @@ class _OTPVerifyScreenState extends State<OTPVerifyScreen> {
             ),
           ),
         ),
-        if (showFadingCircle) const loadingIndicator()
+        if (showFadingCircle) loadingIndicator()
       ],
     );
   }

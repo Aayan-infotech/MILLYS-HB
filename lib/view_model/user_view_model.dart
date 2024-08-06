@@ -3,6 +3,7 @@ import 'dart:convert';
 import 'package:flutter/material.dart';
 import 'package:millyshb/configs/components/constants.dart';
 import 'package:millyshb/configs/components/pdf_api.dart';
+import 'package:millyshb/configs/components/shared_preferences.dart';
 import 'package:millyshb/configs/components/user_constext_data.dart';
 import 'package:millyshb/configs/network/call_helper.dart';
 import 'package:millyshb/configs/network/server_calls/user_api.dart';
@@ -11,13 +12,13 @@ import 'package:millyshb/view/select_store_screen.dart';
 
 class UserProvider with ChangeNotifier {
   User? _user;
+  bool get isLoading => _isLoading;
   bool _isLoading = false;
 
   // Getter to retrieve the current user
   User? get user => _user;
 
   // Getter to check loading state
-  bool get isLoading => _isLoading;
 
   // Setter to update the current user
   set user(User? user) {
@@ -30,8 +31,12 @@ class UserProvider with ChangeNotifier {
     ApiResponseWithData response =
         await LoginAPIs().login(userNameOrEmail, password);
     if (response.success) {
+      String token = response.data['token'];
+
+      SharedPrefUtil.setValue(userToken, token);
+
       _user = User.fromJson(response.data['data']);
-       await UserContextData.setCurrentUserAndFetchUserData(context);
+      await UserContextData.setCurrentUserAndFetchUserData(context);
 
       PDFApi.saveFileToLocalDirectory(
           jsonEncode(_user!.toJson()), userDetailsLocalFilePath);
@@ -51,14 +56,14 @@ class UserProvider with ChangeNotifier {
       _showSnackBar(context, 'User Registered', Colors.green);
       Navigator.of(context).pop();
     } else {
-      _showSnackBar(context, response.message, Colors.red);
+      _showSnackBar(context, "Invalid email/username or password", Colors.red);
     }
     _setLoading(false);
   }
 
   void _setLoading(bool loading) {
     _isLoading = loading;
-    notifyListeners();
+    // notifyListeners();
   }
 
   void _showSnackBar(

@@ -49,7 +49,6 @@ class SplashScreenState extends State<SplashScreen> {
     final productProvider =
         Provider.of<ProductProvider>(context, listen: false);
     await productProvider.getCategoryList(context);
-    SharedPrefUtil.setValue(isLogedIn, false);
   }
 
   Future<void> _loadUserDetails() async {

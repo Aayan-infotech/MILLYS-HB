@@ -1,7 +1,9 @@
 import 'package:flutter/material.dart';
+import 'package:millyshb/models/product_model.dart';
 
 class ProductCard extends StatefulWidget {
-  const ProductCard({super.key});
+  Product product;
+  ProductCard({required this.product, super.key});
 
   @override
   State<ProductCard> createState() => _ProductCardState();
@@ -10,14 +12,15 @@ class ProductCard extends StatefulWidget {
 class _ProductCardState extends State<ProductCard> {
   @override
   Widget build(BuildContext context) {
+    widget.product.discount = 5;
     return Column(
       crossAxisAlignment: CrossAxisAlignment.start,
       children: [
         ClipRRect(
           borderRadius:
               BorderRadius.circular(14.0), // Adjust the radius as needed
-          child: Image.asset(
-            'assets/images/product.png',
+          child: Image.network(
+            widget.product.image,
             width: 170.0, // Set your desired width
             height: 124.0, // Set your desired height
             fit: BoxFit.cover, // Set the fit property to cover the entire area
@@ -28,8 +31,8 @@ class _ProductCardState extends State<ProductCard> {
           child: Column(
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
-              const Text(
-                "Lorem ispsum",
+              Text(
+                widget.product.name,
                 style: TextStyle(
                     color: Color.fromRGBO(0, 0, 0, 1),
                     fontWeight: FontWeight.w500,
@@ -38,10 +41,10 @@ class _ProductCardState extends State<ProductCard> {
               const SizedBox(
                 height: 4,
               ),
-              const SizedBox(
+              SizedBox(
                 width: 170,
                 child: Text(
-                  "Neque porro quisquam est qui dolorem ipsum quia",
+                  widget.product.description,
                   style: TextStyle(
                       color: Color.fromRGBO(0, 0, 0, 1),
                       fontWeight: FontWeight.w400,
@@ -51,34 +54,44 @@ class _ProductCardState extends State<ProductCard> {
               const SizedBox(
                 height: 4,
               ),
-              const Text(
-                "₹1500",
-                style: TextStyle(
-                    color: Color.fromRGBO(0, 0, 0, 1),
-                    fontWeight: FontWeight.w500,
-                    fontSize: 10),
-              ),
-              RichText(
-                text: const TextSpan(
-                  children: [
-                    TextSpan(
-                      text: '₹2499',
+              (widget.product.discount == 0)
+                  ? Text(
+                      "\$ ${widget.product.price}",
                       style: TextStyle(
-                          color: Color.fromRGBO(187, 187, 187, 1),
-                          decoration: TextDecoration.lineThrough,
-                          fontSize: 12,
-                          fontWeight: FontWeight.w300),
-                    ),
-                    TextSpan(
-                      text: ' 40%Off',
+                          color: Color.fromRGBO(0, 0, 0, 1),
+                          fontWeight: FontWeight.w500,
+                          fontSize: 10),
+                    )
+                  : Text(
+                      "\$ ${(widget.product.price - widget.product.discount).toStringAsFixed(2)}",
                       style: TextStyle(
-                          color: Colors.red,
-                          fontSize: 10,
-                          fontWeight: FontWeight.w400),
+                          color: Color.fromRGBO(0, 0, 0, 1),
+                          fontWeight: FontWeight.w500,
+                          fontSize: 10),
                     ),
-                  ],
-                ),
-              )
+              if (widget.product.discount != 0)
+                RichText(
+                  text: TextSpan(
+                    children: [
+                      TextSpan(
+                        text: "\$ ${widget.product.price}",
+                        style: TextStyle(
+                            color: Color.fromRGBO(187, 187, 187, 1),
+                            decoration: TextDecoration.lineThrough,
+                            fontSize: 12,
+                            fontWeight: FontWeight.w300),
+                      ),
+                      TextSpan(
+                        text:
+                            ' ${((widget.product.discount / widget.product.price) * 100).toStringAsFixed(2)}%Off',
+                        style: TextStyle(
+                            color: Colors.red,
+                            fontSize: 10,
+                            fontWeight: FontWeight.w400),
+                      ),
+                    ],
+                  ),
+                )
             ],
           ),
         )

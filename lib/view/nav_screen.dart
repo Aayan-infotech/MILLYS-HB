@@ -28,7 +28,7 @@ class _NavScreenState extends State<NavScreen> {
   }
 
   List<Widget> homeScreenItems = [
-    const HomeScreen(),
+    HomeScreen(),
     const ProductList(),
     ShoppingBagScreen(),
     SettingsScreen()

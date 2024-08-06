@@ -1,17 +1,20 @@
 import 'package:carousel_slider/carousel_slider.dart';
 import 'package:flutter/material.dart';
-import 'package:millyshb/configs/components/app_drawer.dart';
 import 'package:millyshb/configs/components/cliped_card.dart';
 import 'package:millyshb/configs/components/constants.dart';
+import 'package:millyshb/configs/components/miscellaneous.dart';
 import 'package:millyshb/configs/components/shared_preferences.dart';
-import 'package:millyshb/configs/components/size_config.dart';
+import 'package:millyshb/models/product_model.dart';
+import 'package:millyshb/models/sub_category_model.dart';
 import 'package:millyshb/view/login_signup/login_screen.dart';
 import 'package:millyshb/view/product/product_list.dart';
 import 'package:millyshb/configs/components/branded_text_field.dart';
 import 'package:millyshb/configs/components/image_widget.dart';
 import 'package:millyshb/configs/components/product_card.dart';
 import 'package:millyshb/view/profile_screen.dart';
+import 'package:millyshb/view_model/product_view_model.dart';
 import 'package:millyshb/view_model/select_store_view_model.dart';
+import 'package:millyshb/view_model/user_view_model.dart';
 import 'package:provider/provider.dart';
 
 class HomeScreen extends StatefulWidget {
@@ -24,15 +27,13 @@ class HomeScreen extends StatefulWidget {
 class _HomeScreenState extends State<HomeScreen> {
   final TextEditingController _searchController = TextEditingController();
   int _currentIndex = 0;
-
+  bool isLoading = false;
   final List<String> imgList = [
     "assets/images/1.jpg",
     "assets/images/2.jpg",
     "assets/images/3.jpg",
   ];
   void _showLoginBottomSheet(BuildContext context) {
-    final TextEditingController _userNameController = TextEditingController();
-    final TextEditingController _emailController = TextEditingController();
     showModalBottomSheet(
       context: context,
       isScrollControlled: true,
@@ -46,7 +47,7 @@ class _HomeScreenState extends State<HomeScreen> {
             return Container(
                 decoration: BoxDecoration(
                   color: Colors.white,
-                  borderRadius: BorderRadius.vertical(
+                  borderRadius: const BorderRadius.vertical(
                     top: Radius.circular(20),
                   ),
                   boxShadow: [
@@ -58,57 +59,86 @@ class _HomeScreenState extends State<HomeScreen> {
                     ),
                   ],
                 ),
-                child: LoginScreen(
+                child: const LoginScreen(
                   isbottomSheet: true,
                 ));
           },
         );
       },
     ).whenComplete(() {
-      // Call setState to update the UI after the bottom sheet is closed
-      setState(() {});
+      if (mounted) setState(() {});
     });
     ;
+  }
+
+  asyncInit() async {
+    setState(() {
+      isLoading = true;
+    });
+    final productProvider =
+        Provider.of<ProductProvider>(context, listen: false);
+    await productProvider.getSubCategoryList(
+        productProvider.selectedCategoryId, context);
+    setState(() {
+      isLoading = false;
+    });
+  }
+
+  @override
+  void didChangeDependencies() {
+    super.didChangeDependencies();
+  }
+
+  @override
+  void initState() {
+    asyncInit();
+    super.initState();
   }
 
   @override
   Widget build(BuildContext context) {
     bool isLogin = SharedPrefUtil.getValue(isLogedIn, false) as bool;
-
-    return Scaffold(
-      backgroundColor: Colors.white,
-      appBar: AppBar(
-        backgroundColor: Colors.white,
-        forceMaterialTransparency: true,
-        centerTitle: true,
-        elevation: 0,
-        title: const Image(image: AssetImage("assets/images/logo.png")),
-        actions: [
-          IconButton(
-              onPressed: () {
-                if (isLogin) {
-                  Navigator.of(context)
-                      .push(MaterialPageRoute(builder: (context) {
-                    return ProfilePage();
-                  }));
-                } else {
-                  _showLoginBottomSheet(context);
-                }
+    return isLoading
+        ? loadingIndicator()
+        : Scaffold(
+            backgroundColor: Colors.white,
+            appBar: AppBar(
+              backgroundColor: Colors.white,
+              forceMaterialTransparency: true,
+              centerTitle: true,
+              elevation: 0,
+              title: const Image(image: AssetImage("assets/images/logo.png")),
+              actions: [
+                IconButton(
+                    onPressed: () {
+                      if (isLogin) {
+                        Navigator.of(context)
+                            .push(MaterialPageRoute(builder: (context) {
+                          return const ProfilePage();
+                        }));
+                      } else {
+                        _showLoginBottomSheet(context);
+                      }
+                    },
+                    icon: const Icon(Icons.person_outline))
+              ],
+            ),
+            body: Consumer<SelectStoreProvider>(
+              builder: (context, provider, child) {
+                return (provider.selectedStore == Store.FOOD)
+                    ? foodFeed(context)
+                    : cosmeticsFeed(context);
               },
-              icon: const Icon(Icons.person_outline))
-        ],
-      ),
-      body: Consumer<SelectStoreProvider>(
-        builder: (context, provider, child) {
-          return (provider.selectedStore == Store.FOOD)
-              ? foodFeed(context)
-              : cosmeticsFeed(context);
-        },
-      ),
-    );
+            ),
+          );
   }
 
-  SingleChildScrollView foodFeed(BuildContext context) {
+  SingleChildScrollView foodFeed(
+    BuildContext context,
+  ) {
+    final productProvider =
+        Provider.of<ProductProvider>(context, listen: false);
+
     return SingleChildScrollView(
       child: Padding(
         padding: const EdgeInsets.symmetric(horizontal: 10),
@@ -213,9 +243,11 @@ class _HomeScreenState extends State<HomeScreen> {
               height: 100,
               child: ListView.builder(
                   scrollDirection: Axis.horizontal,
-                  itemCount: 5,
+                  itemCount: productProvider.subCategory.length,
                   itemBuilder: (BuildContext context, item) {
-                    return const ImageWidget();
+                    SubCategory subCategory =
+                        productProvider.subCategory[item] as SubCategory;
+                    return ImageWidget(subCategory: subCategory);
                   }),
             ),
             const SizedBox(height: 10),
@@ -397,7 +429,7 @@ class _HomeScreenState extends State<HomeScreen> {
                               height: 156,
                             ),
                           ),
-                          Column(
+                          const Column(
                             crossAxisAlignment: CrossAxisAlignment.start,
                             children: [
                               Text(
@@ -424,11 +456,11 @@ class _HomeScreenState extends State<HomeScreen> {
                     );
                   }),
             ),
-            SizedBox(
+            const SizedBox(
               height: 10,
             ),
             headingCard("Recommended For You "),
-            SizedBox(
+            const SizedBox(
               height: 10,
             ),
             foodCard(context, isRecomended: true)
@@ -592,6 +624,8 @@ class _HomeScreenState extends State<HomeScreen> {
   }
 
   SingleChildScrollView cosmeticsFeed(BuildContext context) {
+    final productProvider =
+        Provider.of<ProductProvider>(context, listen: false);
     return SingleChildScrollView(
       child: Padding(
         padding: const EdgeInsets.symmetric(horizontal: 10),
@@ -695,9 +729,11 @@ class _HomeScreenState extends State<HomeScreen> {
               height: 100,
               child: ListView.builder(
                   scrollDirection: Axis.horizontal,
-                  itemCount: 5,
+                  itemCount: productProvider.subCategory.length,
                   itemBuilder: (BuildContext context, item) {
-                    return const ImageWidget();
+                    SubCategory subCategory =
+                        productProvider.subCategory[item] as SubCategory;
+                    return ImageWidget(subCategory: subCategory);
                   }),
             ),
             const SizedBox(height: 20),
@@ -825,17 +861,20 @@ class _HomeScreenState extends State<HomeScreen> {
               ],
             ),
             const SizedBox(height: 10),
-            focusCard(context, "Most Recommended"),
+            focusCard(context, "Wishlist"),
             const SizedBox(height: 10),
             SizedBox(
               height: 210,
               child: ListView.builder(
                   scrollDirection: Axis.horizontal,
-                  itemCount: 5,
+                  itemCount: productProvider.favProduct.length,
                   itemBuilder: (BuildContext context, item) {
-                    return const Padding(
+                    Product favProduct = productProvider.favProduct[item];
+                    return Padding(
                       padding: EdgeInsets.symmetric(horizontal: 4),
-                      child: ProductCard(),
+                      child: ProductCard(
+                        product: favProduct,
+                      ),
                     );
                   }),
             ),
@@ -888,11 +927,14 @@ class _HomeScreenState extends State<HomeScreen> {
               height: 210,
               child: ListView.builder(
                   scrollDirection: Axis.horizontal,
-                  itemCount: 5,
+                  itemCount: productProvider.favProduct.length,
                   itemBuilder: (BuildContext context, item) {
-                    return const Padding(
+                    Product favProduct = productProvider.favProduct[item];
+                    return Padding(
                       padding: EdgeInsets.symmetric(horizontal: 4),
-                      child: ProductCard(),
+                      child: ProductCard(
+                        product: favProduct,
+                      ),
                     );
                   }),
             ),
@@ -917,13 +959,13 @@ class _HomeScreenState extends State<HomeScreen> {
                 padding: EdgeInsets.only(left: 10, top: 10),
                 child: Text(
                   name,
-                  style: TextStyle(
+                  style: const TextStyle(
                       color: Colors.white,
                       fontSize: 16,
                       fontWeight: FontWeight.w400),
                 ),
               ),
-              Padding(
+              const Padding(
                 padding: EdgeInsets.only(left: 10),
                 child: Text(
                   "Products",
