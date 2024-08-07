@@ -1,4 +1,5 @@
 import 'package:millyshb/configs/components/constants.dart';
+import 'package:millyshb/configs/components/pdf_api.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
 //This wrapper over SharedPreferences is needed as flutter doesn't provide
@@ -64,8 +65,9 @@ class SharedPrefUtil {
     // clearValue(adminNumber);
     // clearValue(adminImage);
 
-    // DbManager().deleteFullLocalCache();
-    // PDFApi.deleteFile(defaultServieJsonFilePath);
+    //DbManager().deleteFullLocalCache();
+    PDFApi.deleteFile(userDetailsLocalFilePath);
+    PDFApi.deleteFile(product_category);
     // PDFApi.deleteFile(salonServicesLocalFilePath);
     // LoginWith().googleLogout();
   }

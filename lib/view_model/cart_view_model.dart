@@ -3,6 +3,7 @@ import 'package:flutter/material.dart';
 import 'package:millyshb/configs/network/call_helper.dart';
 import 'package:millyshb/configs/network/server_calls/cart_api.dart';
 import 'package:millyshb/models/cart_product_model.dart';
+import 'package:millyshb/models/delivery_slot_model.dart';
 import 'package:millyshb/models/product_model.dart';
 
 class CartProvider with ChangeNotifier {
@@ -15,6 +16,12 @@ class CartProvider with ChangeNotifier {
       version: 0);
   bool get isLoading => _isLoading;
   bool _isLoading = false;
+  List<DeliverySlot> _lstSlot = [];
+  List<DeliverySlot> get lstSlot => _lstSlot;
+  List<DeliverySlot> _lstMorningSlot = [];
+  List<DeliverySlot> get lstMorningSlot => _lstMorningSlot;
+  List<DeliverySlot> _lstExpressDeliverySlot = [];
+  List<DeliverySlot> get lstExpressDeliverySlot => _lstExpressDeliverySlot;
   // Getter for the product list
   dynamic get userCart => _cart;
 
@@ -40,19 +47,26 @@ class CartProvider with ChangeNotifier {
   }
 
   getCart(String userId, BuildContext context) async {
-    _setLoading(true);
     ApiResponseWithData response = await CartAPIs().getCart(userId);
     if (response.success) {
       _cart = Cart.fromJson(response.data["data"]);
-    } else {
-      ScaffoldMessenger.of(context).showSnackBar(
-        SnackBar(
-          content: Text(response.data),
-          backgroundColor: Colors.red,
-        ),
-      );
-    }
-    _setLoading(false);
+    } else {}
+  }
+
+  getSlot(String deliveryType, BuildContext context) async {
+    ApiResponseWithData response = await CartAPIs().getSlot(deliveryType);
+
+    if (response.success) {
+      _lstSlot = (response.data["data"] as List)
+          .map((item) => DeliverySlot.fromJson(item))
+          .toList();
+      _lstMorningSlot = _lstSlot
+          .where((order) => order.deliveryType == "Morning delivery")
+          .toList();
+      _lstExpressDeliverySlot = _lstSlot
+          .where((order) => order.deliveryType == "Express Delivery")
+          .toList();
+    } else {}
   }
 
   removeFromCart(String userId, Product product, BuildContext context) async {
@@ -64,8 +78,6 @@ class CartProvider with ChangeNotifier {
       int index =
           _cart.products.indexWhere((product) => product.id == product.id);
       _cart.products.removeAt(index);
-
-      //(userCart as Cart).products.remove(product);
     } else {
       ScaffoldMessenger.of(context).showSnackBar(
         const SnackBar(

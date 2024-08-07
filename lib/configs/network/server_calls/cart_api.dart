@@ -57,4 +57,12 @@ class CartAPIs extends ApiBase {
       String userId) async {
     return await CallHelper().getWithData('api/cart/get/${userId}', {});
   }
+
+  Future<ApiResponseWithData<Map<String, dynamic>>> getSlot(
+      String deliveryType) async {
+    // deliveryType
+    Map<String, String> data = {"deliveryType": deliveryType};
+
+    return await CallHelper().getWithData('api/deliveryslot/get', data);
+  }
 }

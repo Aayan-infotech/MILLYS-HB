@@ -9,28 +9,24 @@ class AddressAPIs extends ApiBase {
   Future<ApiResponseWithData<Map<String, dynamic>>> saveAddress(
       Address address) async {
     Map<String, String> data = {
+      "receiverName": address.name,
       'userId': address.userId,
       'houseNumber': address.houseNumber,
       'state': address.state,
       'city': address.city,
       'pinCode': address.postalCode,
       'contactNumber': address.mobileNumber,
-      'area': address.street
+      'area': address.street,
+      'country': address.country
     };
 
     return await CallHelper().postWithData('api/address/add', data, {});
   }
-  // "userId": "669e2f350a92abdbb4e2003c", // Example User ID
-  //   "houseNumber": "123A",
-  //   "state": "California",
-  //   "city": "Los Angeles",
-  //   "pinCode": "90001",
-  //   "contactNumber": "+1-234-567-8901",
-  //   "area":"new delhi
 
-  Future<ApiResponseWithData<Map<String, dynamic>>> editAddress(
+  Future<ApiResponse> editAddress(
       Address address) async {
     Map<String, String> data = {
+      'receiverName': address.name,
       'userId': address.userId,
       'houseNumber': address.houseNumber,
       'state': address.state,
@@ -40,7 +36,7 @@ class AddressAPIs extends ApiBase {
       'area': address.street
     };
     return await CallHelper()
-        .postWithData('api/address/update/${address.addressId}', data, {});
+        .put('api/address/update/${address.addressId}', data);
   }
 
   Future<ApiResponseWithData<Map<String, dynamic>>> getAddressList(
@@ -50,5 +46,10 @@ class AddressAPIs extends ApiBase {
 
   Future<ApiResponse> deleteAddress(String userId) async {
     return await CallHelper().delete('api/address/delete/${userId}', {});
+  }
+
+  Future<ApiResponse> selectAddress(String userId, String addressId) async {
+    Map<String, String> data = {"addressId": addressId, "userId": userId};
+    return await CallHelper().put('api/address/select', data);
   }
 }

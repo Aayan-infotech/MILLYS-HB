@@ -107,13 +107,17 @@ class CallHelper {
       },
     );
 
-    var decodedResponse = jsonDecode(response.body);
+    var decodedResponse =
+        (response.statusCode != 404) ? jsonDecode(response.body) : "";
 
     if (response.statusCode == 200 && decodedResponse != null) {
       return ApiResponseWithData(decodedResponse as T, true);
     } else if (response.statusCode == 404) {
       return ApiResponseWithData(
-          message: "Not Found", decodedResponse as T, true);
+        defaultData,
+        false,
+        message: "Not Found",
+      );
     } else {
       return ApiResponseWithData(defaultData, false,
           message: decodedResponse['message'] ?? internalServerErrorMessage);

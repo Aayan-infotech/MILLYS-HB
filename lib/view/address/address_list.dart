@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:millyshb/configs/components/miscellaneous.dart';
 import 'package:millyshb/models/address_model.dart';
 import 'package:millyshb/view/address/address_screen.dart';
 import 'package:millyshb/view/widget/address_card.dart';
@@ -14,18 +15,25 @@ class AddressList extends StatefulWidget {
 }
 
 class _AddressListState extends State<AddressList> {
+  bool isLoading = false;
   @override
   void initState() {
     super.initState();
     _fetchAddresses();
   }
 
-  void _fetchAddresses() {
+  _fetchAddresses() async {
+    setState(() {
+      isLoading = true;
+    });
     final addressProvider =
         Provider.of<AddressProvider>(context, listen: false);
     final userProvider = Provider.of<UserProvider>(context, listen: false);
-    addressProvider.getAddressList(
-        userProvider.user!.id, context); // Replace with actual userId
+    await addressProvider.getAddressList(userProvider.user!.id, context);
+
+    setState(() {
+      isLoading = false;
+    }); // Replace with actual userId
   }
 
   void _editAddress(Address address) {
@@ -90,38 +98,43 @@ class _AddressListState extends State<AddressList> {
 
   @override
   Widget build(BuildContext context) {
-    return Scaffold(
-      appBar: AppBar(
-        forceMaterialTransparency: true,
-        title: const Text('My Addresses'),
-      ),
-      body: Consumer<AddressProvider>(
-        builder: (context, addressProvider, child) {
-          if (addressProvider.isLoading) {
-            return const Center(child: CircularProgressIndicator());
-          } else if (addressProvider.address.isEmpty) {
-            return const Center(child: Text('No addresses found'));
-          } else {
-            return ListView.builder(
-              itemCount: addressProvider.address.length,
-              itemBuilder: (context, index) {
-                final address = addressProvider.address[index];
-                return addressCard(context, address,
-                    Provider.of<UserProvider>(context, listen: false));
+    return isLoading
+        ? loadingIndicator()
+        : Scaffold(
+            appBar: AppBar(
+              forceMaterialTransparency: true,
+              title: const Text('My Addresses'),
+            ),
+            body: Consumer<AddressProvider>(
+              builder: (context, addressProvider, child) {
+                if (addressProvider.isLoading) {
+                  return const Center(child: CircularProgressIndicator());
+                } else if (addressProvider.address.isEmpty) {
+                  return const Center(child: Text('No addresses found'));
+                } else {
+                  return ListView.builder(
+                    itemCount: addressProvider.address.length,
+                    itemBuilder: (context, index) {
+                      final address = addressProvider.address[index];
+                      return addressCard(context, address,
+                          Provider.of<UserProvider>(context, listen: false));
+                    },
+                  );
+                }
               },
-            );
-          }
-        },
-      ),
-      floatingActionButton: FloatingActionButton(
-        onPressed: () async {
-          Navigator.of(context).push(MaterialPageRoute(builder: (context) {
-            return AddressInputScreen();
-          }));
-        },
-        child: const Icon(Icons.add),
-      ),
-    );
+            ),
+            floatingActionButton: FloatingActionButton(
+              onPressed: () async {
+                Navigator.of(context)
+                    .push(MaterialPageRoute(builder: (context) {
+                  return AddressInputScreen();
+                })).then((value) async {
+                  await _fetchAddresses();
+                });
+              },
+              child: const Icon(Icons.add),
+            ),
+          );
   }
 }
 

@@ -4,6 +4,7 @@ import 'dart:async';
 
 import 'package:flutter/material.dart';
 import 'package:millyshb/configs/components/branded_primary_button.dart';
+import 'package:millyshb/configs/components/error_success_dialogue.dart';
 import 'package:millyshb/configs/components/miscellaneous.dart';
 import 'package:millyshb/configs/network/server_calls/user_api.dart';
 import 'package:millyshb/view/settings/update_password.dart';
@@ -28,7 +29,7 @@ class _OTPVerifyScreenState extends State<OTPVerifyScreen> {
   final TextEditingController otpController = TextEditingController();
   bool showFadingCircle = false;
   bool isEnable = false;
-
+  bool isLoading = false;
   late Timer resendTimer;
   bool canResendCode = false;
   int secondsRemaining = 60;
@@ -53,12 +54,16 @@ class _OTPVerifyScreenState extends State<OTPVerifyScreen> {
   //   });
   // }
   otpVerify(String otp) async {
+    setState(() {
+      isLoading = true;
+    });
     var response = await LoginAPIs().verifyOTP(otp);
 
     if (response.success) {
       String token = response.data['token'];
-
- 
+      setState(() {
+        isLoading = false;
+      });
       Navigator.push(
         context,
         MaterialPageRoute(
@@ -66,6 +71,21 @@ class _OTPVerifyScreenState extends State<OTPVerifyScreen> {
                   token: token,
                 )),
       );
+    } else {
+      showDialog(
+          context: context,
+          builder: (BuildContext context) {
+            return SuccessAndErrorDialougeBox(
+              subTitle: "Server Error",
+              isSuccess: false,
+              title: 'Invalid otp',
+              action: () {},
+            );
+          }).then((value) {
+        setState(() {
+          isLoading = true;
+        });
+      });
     }
   }
 

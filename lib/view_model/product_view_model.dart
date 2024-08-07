@@ -42,10 +42,10 @@ class ProductProvider with ChangeNotifier {
             .map((item) => ProductCategory.fromJson(item))
             .toList();
       } else {
-        _showErrorSnackbar(context, 'Internal server error');
+        // _showErrorSnackbar(context, 'Internal server error');
       }
     } catch (e) {
-      _showErrorSnackbar(context, 'Failed to load categories');
+      // _showErrorSnackbar(context, 'Failed to load categories');
     } finally {
       _setLoading(false);
     }
@@ -72,8 +72,6 @@ class ProductProvider with ChangeNotifier {
   }
 
   Future<void> getFavProduct(String id, BuildContext context) async {
-    _setLoading(true);
-
     try {
       ApiResponseWithData response = await ProductAPIs().getFavoriteProduct(id);
       if (response.success) {
@@ -85,9 +83,8 @@ class ProductProvider with ChangeNotifier {
       }
     } catch (e) {
       _showErrorSnackbar(context, 'Failed to load subcategories');
-    } finally {
-      _setLoading(false);
-    }
+    } finally {}
+    notifyListeners();
   }
 
   Future<void> getProductList(String id, BuildContext context) async {
@@ -107,7 +104,7 @@ class ProductProvider with ChangeNotifier {
     } catch (e) {
       _showErrorSnackbar(context, 'Failed to load products');
     } finally {
-      _setLoading(false);
+      notifyListeners();
     }
   }
 
@@ -145,11 +142,11 @@ class ProductProvider with ChangeNotifier {
   }
 
   void _showErrorSnackbar(BuildContext context, String message) {
-    ScaffoldMessenger.of(context).showSnackBar(
-      SnackBar(
-        content: Text(message),
-        backgroundColor: Colors.red,
-      ),
-    );
+    // ScaffoldMessenger.of(context).showSnackBar(
+    //   SnackBar(
+    //     content: Text(message),
+    //     backgroundColor: Colors.red,
+    //   ),
+    // );
   }
 }

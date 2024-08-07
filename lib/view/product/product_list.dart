@@ -266,41 +266,44 @@ class _ProductListState extends State<ProductList> {
                                                   ),
                                                 ),
                                               ),
-                                              IconButton(
-                                                  padding: EdgeInsets.zero,
-                                                  onPressed: () async {
-                                                    setState(() {
-                                                      isAddToCartLoading = true;
-                                                    });
-                                                    if (isFav) {
-                                                      await productProvider
-                                                          .removeFavProduct(
-                                                              product,
-                                                              userProvider
-                                                                  .user!.id,
-                                                              context);
-                                                    } else {
-                                                      await productProvider
-                                                          .addFavProduct(
-                                                              product,
-                                                              userProvider
-                                                                  .user!.id,
-                                                              context);
-                                                    }
+                                              if (isLogin)
+                                                IconButton(
+                                                    padding: EdgeInsets.zero,
+                                                    onPressed: () async {
+                                                      setState(() {
+                                                        isAddToCartLoading =
+                                                            true;
+                                                      });
+                                                      if (isFav) {
+                                                        await productProvider
+                                                            .removeFavProduct(
+                                                                product,
+                                                                userProvider
+                                                                    .user!.id,
+                                                                context);
+                                                      } else {
+                                                        await productProvider
+                                                            .addFavProduct(
+                                                                product,
+                                                                userProvider
+                                                                    .user!.id,
+                                                                context);
+                                                      }
 
-                                                    setState(() {
-                                                      isAddToCartLoading =
-                                                          false;
-                                                    });
-                                                  },
-                                                  icon: isFav
-                                                      ? const Icon(
-                                                          Icons.favorite,
-                                                          color: Colors.red,
-                                                        )
-                                                      : const Icon(
-                                                          Icons.favorite_border,
-                                                        ))
+                                                      setState(() {
+                                                        isAddToCartLoading =
+                                                            false;
+                                                      });
+                                                    },
+                                                    icon: isFav
+                                                        ? const Icon(
+                                                            Icons.favorite,
+                                                            color: Colors.red,
+                                                          )
+                                                        : const Icon(
+                                                            Icons
+                                                                .favorite_border,
+                                                          ))
                                             ],
                                           ),
                                           const SizedBox(height: 20),

@@ -1,6 +1,7 @@
 import 'dart:convert';
 
 import 'package:flutter/material.dart';
+import 'package:millyshb/view_model/cart_view_model.dart';
 import 'package:provider/provider.dart';
 import 'package:millyshb/configs/components/constants.dart';
 import 'package:millyshb/configs/components/pdf_api.dart';
@@ -48,6 +49,9 @@ class SplashScreenState extends State<SplashScreen> {
   Future<void> _loadInitialData() async {
     final productProvider =
         Provider.of<ProductProvider>(context, listen: false);
+
+    final cartProvider = Provider.of<CartProvider>(context, listen: false);
+    await cartProvider.getSlot("", context);
     await productProvider.getCategoryList(context);
   }
 

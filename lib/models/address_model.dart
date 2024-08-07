@@ -9,7 +9,7 @@ enum AddressType {
 class Address {
   String name;
   String userId;
-  String? addressId;
+  String addressId;
   String houseNumber;
   String mobileNumber;
   String street;
@@ -22,7 +22,7 @@ class Address {
   Address({
     required this.houseNumber,
     required this.userId,
-    this.addressId,
+    this.addressId = '',
     required this.name,
     required this.mobileNumber,
     required this.street,
@@ -43,10 +43,10 @@ class Address {
     print(json["_id"]);
     return Address(
       houseNumber: json["houseNumber"] ?? "",
-      userId: json["userId"] ?? "",
+      userId: json["user"],
       addressId: json["_id"] ?? "",
       mobileNumber: json["contactNumber"] ?? "",
-      name: json["name"] ?? "",
+      name: json["receiverName"] ?? "",
       street: json['area'] ?? "",
       city: json['city'] ?? "",
       state: json['state'] ?? "",

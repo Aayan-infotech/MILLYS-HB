@@ -71,150 +71,163 @@ class _AddressInputScreenState extends State<AddressInputScreen> {
         Provider.of<AddressProvider>(context, listen: false);
     final userProvider = Provider.of<UserProvider>(context, listen: false);
 
-    return addressProvider.isLoading
-        ? loadingIndicator()
-        : Scaffold(
-            appBar: AppBar(
-              forceMaterialTransparency: true,
-              backgroundColor: Colors.white,
-              centerTitle: true,
-              title: const Text(
-                "Address",
-                style: TextStyle(fontSize: 16, fontWeight: FontWeight.w600),
-              ),
+    return Stack(
+      children: [
+        Scaffold(
+          appBar: AppBar(
+            forceMaterialTransparency: true,
+            backgroundColor: Colors.white,
+            centerTitle: true,
+            title: const Text(
+              "Address",
+              style: TextStyle(fontSize: 16, fontWeight: FontWeight.w600),
             ),
-            persistentFooterButtons: [
-              BrandedPrimaryButton(
-                isEnabled: true, //_houseController.text.isNotEmpty,
-                name: "Save",
-                onPressed: () async {
-                  Address address = Address(
-                      addressType: AddressType.HOME,
-                      city: _cityController.text,
-                      state: _stateController.text,
-                      country: _countryController.text,
-                      houseNumber: _houseController.text,
-                      mobileNumber:
-                          _phoneNumber, //_mobileNumberController.text,
-                      name: _nameController.text,
-                      postalCode: _pinNumberController.text,
-                      street: _areaController.text,
-                      userId: userProvider.user!.id);
+          ),
+          persistentFooterButtons: [
+            BrandedPrimaryButton(
+              isEnabled: true, //_houseController.text.isNotEmpty,
+              name: "Save",
+              onPressed: () async {
+                setState(() {
+                  isLoading = true;
+                });
+                Address address = Address(
+                    addressType: AddressType.HOME,
+                    city: _cityController.text,
+                    state: _stateController.text,
+                    country: _countryController.text,
+                    houseNumber: _houseController.text,
+                    mobileNumber: _phoneNumber, //_mobileNumberController.text,
+                    name: _nameController.text,
+                    postalCode: _pinNumberController.text,
+                    street: _areaController.text,
+                    userId: userProvider.user!.id);
 
-                  if (widget.isEdit) {
-                    address.addressId = widget.customerAddress!.addressId;
-                    addressProvider.editAddress(address, context);
-                  } else {
-                    addressProvider.saveAddress(address, context);
-                  }
-                },
-              ),
-            ],
-            body: Padding(
-              padding: const EdgeInsets.symmetric(horizontal: 16),
-              child: SafeArea(
-                child: SingleChildScrollView(
-                  child: Form(
-                    key: _formKey,
-                    child: Column(
-                      crossAxisAlignment: CrossAxisAlignment.start,
-                      mainAxisAlignment: MainAxisAlignment.center,
-                      children: [
-                        BrandedTextField(
-                          controller: _nameController,
-                          labelText: 'Name.',
-                          validator: (value) {
-                            if (value == null || value.isEmpty) {
-                              return 'Please enter Name before proceeding';
-                            }
-                            return null;
+                if (widget.isEdit) {
+                  address.addressId = widget.customerAddress!.addressId;
+                  await addressProvider.editAddress(address, context);
+                } else {
+                  await addressProvider.saveAddress(address, context);
+                }
+                setState(() {
+                  isLoading = false;
+                });
+              },
+            ),
+          ],
+          body: Padding(
+            padding: const EdgeInsets.symmetric(horizontal: 16),
+            child: SafeArea(
+              child: SingleChildScrollView(
+                child: Form(
+                  key: _formKey,
+                  child: Column(
+                    crossAxisAlignment: CrossAxisAlignment.start,
+                    mainAxisAlignment: MainAxisAlignment.center,
+                    children: [
+                      BrandedTextField(
+                        controller: _nameController,
+                        labelText: 'Name.',
+                        validator: (value) {
+                          if (value == null || value.isEmpty) {
+                            return 'Please enter Name before proceeding';
+                          }
+                          return null;
+                        },
+                      ),
+                      const SizedBox(height: 20.0),
+                      Container(
+                        width: MediaQuery.of(context).size.width,
+                        decoration: const BoxDecoration(),
+                        child: PhoneEditField(
+                          currentNumber: _mobileNumberController.text,
+                          enabled: true,
+                          updatePhone: (value) {
+                            _phoneNumber = value;
+                            setState(() {
+                              isEnable = value.length > 10;
+                            });
                           },
                         ),
-                        const SizedBox(height: 20.0),
-                        Container(
-                          width: MediaQuery.of(context).size.width,
-                          decoration: const BoxDecoration(),
-                          child: PhoneEditField(
-                            currentNumber: _mobileNumberController.text,
-                            enabled: true,
-                            updatePhone: (value) {
-                              _phoneNumber = value;
-                              setState(() {
-                                isEnable = value.length > 10;
-                              });
-                            },
+                      ),
+                      const SizedBox(
+                        height: 10,
+                      ),
+                      BrandedTextField(
+                        keyboardType: TextInputType.number,
+                        controller: _houseController,
+                        labelText: 'House / Flat/ Block.',
+                        validator: (value) {
+                          if (value == null || value.isEmpty) {
+                            return 'Please enter House Number before proceeding';
+                          }
+                          return null;
+                        },
+                      ),
+                      const SizedBox(
+                        height: 10,
+                      ),
+                      BrandedTextField(
+                        controller: _areaController,
+                        labelText: 'Apartment/ Road / Area',
+                      ),
+                      const SizedBox(height: 20.0),
+                      Row(
+                        mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                        children: [
+                          SizedBox(
+                            width: SizeConfig.screenWidth * 0.4,
+                            child: BrandedTextField(
+                              keyboardType: TextInputType.phone,
+                              controller: _pinNumberController,
+                              labelText: 'Pin Code',
+                            ),
                           ),
-                        ),
-                        const SizedBox(
-                          height: 10,
-                        ),
-                        BrandedTextField(
-                          controller: _houseController,
-                          labelText: 'House / Flat/ Block.',
-                          validator: (value) {
-                            if (value == null || value.isEmpty) {
-                              return 'Please enter House Number before proceeding';
-                            }
-                            return null;
-                          },
-                        ),
-                        const SizedBox(
-                          height: 10,
-                        ),
-                        BrandedTextField(
-                          controller: _areaController,
-                          labelText: 'Apartment/ Road / Area',
-                        ),
-                        const SizedBox(height: 20.0),
-                        Row(
-                          mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                          children: [
-                            SizedBox(
-                              width: SizeConfig.screenWidth * 0.4,
-                              child: BrandedTextField(
-                                controller: _pinNumberController,
-                                labelText: 'Pin Code',
-                              ),
+                          SizedBox(
+                            width: SizeConfig.screenWidth * 0.4,
+                            child: BrandedTextField(
+                              controller: _cityController,
+                              labelText: 'City',
                             ),
-                            SizedBox(
-                              width: SizeConfig.screenWidth * 0.4,
-                              child: BrandedTextField(
-                                controller: _cityController,
-                                labelText: 'City',
-                              ),
-                            ),
-                          ],
-                        ),
-                        const SizedBox(height: 20.0),
-                        BrandedTextField(
-                          controller: _stateController,
-                          labelText: 'State',
-                        ),
-                        const SizedBox(height: 20.0),
-                        BrandedTextField(
-                          controller: _countryController,
-                          labelText: 'Country',
-                        ),
+                          ),
+                        ],
+                      ),
+                      const SizedBox(height: 20.0),
+                      BrandedTextField(
+                        controller: _stateController,
+                        labelText: 'State',
+                      ),
+                      const SizedBox(height: 20.0),
+                      BrandedTextField(
+                        controller: _countryController,
+                        labelText: 'Country',
+                      ),
 
-                        // const SizedBox(height: 20.0),
-                        // const Text('Save As'),
-                        // const SizedBox(height: 20.0),
-                        // Wrap(
-                        //   spacing: 20,
-                        //   children: [
-                        //     _buildSaveAsButton(context, Icons.home, 'Home',
-                        //         AddressType.HOME, isHomeDisabled),
-                        //     _buildSaveAsButton(context, Icons.work, 'Work',
-                        //         AddressType.WORK, isWorkDisabled),
-                        //   ],
-                        // ),
-                      ],
-                    ),
+                      // const SizedBox(height: 20.0),
+                      // const Text('Save As'),
+                      // const SizedBox(height: 20.0),
+                      // Wrap(
+                      //   spacing: 20,
+                      //   children: [
+                      //     _buildSaveAsButton(context, Icons.home, 'Home',
+                      //         AddressType.HOME, isHomeDisabled),
+                      //     _buildSaveAsButton(context, Icons.work, 'Work',
+                      //         AddressType.WORK, isWorkDisabled),
+                      //   ],
+                      // ),
+                    ],
                   ),
                 ),
               ),
             ),
-          );
+          ),
+        ),
+        if (isLoading)
+          loadingIndicator(
+            isTransParent: true,
+          )
+      ],
+    );
   }
 
   Widget _buildSaveAsButton(BuildContext context, IconData icon, String label,

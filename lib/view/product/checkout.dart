@@ -1,7 +1,17 @@
 import 'package:flutter/material.dart';
+import 'package:intl/intl.dart';
+import 'package:millyshb/configs/components/miscellaneous.dart';
+import 'package:millyshb/configs/components/size_config.dart';
+import 'package:millyshb/configs/theme/colors.dart';
+import 'package:millyshb/models/address_model.dart';
+import 'package:millyshb/models/delivery_slot_model.dart';
 import 'package:millyshb/view/address/address_screen.dart';
 import 'package:millyshb/configs/components/branded_primary_button.dart';
 import 'package:millyshb/view/product/order_summery_screen.dart';
+import 'package:millyshb/view_model/address_view_model.dart';
+import 'package:millyshb/view_model/cart_view_model.dart';
+import 'package:millyshb/view_model/user_view_model.dart';
+import 'package:provider/provider.dart';
 
 class CheckOutScreen extends StatefulWidget {
   const CheckOutScreen({super.key});
@@ -11,98 +21,110 @@ class CheckOutScreen extends StatefulWidget {
 }
 
 class _CheckOutScreenState extends State<CheckOutScreen> {
+  TextEditingController _dateController = TextEditingController();
+  String selectedDate = "";
+  String selectedDeliveryType = "Express Delivery - Rs 19";
+
+  DeliverySlot selectedTimeSlot = DeliverySlot.defaultDeliverySlot();
+
+  bool isLoading = false;
+
+  final Map<String, List<String>> deliveryOptions = {
+    "Express Delivery - Rs 19": [
+      "12:00AM - 1:00PM",
+      "1:00PM - 2:00PM",
+      "2:00PM - 3:00PM"
+    ],
+    "Express Delivery - Rs 49": [
+      "3:00PM - 4:00PM",
+      "4:00PM - 5:00PM",
+      "5:00PM - 6:00PM"
+    ],
+    "Pre-midnight Delivery - Rs 249": [
+      "6:00PM - 7:00PM",
+      "7:00PM - 8:00PM",
+      "8:00PM - 9:00PM"
+    ]
+  };
+
   @override
   Widget build(BuildContext context) {
-    return Scaffold(
-      backgroundColor: Colors.white,
-      appBar: AppBar(
-        forceMaterialTransparency: true,
-        backgroundColor: Colors.white,
-        centerTitle: true,
-        title: const Text(
-          "Checkout",
-          style: TextStyle(fontSize: 16, fontWeight: FontWeight.w600),
-        ),
-      ),
-      body: Padding(
-        padding: const EdgeInsets.symmetric(
-          horizontal: 16,
-        ),
-        child: Column(
-          crossAxisAlignment: CrossAxisAlignment.start,
-          mainAxisSize: MainAxisSize.min,
-          children: [
-            const SizedBox(
-              height: 10,
+    final cartProvider = Provider.of<CartProvider>(context, listen: false);
+    DateTime today = DateTime.now();
+    DateTime tomorrow = today.add(Duration(days: 1));
+    List<DeliverySlot> lstDeliverySlot = [];
+    Address selectedAddress =
+        Provider.of<AddressProvider>(context, listen: false).address.isNotEmpty
+            ? Provider.of<AddressProvider>(context, listen: false).address[0]
+            : Address(
+                houseNumber: "12",
+                userId: "",
+                name: "Home",
+                mobileNumber: "",
+                street: "",
+                city: "",
+                state: "state",
+                postalCode: "",
+                country: "",
+                addressType: AddressType.HOME);
+
+    String formatDate(DateTime date) {
+      return DateFormat('d MMM').format(date);
+    }
+
+    return Stack(
+      children: [
+        Scaffold(
+          backgroundColor: Colors.white,
+          appBar: AppBar(
+            forceMaterialTransparency: true,
+            backgroundColor: Colors.white,
+            centerTitle: true,
+            title: const Text(
+              "Checkout",
+              style: TextStyle(fontSize: 16, fontWeight: FontWeight.w600),
             ),
-            const Row(
-              children: [
-                Icon(
-                  Icons.location_on_outlined,
-                ),
-                Text(
-                  "Delivery Address",
-                  style: TextStyle(fontSize: 14, fontWeight: FontWeight.w600),
-                ),
-              ],
+          ),
+          persistentFooterButtons: [
+            BrandedPrimaryButton(
+              isEnabled: true,
+              name: "Proceed",
+              onPressed: () {
+                Navigator.of(context)
+                    .push(MaterialPageRoute(builder: (context) {
+                  return OrderSummery();
+                }));
+              },
             ),
-            Container(
-              height: 250,
-              child: ListView.builder(
-                itemCount: 3, // Assuming you have 3 items, adjust as needed
-                itemBuilder: (context, index) {
-                  if (index == 2) {
-                    // This is the last item, render the OutlinedButton
-                    return Center(
-                      child: Padding(
-                        padding: const EdgeInsets.all(10.0),
-                        child: SizedBox(
-                          height: 50,
-                          child: Card(
-                            color: Colors.white,
-                            elevation: 1,
-                            child: OutlinedButton(
-                              onPressed: () {
-                                // Define your onPressed function here
-                              },
-                              style: OutlinedButton.styleFrom(
-                                padding: const EdgeInsets.symmetric(
-                                    horizontal: 0, vertical: 0),
-                                side: BorderSide(
-                                  width: 1,
-                                  color: Colors.transparent,
-                                ),
-                                minimumSize: Size(
-                                    double.infinity, 50), // Full-width button
-                              ),
-                              child: Padding(
-                                padding: const EdgeInsets.all(5.0),
-                                child: Container(
-                                    decoration: BoxDecoration(
-                                      shape: BoxShape.circle,
-                                      border: Border.all(
-                                          color: Colors.black, width: 1),
-                                    ),
-                                    child: IconButton(
-                                      onPressed: () {
-                                        Navigator.of(context).push(
-                                            MaterialPageRoute(
-                                                builder: (context) {
-                                          return AddressInputScreen();
-                                        }));
-                                      },
-                                      icon: const Icon(Icons.add,
-                                          size: 16, color: Colors.black),
-                                    )),
-                              ),
-                            ),
-                          ),
+          ],
+          body: Padding(
+            padding: const EdgeInsets.symmetric(
+              horizontal: 16,
+            ),
+            child: SingleChildScrollView(
+              child: Column(
+                crossAxisAlignment: CrossAxisAlignment.start,
+                mainAxisSize: MainAxisSize.min,
+                children: [
+                  const SizedBox(
+                    height: 10,
+                  ),
+                  if (selectedAddress.mobileNumber.isNotEmpty)
+                    const Row(
+                      children: [
+                        Icon(
+                          Icons.location_on_outlined,
                         ),
-                      ),
-                    );
-                  } else {
-                    // For other items, render your Card as before
-                    return Card(
+                        Text(
+                          "Delivery Address",
+                          style: TextStyle(
+                              fontSize: 14, fontWeight: FontWeight.w600),
+                        ),
+                      ],
+                    ),
+                  if (selectedAddress.mobileNumber.isNotEmpty)
+                    Container(
+                        child: Card(
                       color: Colors.white,
                       shape: RoundedRectangleBorder(
                         borderRadius: BorderRadius.circular(8),
@@ -139,87 +161,386 @@ class _CheckOutScreenState extends State<CheckOutScreen> {
                               ),
                             ),
                             Text(
-                              "216 St Paul's Rd, London N1 2LL",
+                              selectedAddress.houseNumber +
+                                  ' ' +
+                                  selectedAddress.street +
+                                  ' ' +
+                                  selectedAddress.city +
+                                  ' ' +
+                                  selectedAddress.state +
+                                  ' ' +
+                                  selectedAddress.country +
+                                  ' ' +
+                                  selectedAddress.postalCode,
                               style: TextStyle(
                                   fontSize: 12, fontWeight: FontWeight.w400),
                             ),
                             Text(
-                              "Contact : +919783847848",
+                              "Contact : ${selectedAddress.mobileNumber}",
                               style: TextStyle(
                                   fontSize: 12, fontWeight: FontWeight.w400),
                             )
                           ],
                         ),
                       ),
-                    );
-                  }
-                },
-              ),
-            ),
-            Text(
-              "Select Slot",
-              style: TextStyle(fontWeight: FontWeight.w600),
-            ),
-            SizedBox(
-              height: 20,
-            ),
-            Container(
-              height: 65,
-              width: MediaQuery.of(context).size.width,
-              decoration: BoxDecoration(
-                color: Color.fromRGBO(242, 242, 242, 1),
-                border: Border.all(color: Colors.transparent),
-                borderRadius:
-                    BorderRadius.circular(10), // Optional: for rounded corners
-              ),
-              padding:
-                  EdgeInsets.all(0), // Optional: for padding inside the border
-              child: const Padding(
-                padding: EdgeInsets.symmetric(horizontal: 30),
-                child: Column(
-                  mainAxisAlignment: MainAxisAlignment.start,
-                  crossAxisAlignment: CrossAxisAlignment.start,
-                  children: [
-                    SizedBox(
-                      height: 10,
-                    ),
-                    Row(
-                      mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                      children: [
-                        Text(
-                          "Delivery slot:",
-                          style: TextStyle(
-                              fontSize: 14, fontWeight: FontWeight.w600),
+                    )),
+                  Text(
+                    "Select a Date",
+                    style: TextStyle(fontWeight: FontWeight.w600),
+                  ),
+                  SizedBox(
+                    height: 20,
+                  ),
+                  Row(
+                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                    children: [
+                      Expanded(
+                        child: Card(
+                          elevation: selectedDate == "Today" ? 4 : 2,
+                          color: selectedDate == "Today"
+                              ? Colors.blue[50]
+                              : Colors.white,
+                          child: InkWell(
+                            onTap: () async {
+                              setState(() {
+                                isLoading = true;
+                                selectedDate = "Today";
+                                _dateController.text = DateFormat('yyyy-MM-dd')
+                                    .format(DateTime.now());
+                              });
+                              await cartProvider.getSlot(
+                                  "Morning delivery", context);
+                              setState(() {
+                                isLoading = false;
+                              });
+                            },
+                            child: Container(
+                              height: 70,
+                              alignment: Alignment.center,
+                              child: Column(
+                                mainAxisAlignment: MainAxisAlignment.center,
+                                children: [
+                                  const Text(
+                                    "Today",
+                                    style: TextStyle(
+                                        color: Colors.grey,
+                                        fontWeight: FontWeight.bold),
+                                  ),
+                                  SizedBox(height: 5),
+                                  Text(formatDate(today)),
+                                ],
+                              ),
+                            ),
+                          ),
                         ),
-                        Icon(
-                          Icons.keyboard_control_key,
-                          size: 25,
-                        )
-                      ],
-                    ),
-                    Text(
-                      "30 May, 11:20am",
-                      style: TextStyle(fontWeight: FontWeight.w400),
-                    )
-                  ],
-                ),
+                      ),
+                      SizedBox(width: 10),
+                      Expanded(
+                        child: Card(
+                          elevation: selectedDate == "Tomorrow" ? 4 : 2,
+                          color: selectedDate == "Tomorrow"
+                              ? Colors.blue[50]
+                              : Colors.white,
+                          child: InkWell(
+                            onTap: () {
+                              // setState(() {
+                              //   selectedDate = "Tomorrow";
+                              //   _dateController.text = DateFormat('yyyy-MM-dd')
+                              //       .format(DateTime.now().add(Duration(days: 1)));
+                              // });
+                            },
+                            child: Container(
+                              height: 70,
+                              alignment: Alignment.center,
+                              child: Column(
+                                mainAxisAlignment: MainAxisAlignment.center,
+                                children: [
+                                  Text(
+                                    "Tomorrow",
+                                    style: TextStyle(
+                                        color: Colors.grey,
+                                        fontWeight: FontWeight.bold),
+                                  ),
+                                  SizedBox(height: 5),
+                                  Text(formatDate(tomorrow)),
+                                ],
+                              ),
+                            ),
+                          ),
+                        ),
+                      ),
+                      SizedBox(width: 10),
+                      Expanded(
+                        child: Card(
+                          elevation: selectedDate == "Later" ? 4 : 2,
+                          color: selectedDate == "Later"
+                              ? Colors.blue[50]
+                              : Colors.white,
+                          child: InkWell(
+                            onTap: () async {
+                              DateTime? pickedDate = await showDatePicker(
+                                context: context,
+                                initialDate: DateTime.now(),
+                                firstDate: DateTime(2000),
+                                lastDate: DateTime(2101),
+                              );
+                              if (pickedDate != null) {
+                                setState(() {
+                                  selectedDate = "Later";
+                                  _dateController.text =
+                                      DateFormat('yyyy-MM-dd')
+                                          .format(pickedDate);
+                                });
+                              }
+                            },
+                            child: Container(
+                              height: 70,
+                              alignment: Alignment.center,
+                              child: Column(
+                                mainAxisAlignment: MainAxisAlignment.center,
+                                children: [
+                                  Text(
+                                    "Later",
+                                    style: TextStyle(
+                                        color: Colors.grey,
+                                        fontWeight: FontWeight.bold),
+                                  ),
+                                  SizedBox(height: 5),
+                                  Text(selectedDate == "Later" &&
+                                          _dateController.text.isNotEmpty
+                                      ? formatDate(
+                                          DateTime.parse(_dateController.text))
+                                      : "Select Date"),
+                                ],
+                              ),
+                            ),
+                          ),
+                        ),
+                      ),
+                    ],
+                  ),
+                  SizedBox(
+                    height: 20,
+                  ),
+                  Text(
+                    "Selected Date: ${_dateController.text}",
+                    style: TextStyle(fontWeight: FontWeight.w600),
+                  ),
+                  SizedBox(
+                    height: 20,
+                  ),
+                  Text(
+                    "Time Slot",
+                    style: TextStyle(fontWeight: FontWeight.w600),
+                  ),
+                  SizedBox(height: 10),
+                  Row(
+                    children: [
+                      Expanded(
+                        child: Container(
+                          decoration: BoxDecoration(
+                            border: Border.all(color: Colors.grey),
+                            borderRadius: BorderRadius.circular(10),
+                          ),
+                          height: SizeConfig.screenHeight * 0.26,
+                          child: Padding(
+                            padding: const EdgeInsets.only(top: 5),
+                            child: Column(
+                              children: [
+                                ListTile(
+                                  contentPadding: EdgeInsets.zero,
+                                  title: Padding(
+                                    padding: const EdgeInsets.only(left: 10),
+                                    child: Text(
+                                      "Morning Delivery \n- Rs 19",
+                                      style: TextStyle(
+                                        fontSize: 12,
+                                        fontWeight: selectedDeliveryType ==
+                                                "Morning Delivery - Rs 19"
+                                            ? FontWeight.bold
+                                            : FontWeight.normal,
+                                      ),
+                                    ),
+                                  ),
+                                  onTap: () {
+                                    for (DeliverySlot deliverySlot
+                                        in cartProvider.lstMorningSlot) {
+                                      lstDeliverySlot.add(deliverySlot);
+                                    }
+                                    setState(() {
+                                      selectedDeliveryType =
+                                          "Morning Delivery - Rs 19";
+                                    });
+                                  },
+                                ),
+                                ListTile(
+                                  contentPadding: EdgeInsets.zero,
+                                  title: Padding(
+                                    padding: const EdgeInsets.only(left: 10),
+                                    child: Text(
+                                      "Express Delivery \n-  Rs 49",
+                                      style: TextStyle(
+                                        fontSize: 12,
+                                        fontWeight: selectedDeliveryType ==
+                                                "Express Delivery - Rs 49"
+                                            ? FontWeight.bold
+                                            : FontWeight.normal,
+                                      ),
+                                    ),
+                                  ),
+                                  onTap: () {
+                                    lstDeliverySlot =
+                                        cartProvider.lstExpressDeliverySlot;
+                                    setState(() {
+                                      selectedDeliveryType =
+                                          "Express Delivery - Rs 49";
+                                    });
+                                  },
+                                ),
+                                ListTile(
+                                  contentPadding: EdgeInsets.zero,
+                                  title: Padding(
+                                    padding: const EdgeInsets.only(left: 10),
+                                    child: Text(
+                                      "Pre-midnight Delivery \n- Rs 249",
+                                      style: TextStyle(
+                                        fontSize: 12,
+                                        fontWeight: selectedDeliveryType ==
+                                                "Pre-midnight Delivery - Rs 249"
+                                            ? FontWeight.bold
+                                            : FontWeight.normal,
+                                      ),
+                                    ),
+                                  ),
+                                  onTap: () {
+                                    setState(() {
+                                      selectedDeliveryType =
+                                          "Pre-midnight Delivery - Rs 249";
+                                    });
+                                  },
+                                ),
+                              ],
+                            ),
+                          ),
+                        ),
+                      ),
+                      SizedBox(width: 10),
+                      Expanded(
+                        child: Container(
+                          decoration: BoxDecoration(
+                            border: Border.all(color: Colors.grey),
+                            borderRadius: BorderRadius.circular(10),
+                          ),
+                          height: SizeConfig.screenHeight * 0.26,
+                          child: Column(
+                            crossAxisAlignment: CrossAxisAlignment.start,
+                            children: [
+                              Padding(
+                                padding: const EdgeInsets.all(8.0),
+                                child: Text(
+                                  "SELECT AN OPTION",
+                                  style: TextStyle(
+                                      fontSize: 10,
+                                      fontWeight: FontWeight.bold,
+                                      color: Colors.black.withOpacity(.4)),
+                                ),
+                              ),
+                              // if (selectedDeliveryType ==
+                              //     "Morning Delivery - Rs 19")
+                              Column(
+                                children: cartProvider.lstSlot
+                                    .map((slot) => Padding(
+                                          padding: const EdgeInsets.only(
+                                              top: 2, right: 5),
+                                          child: Row(
+                                            children: [
+                                              Radio<DeliverySlot>(
+                                                value: slot,
+                                                groupValue: selectedTimeSlot,
+                                                onChanged: (value) {
+                                                  setState(() {
+                                                    selectedTimeSlot = value!;
+                                                  });
+                                                },
+                                              ),
+                                              Expanded(
+                                                child: Text(
+                                                  slot.timePeriod,
+                                                  style: const TextStyle(
+                                                      fontSize: 12,
+                                                      fontWeight:
+                                                          FontWeight.bold),
+                                                ),
+                                              ),
+                                            ],
+                                          ),
+                                        ))
+                                    .toList(),
+                              )
+                            ],
+                          ),
+                        ),
+                      ),
+                    ],
+                  ),
+                  // SizedBox(
+                  //   height: 20,
+                  // ),
+                  // Container(
+                  //   height: 65,
+                  //   width: MediaQuery.of(context).size.width,
+                  //   decoration: BoxDecoration(
+                  //     color: Color.fromRGBO(242, 242, 242, 1),
+                  //     border: Border.all(color: Colors.transparent),
+                  //     borderRadius: BorderRadius.circular(
+                  //         10), // Optional: for rounded corners
+                  //   ),
+                  //   padding: EdgeInsets.all(
+                  //       0), // Optional: for padding inside the border
+                  //   child: Padding(
+                  //     padding: EdgeInsets.symmetric(horizontal: 30),
+                  //     child: Column(
+                  //       mainAxisAlignment: MainAxisAlignment.start,
+                  //       crossAxisAlignment: CrossAxisAlignment.start,
+                  //       children: [
+                  //         SizedBox(
+                  //           height: 10,
+                  //         ),
+                  //         Row(
+                  //           mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                  //           children: [
+                  //             Text(
+                  //               "Delivery slot:",
+                  //               style: TextStyle(
+                  //                   fontSize: 14, fontWeight: FontWeight.w600),
+                  //             ),
+                  //             Icon(
+                  //               Icons.keyboard_control_key,
+                  //               size: 25,
+                  //             )
+                  //           ],
+                  //         ),
+                  //         Text(
+                  //           "30 May, 11:20am",
+                  //           style: TextStyle(fontWeight: FontWeight.w400),
+                  //         )
+                  //       ],
+                  //     ),
+                  //   ),
+                  // ),
+                  SizedBox(
+                    height: 20,
+                  ),
+                ],
               ),
             ),
-            SizedBox(
-              height: 40,
-            ),
-            BrandedPrimaryButton(
-                isEnabled: true,
-                name: "Proceed",
-                onPressed: () {
-                  Navigator.of(context)
-                      .push(MaterialPageRoute(builder: (context) {
-                    return OrderSummery();
-                  }));
-                })
-          ],
+          ),
         ),
-      ),
+        if (isLoading)
+          loadingIndicator(
+            isTransParent: true,
+          )
+      ],
     );
   }
 }
