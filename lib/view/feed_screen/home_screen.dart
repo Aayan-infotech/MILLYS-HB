@@ -863,20 +863,25 @@ class _HomeScreenState extends State<HomeScreen> {
             const SizedBox(height: 10),
             focusCard(context, "Wishlist"),
             const SizedBox(height: 10),
-            SizedBox(
-              height: 210,
-              child: ListView.builder(
-                  scrollDirection: Axis.horizontal,
-                  itemCount: productProvider.favProduct.length,
-                  itemBuilder: (BuildContext context, item) {
-                    Product favProduct = productProvider.favProduct[item];
-                    return Padding(
-                      padding: EdgeInsets.symmetric(horizontal: 4),
-                      child: ProductCard(
-                        product: favProduct,
-                      ),
-                    );
-                  }),
+            Consumer<ProductProvider>(
+              builder: (context, productProvider, child) {
+                return SizedBox(
+                  height: 210,
+                  child: ListView.builder(
+                    scrollDirection: Axis.horizontal,
+                    itemCount: productProvider.favProduct.length,
+                    itemBuilder: (BuildContext context, item) {
+                      Product favProduct = productProvider.favProduct[item];
+                      return Padding(
+                        padding: EdgeInsets.symmetric(horizontal: 4),
+                        child: ProductCard(
+                          product: favProduct,
+                        ),
+                      );
+                    },
+                  ),
+                );
+              },
             ),
             const SizedBox(height: 20),
             Container(

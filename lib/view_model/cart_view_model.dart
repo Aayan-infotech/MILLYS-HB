@@ -2,9 +2,12 @@ import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:millyshb/configs/network/call_helper.dart';
 import 'package:millyshb/configs/network/server_calls/cart_api.dart';
+import 'package:millyshb/configs/network/server_calls/order_api.dart';
 import 'package:millyshb/models/cart_product_model.dart';
+import 'package:millyshb/models/coupon_model.dart';
 import 'package:millyshb/models/delivery_slot_model.dart';
 import 'package:millyshb/models/product_model.dart';
+import 'package:millyshb/view/payment/payment_success_screen.dart';
 
 class CartProvider with ChangeNotifier {
   Cart _cart = Cart(
@@ -18,8 +21,15 @@ class CartProvider with ChangeNotifier {
   bool _isLoading = false;
   List<DeliverySlot> _lstSlot = [];
   List<DeliverySlot> get lstSlot => _lstSlot;
+  List<Coupon> _lstCoupon = [];
+  List<Coupon> get lstCoupon => _lstCoupon;
   List<DeliverySlot> _lstMorningSlot = [];
+
   List<DeliverySlot> get lstMorningSlot => _lstMorningSlot;
+  List<DeliverySlot> _lstFreeDelivery = [];
+  List<DeliverySlot> get lstFreeDelivery => _lstFreeDelivery;
+  List<DeliverySlot> _lstfixedTimeDelivery = [];
+  List<DeliverySlot> get lstfixedTimeDelivery => _lstfixedTimeDelivery;
   List<DeliverySlot> _lstExpressDeliverySlot = [];
   List<DeliverySlot> get lstExpressDeliverySlot => _lstExpressDeliverySlot;
   // Getter for the product list
@@ -53,18 +63,35 @@ class CartProvider with ChangeNotifier {
     } else {}
   }
 
-  getSlot(String deliveryType, BuildContext context) async {
-    ApiResponseWithData response = await CartAPIs().getSlot(deliveryType);
+  getCoupon(BuildContext context) async {
+    ApiResponseWithData response = await OrderApi().getCoupon();
+    if (response.success) {
+      _lstCoupon = (response.data["data"] as List)
+          .map((item) => Coupon.fromJson(item))
+          .toList();
+      //_lstCoupon = Coupon.fromJson(response.data["data"]);
+    } else {}
+  }
+
+  getSlot(String deliveryDate, BuildContext context) async {
+    ApiResponseWithData response = await CartAPIs().getSlot(deliveryDate);
 
     if (response.success) {
       _lstSlot = (response.data["data"] as List)
           .map((item) => DeliverySlot.fromJson(item))
           .toList();
+      //Fixed Time Delivery
+      _lstFreeDelivery = _lstSlot
+          .where((order) => order.deliveryType == "Free Delivery")
+          .toList();
       _lstMorningSlot = _lstSlot
-          .where((order) => order.deliveryType == "Morning delivery")
+          .where((order) => order.deliveryType == "Morning Delivery")
+          .toList();
+      _lstfixedTimeDelivery = _lstSlot
+          .where((order) => order.deliveryType == "Fixed Time Delivery")
           .toList();
       _lstExpressDeliverySlot = _lstSlot
-          .where((order) => order.deliveryType == "Express Delivery")
+          .where((order) => order.deliveryType == "Express Delivery I")
           .toList();
     } else {}
   }
@@ -128,6 +155,26 @@ class CartProvider with ChangeNotifier {
       // _cart.products.removeAt(index);
 
       //(userCart as Cart).products.remove(product);
+    } else {
+      ScaffoldMessenger.of(context).showSnackBar(
+        const SnackBar(
+          content: Text("Internal server error"),
+          backgroundColor: Colors.red,
+        ),
+      );
+    }
+    notifyListeners();
+  }
+
+  createOrder(String userId, String slotId, BuildContext context) async {
+    ApiResponseWithData response = await OrderApi().createOrder(
+      userId,
+      slotId,
+    );
+    if (response.success) {
+      Navigator.of(context).push(MaterialPageRoute(builder: (context) {
+        return PaymentSuccessScreen();
+      }));
     } else {
       ScaffoldMessenger.of(context).showSnackBar(
         const SnackBar(

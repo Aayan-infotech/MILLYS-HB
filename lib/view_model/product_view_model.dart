@@ -112,7 +112,8 @@ class ProductProvider with ChangeNotifier {
     ApiResponseWithData response =
         await ProductAPIs().addFavorite(product.id, userId);
     if (response.success) {
-      await getFavProduct(userId, context);
+      _favProducts.add(product);
+      getFavProduct(userId, context);
     } else {}
     notifyListeners();
   }

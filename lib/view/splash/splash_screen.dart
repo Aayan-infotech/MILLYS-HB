@@ -41,7 +41,6 @@ class SplashScreenState extends State<SplashScreen> {
         _navigateToScreen(const WelcomeScreen());
       }
     } catch (e) {
-      // Handle error (e.g., show a dialog or a snackbar)
       print('Error during navigation: $e');
     }
   }
@@ -62,8 +61,8 @@ class SplashScreenState extends State<SplashScreen> {
       Map<String, dynamic> userJson = jsonDecode(userJsonString);
       User user = User.fromJson(userJson);
       Provider.of<UserProvider>(context, listen: false).user = user;
+      await UserContextData.setCurrentUserAndFetchUserData(context);
     }
-    await UserContextData.setCurrentUserAndFetchUserData(context);
   }
 
   void _navigateToScreen(Widget screen) {

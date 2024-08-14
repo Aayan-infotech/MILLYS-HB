@@ -3,6 +3,7 @@ import 'package:millyshb/view/product/checkout.dart';
 import 'package:millyshb/view/feed_screen/food_feed_screen.dart';
 import 'package:millyshb/view/feed_screen/home_screen.dart';
 import 'package:millyshb/view/product/product_list.dart';
+import 'package:millyshb/view/product/wish_list.dart';
 import 'package:millyshb/view/settings/settings.dart';
 import 'package:millyshb/view/product/shopping_bag.dart';
 import 'package:millyshb/configs/theme/colors.dart';
@@ -84,9 +85,9 @@ class _NavScreenState extends State<NavScreen> {
           BottomNavigationBarItem(
             icon: Icon(
               size: 30,
-              Icons.favorite_border_outlined,
+              Icons.shopping_cart_outlined,
             ),
-            label: 'Wishlist',
+            label: 'Cart',
           ),
           BottomNavigationBarItem(
             icon: Icon(

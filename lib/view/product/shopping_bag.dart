@@ -173,7 +173,7 @@ class _ShoppingBagScreenState extends State<ShoppingBagScreen> {
                                                   ],
                                                 ),
                                               ),
-                                              SizedBox(height: 20),
+                                              SizedBox(height: 10),
                                               if (product.product.discount != 0)
                                                 Text(
                                                   "\$ ${product.product.price + product.product.discount}",
