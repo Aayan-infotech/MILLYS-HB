@@ -53,7 +53,7 @@ class _SelectStoreScreenState extends State<SelectStoreScreen> {
                     StoreCard(
                       category:
                           (productProvider.category[0] as ProductCategory),
-                      isFood: false,
+                      isFood: true,
                     ),
                     SizedBox(
                       height: 20,

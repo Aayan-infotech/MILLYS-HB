@@ -20,10 +20,21 @@ class ProductAPIs extends ApiBase {
     return await CallHelper().getWithData('api/favorite/get/${id}', {});
   }
 
+  Future<ApiResponseWithData<Map<String, dynamic>>> getOrders(String id) async {
+    return await CallHelper()
+        .getWithData('api/product/order-history/${id}', {});
+  }
+
   Future<ApiResponseWithData<Map<String, dynamic>>> getProductById(
       String id) async {
     return await CallHelper().getWithData('api/product/subcategory/${id}', {});
   }
+
+  Future<ApiResponseWithData<Map<String, dynamic>>> getRecommendedProductById(
+      String id) async {
+    return await CallHelper().getWithData('api/product/recommended/${id}', {});
+  }
+  //api/product/recommended/66a338b8dc8ca180402cc419
 
   Future<ApiResponseWithData<Map<String, dynamic>>> addFavorite(
       String productId, String userId) async {
@@ -35,14 +46,16 @@ class ProductAPIs extends ApiBase {
     return await CallHelper().postWithData('api/favorite/add', data, {});
   }
 
-  Future<ApiResponse> removeFavorite(
-      String productId, String userId) async {
+  Future<ApiResponse> removeFavorite(String productId, String userId) async {
     Map<String, String> data = {
       'userId': userId,
       'productId': productId,
     };
 
-    return await CallHelper().delete('api/favorite/delete', data, );
+    return await CallHelper().delete(
+      'api/favorite/delete',
+      data,
+    );
   }
 
   Future<ApiResponse> deleteAddress(String userId) async {

@@ -22,11 +22,30 @@ class OrderApi extends ApiBase {
     return await CallHelper()
         .postWithData('api/product/cancel/${orderId}', data, {});
   }
+  
 
   Future<ApiResponseWithData<Map<String, dynamic>>> getAllOrders(
       String userId) async {
     return await CallHelper().getWithData('api/cart/get/${userId}', {});
   }
+  // 
+  //  Future<ApiResponseWithData<List<Category>>> getServices(
+  //     {bool foreceRefresh = false}) async {
+  //   // bool isfound = await PDFApi.checkIfFileExists(salonServicesLocalFilePath);
+  //   // print(isfound);
+  //   if (foreceRefresh ||
+  //       !await PDFApi.checkIfFileExists(salonServicesLocalFilePath)) {
+  //     return await _getServicesFromServer();
+  //   }
+
+  //   var json =
+  //       await PDFApi.readFileFromLocalDirectory(salonServicesLocalFilePath);
+
+  //   List<Category> categories = await _getServicesFromJson(jsonDecode(json));
+
+  //   return ApiResponseWithData<List<Category>>(categories, true, message: "");
+  // }
+
 
   Future<ApiResponseWithData<Map<String, dynamic>>> getCoupon(
       ) async {

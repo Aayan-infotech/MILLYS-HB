@@ -26,16 +26,49 @@ class _OrderSummeryState extends State<OrderSummery> {
   TextEditingController _codeController = TextEditingController();
   Coupon? appliedCoupon; // State variable to keep track of applied coupon
 
+  // addPayment() {
+  //   setState(() {
+  //     isLoading = true;
+  //   });
+  //   final cart = Provider.of<CartProvider>(context, listen: false);
+
+  //   for (CartItem product in (cart.userCart as Cart).products) {
+  //     price = price + (product.product.price - product.product.discount);
+  //   }
+  //   totalPrice = price + int.parse(widget.deliverySlot.price) + 12;
+
+  //   // Apply coupon discount if a coupon is applied
+  //   if (appliedCoupon != null) {
+  //     totalPrice -= appliedCoupon!.discountValue;
+  //   }
+
+  //   setState(() {
+  //     isLoading = false;
+  //   });
+  // }
   addPayment() {
     setState(() {
       isLoading = true;
     });
-    final cart = Provider.of<CartProvider>(context, listen: false);
 
+    final cart = Provider.of<CartProvider>(context, listen: false);
+    price = 0;
+
+    // Calculate the total price of products in the cart, including discounts
     for (CartItem product in (cart.userCart as Cart).products) {
-      price = price + (product.product.price - product.product.discount);
+      price += (product.product.price * product.quantity -
+          product.product.discount * product.quantity);
     }
-    totalPrice = price + int.parse(widget.deliverySlot.price) + 12;
+
+    // Parse delivery slot price safely and add it to the total price
+    int deliverySlotPrice = 0;
+    if (widget.deliverySlot.price != "null" &&
+        widget.deliverySlot.price.isNotEmpty) {
+      deliverySlotPrice = int.tryParse(widget.deliverySlot.price) ?? 0;
+    }
+
+    // Add delivery slot price and fixed delivery fee
+    totalPrice = price + deliverySlotPrice + 12;
 
     // Apply coupon discount if a coupon is applied
     if (appliedCoupon != null) {
@@ -157,7 +190,6 @@ class _OrderSummeryState extends State<OrderSummery> {
                                           } else {
                                             applyCoupon(coupon);
                                           }
-                                          addPayment();
                                         },
                                         child: Text(
                                             isApplied ? "Remove" : "Apply"),
@@ -230,7 +262,7 @@ class _OrderSummeryState extends State<OrderSummery> {
                                         children: [
                                           SizedBox(
                                             width:
-                                                SizeConfig.screenWidth * 0.494,
+                                                SizeConfig.screenWidth * 0.45,
                                             child: Row(
                                               crossAxisAlignment:
                                                   CrossAxisAlignment.start,
@@ -262,7 +294,7 @@ class _OrderSummeryState extends State<OrderSummery> {
                                           SizedBox(height: 20),
                                           if (product.product.discount != 0)
                                             Text(
-                                              "\$ ${product.product.price + product.product.discount}",
+                                              "\$ ${product.product.price}",
                                               style: const TextStyle(
                                                 color: Color.fromRGBO(
                                                     187, 187, 187, 1),
@@ -272,27 +304,79 @@ class _OrderSummeryState extends State<OrderSummery> {
                                                 fontWeight: FontWeight.w300,
                                               ),
                                             ),
-                                          Container(
-                                            height: 30,
-                                            width: 84,
-                                            decoration: BoxDecoration(
-                                              color: Color.fromRGBO(
-                                                  242, 242, 242, 1),
-                                              border: Border.all(
-                                                  color: Colors.transparent),
-                                              borderRadius:
-                                                  BorderRadius.circular(5),
-                                            ),
-                                            padding: EdgeInsets.all(0),
-                                            child: Center(
-                                              child: Text(
-                                                "\$ ${product.product.price.toString()}",
-                                                style: TextStyle(
-                                                  fontSize: 14,
-                                                  fontWeight: FontWeight.w400,
+                                          Row(
+                                            mainAxisAlignment:
+                                                MainAxisAlignment.spaceBetween,
+                                            children: [
+                                              Container(
+                                                height: 30,
+                                                decoration: BoxDecoration(
+                                                  color: Color.fromRGBO(
+                                                      242, 242, 242, 1),
+                                                  border: Border.all(
+                                                      color:
+                                                          Colors.transparent),
+                                                  borderRadius:
+                                                      BorderRadius.circular(5),
+                                                ),
+                                                padding: EdgeInsets.all(0),
+                                                child: Center(
+                                                  child: Text(
+                                                    "\$ ${(product.product.price * product.quantity).toString()}",
+                                                    style: const TextStyle(
+                                                      fontSize: 14,
+                                                      fontWeight:
+                                                          FontWeight.w400,
+                                                    ),
+                                                  ),
                                                 ),
                                               ),
-                                            ),
+                                              SizedBox(
+                                                width: MediaQuery.of(context)
+                                                        .size
+                                                        .width *
+                                                    0.15,
+                                              ),
+                                              Container(
+                                                height: 30,
+                                                decoration: BoxDecoration(
+                                                  color: const Color.fromRGBO(
+                                                      242, 242, 242, 1),
+                                                  border: Border.all(
+                                                      color:
+                                                          Colors.transparent),
+                                                  borderRadius:
+                                                      BorderRadius.circular(5),
+                                                ),
+                                                padding: EdgeInsets.all(0),
+                                                child: Center(
+                                                  child: Row(
+                                                    mainAxisAlignment:
+                                                        MainAxisAlignment
+                                                            .center,
+                                                    children: [
+                                                      // Space between the icon and text
+                                                      Text(
+                                                        " ${(product.quantity).toString()}",
+                                                        style: TextStyle(
+                                                          fontSize: 14,
+                                                          fontWeight:
+                                                              FontWeight.w400,
+                                                        ),
+                                                      ),
+                                                      const SizedBox(width: 4),
+                                                      Icon(
+                                                        Icons
+                                                            .production_quantity_limits, // Icon representing quantity
+                                                        size: 18,
+                                                        color: Colors
+                                                            .grey, // You can customize the color
+                                                      ),
+                                                    ],
+                                                  ),
+                                                ),
+                                              ),
+                                            ],
                                           ),
                                           SizedBox(height: 10),
                                         ],

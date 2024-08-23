@@ -9,7 +9,8 @@ import 'package:millyshb/view_model/user_view_model.dart';
 import 'package:provider/provider.dart';
 
 class ShoppingBagScreen extends StatefulWidget {
-  const ShoppingBagScreen({super.key});
+  bool? isBackButton;
+  ShoppingBagScreen({this.isBackButton = true, super.key});
 
   @override
   State<ShoppingBagScreen> createState() => _ShoppingBagScreenState();
@@ -21,7 +22,6 @@ class _ShoppingBagScreenState extends State<ShoppingBagScreen> {
     "assets/images/2.jpg",
     "assets/images/3.jpg",
   ];
-  bool _isFirstLoad = true;
   bool isRemoveFromCart = false;
 
   @override
@@ -40,6 +40,7 @@ class _ShoppingBagScreenState extends State<ShoppingBagScreen> {
         Scaffold(
           backgroundColor: Colors.white,
           appBar: AppBar(
+            automaticallyImplyLeading: widget.isBackButton!,
             backgroundColor: Colors.white,
             forceMaterialTransparency: true,
             centerTitle: true,
@@ -79,87 +80,253 @@ class _ShoppingBagScreenState extends State<ShoppingBagScreen> {
                             final product =
                                 (cart.userCart as Cart).products[item];
 
+                            // Inside the ListView.builder widget
                             return Padding(
-                              padding: const EdgeInsets.only(bottom: 20),
-                              child: Card(
-                                color: Colors.white,
-                                elevation: 1,
-                                child: Padding(
-                                  padding: const EdgeInsets.all(8.0),
-                                  child: SizedBox(
-                                    height: SizeConfig.screenHeight * 0.21,
-                                    width: MediaQuery.of(context).size.width,
-                                    child: Row(
-                                      children: [
-                                        Container(
-                                          height: SizeConfig.screenHeight * 0.2,
-                                          width: 123,
-                                          decoration: BoxDecoration(
-                                            borderRadius:
-                                                BorderRadius.circular(10.0),
-                                          ),
-                                          child: ClipRRect(
-                                            borderRadius:
-                                                BorderRadius.circular(10.0),
-                                            child: Image.network(
-                                              product.product.image,
-                                              fit: BoxFit.cover,
-                                              width: MediaQuery.of(context)
-                                                  .size
-                                                  .width,
+                                padding: const EdgeInsets.only(bottom: 20),
+                                child: Card(
+                                  color: Colors.white,
+                                  elevation: 1,
+                                  child: Padding(
+                                    padding: const EdgeInsets.all(8.0),
+                                    child: SizedBox(
+                                      height: SizeConfig.screenHeight * 0.21,
+                                      width: MediaQuery.of(context).size.width,
+                                      child: Row(
+                                        children: [
+                                          Container(
+                                            height:
+                                                SizeConfig.screenHeight * 0.2,
+                                            width: 123,
+                                            decoration: BoxDecoration(
+                                              borderRadius:
+                                                  BorderRadius.circular(10.0),
+                                            ),
+                                            child: ClipRRect(
+                                              borderRadius:
+                                                  BorderRadius.circular(10.0),
+                                              child: Image.network(
+                                                "https://res.cloudinary.com/dqhh1rff5/image/upload/v1722194860/Blog/gwvd3q1gi0ctsi43bae8.png", //product.product.image,
+                                                fit: BoxFit.cover,
+                                                width: MediaQuery.of(context)
+                                                    .size
+                                                    .width,
+                                              ),
                                             ),
                                           ),
-                                        ),
-                                        Padding(
-                                          padding: const EdgeInsets.only(
-                                            left: 15,
-                                          ),
-                                          child: Column(
-                                            crossAxisAlignment:
-                                                CrossAxisAlignment.start,
-                                            children: [
-                                              SizedBox(
-                                                width: SizeConfig.screenWidth *
-                                                    0.494,
-                                                child: Row(
-                                                  crossAxisAlignment:
-                                                      CrossAxisAlignment.start,
+                                          Padding(
+                                            padding:
+                                                const EdgeInsets.only(left: 15),
+                                            child: Column(
+                                              crossAxisAlignment:
+                                                  CrossAxisAlignment.start,
+                                              children: [
+                                                SizedBox(
+                                                  width:
+                                                      SizeConfig.screenWidth *
+                                                          0.494,
+                                                  child: Row(
+                                                    crossAxisAlignment:
+                                                        CrossAxisAlignment
+                                                            .start,
+                                                    mainAxisAlignment:
+                                                        MainAxisAlignment
+                                                            .spaceBetween,
+                                                    children: [
+                                                      Padding(
+                                                        padding:
+                                                            const EdgeInsets
+                                                                .only(top: 10),
+                                                        child: SizedBox(
+                                                          width: SizeConfig
+                                                                  .screenWidth *
+                                                              0.3,
+                                                          child: Text(
+                                                            product
+                                                                .product.name,
+                                                            maxLines: 2,
+                                                            style: const TextStyle(
+                                                                fontWeight:
+                                                                    FontWeight
+                                                                        .w600,
+                                                                fontSize: 14),
+                                                          ),
+                                                        ),
+                                                      ),
+                                                      IconButton(
+                                                        padding:
+                                                            EdgeInsets.zero,
+                                                        icon: const Icon(
+                                                            Icons.delete,
+                                                            color: Colors.red),
+                                                        onPressed: () async {
+                                                          setState(() {
+                                                            isRemoveFromCart =
+                                                                true;
+                                                          });
+
+                                                          await cartProvider
+                                                              .removeFromCart(
+                                                                  userProvider
+                                                                      .user!.id,
+                                                                  product
+                                                                      .product,
+                                                                  context);
+                                                          setState(() {
+                                                            isRemoveFromCart =
+                                                                false;
+                                                          });
+                                                        },
+                                                      ),
+                                                    ],
+                                                  ),
+                                                ),
+                                                const SizedBox(height: 10),
+                                                // Show discounted price if available
+                                                if (product.product.discount !=
+                                                    0)
+                                                  Text(
+                                                    "\$ ${((product.product.price) * product.quantity).toStringAsFixed(2)}",
+                                                    style: TextStyle(
+                                                      color: Color.fromRGBO(
+                                                          187, 187, 187, 1),
+                                                      decoration: TextDecoration
+                                                          .lineThrough,
+                                                      fontSize: 12,
+                                                      fontWeight:
+                                                          FontWeight.w300,
+                                                    ),
+                                                  ),
+                                                // Show final price
+                                                Container(
+                                                  height: 30,
+                                                  width: 84,
+                                                  decoration: BoxDecoration(
+                                                    color: Color.fromRGBO(
+                                                        242, 242, 242, 1),
+                                                    border: Border.all(
+                                                        color:
+                                                            Colors.transparent),
+                                                    borderRadius:
+                                                        BorderRadius.circular(
+                                                            5),
+                                                  ),
+                                                  padding: EdgeInsets.all(0),
+                                                  child: Center(
+                                                    child: Text(
+                                                      "\$ ${((product.product.price - product.product.discount) * product.quantity).toStringAsFixed(2)}",
+                                                      style: const TextStyle(
+                                                          fontSize: 14,
+                                                          fontWeight:
+                                                              FontWeight.w400),
+                                                    ),
+                                                  ),
+                                                ),
+                                                const SizedBox(height: 10),
+                                                Row(
                                                   mainAxisAlignment:
-                                                      MainAxisAlignment
-                                                          .spaceBetween,
+                                                      MainAxisAlignment.start,
                                                   children: [
-                                                    Padding(
-                                                      padding: EdgeInsets.only(
-                                                          top: 10),
-                                                      child: SizedBox(
+                                                    GestureDetector(
+                                                      onTap: () async {
+                                                        if (product.quantity ==
+                                                            1) {
+                                                          setState(() {
+                                                            isRemoveFromCart =
+                                                                true;
+                                                          });
+
+                                                          await cartProvider
+                                                              .removeFromCart(
+                                                                  userProvider
+                                                                      .user!.id,
+                                                                  product
+                                                                      .product,
+                                                                  context);
+                                                          setState(() {
+                                                            isRemoveFromCart =
+                                                                false;
+                                                          });
+                                                        } else {
+                                                          setState(() {
+                                                            isRemoveFromCart =
+                                                                true;
+                                                          });
+                                                          await cartProvider
+                                                              .decreaseProductQuantity(
+                                                                  userProvider
+                                                                      .user!.id,
+                                                                  product
+                                                                      .product,
+                                                                  context);
+                                                          setState(() {
+                                                            isRemoveFromCart =
+                                                                false;
+                                                          });
+                                                        }
+                                                      },
+                                                      child: Container(
                                                         width: SizeConfig
+                                                                .screenHeight *
+                                                            0.07,
+                                                        height: SizeConfig
                                                                 .screenWidth *
-                                                            0.3,
+                                                            0.1,
+                                                        decoration:
+                                                            const BoxDecoration(
+                                                          color: Colors
+                                                              .grey, // Background color for the container
+                                                          borderRadius:
+                                                              BorderRadius.only(
+                                                            topLeft:
+                                                                Radius.circular(
+                                                                    4.0),
+                                                            bottomLeft:
+                                                                Radius.circular(
+                                                                    4.0),
+                                                          ),
+                                                        ),
+                                                        child: (product
+                                                                    .quantity ==
+                                                                1)
+                                                            ? Icon(Icons.delete)
+                                                            : Icon(
+                                                                Icons.remove),
+                                                      ),
+                                                    ),
+                                                    Container(
+                                                      width: SizeConfig
+                                                              .screenHeight *
+                                                          0.07,
+                                                      height: SizeConfig
+                                                              .screenWidth *
+                                                          0.1,
+                                                      decoration: BoxDecoration(
+                                                        border: Border.all(
+                                                            color: Colors.grey),
+                                                        color: Colors
+                                                            .white, // Background color for the container
+                                                      ),
+                                                      child: Center(
                                                         child: Text(
-                                                          product.product.name,
-                                                          maxLines: 2,
+                                                          product.quantity
+                                                              .toString(),
                                                           style:
                                                               const TextStyle(
-                                                                  fontWeight:
-                                                                      FontWeight
-                                                                          .w600,
-                                                                  fontSize: 14),
+                                                            fontWeight:
+                                                                FontWeight.w500,
+                                                            fontSize: 14,
+                                                          ),
                                                         ),
                                                       ),
                                                     ),
-                                                    IconButton(
-                                                      padding: EdgeInsets.zero,
-                                                      icon: const Icon(
-                                                          Icons.delete,
-                                                          color: Colors.red),
-                                                      onPressed: () async {
+                                                    GestureDetector(
+                                                      onTap: () async {
                                                         setState(() {
                                                           isRemoveFromCart =
                                                               true;
                                                         });
-
                                                         await cartProvider
-                                                            .removeFromCart(
+                                                            .increaseProductQuantity(
                                                                 userProvider
                                                                     .user!.id,
                                                                 product.product,
@@ -169,268 +336,41 @@ class _ShoppingBagScreenState extends State<ShoppingBagScreen> {
                                                               false;
                                                         });
                                                       },
+                                                      child: Container(
+                                                        width: SizeConfig
+                                                                .screenHeight *
+                                                            0.07,
+                                                        height: SizeConfig
+                                                                .screenWidth *
+                                                            0.1,
+                                                        decoration:
+                                                            const BoxDecoration(
+                                                          color: Colors
+                                                              .grey, // Background color for the container
+                                                          borderRadius:
+                                                              BorderRadius.only(
+                                                            topRight:
+                                                                Radius.circular(
+                                                                    4.0),
+                                                            bottomRight:
+                                                                Radius.circular(
+                                                                    4.0),
+                                                          ),
+                                                        ),
+                                                        child: const Icon(
+                                                            Icons.add),
+                                                      ),
                                                     ),
                                                   ],
                                                 ),
-                                              ),
-                                              SizedBox(height: 10),
-                                              if (product.product.discount != 0)
-                                                Text(
-                                                  "\$ ${product.product.price + product.product.discount}",
-                                                  style: TextStyle(
-                                                    color: Color.fromRGBO(
-                                                        187, 187, 187, 1),
-                                                    decoration: TextDecoration
-                                                        .lineThrough,
-                                                    fontSize: 12,
-                                                    fontWeight: FontWeight.w300,
-                                                  ),
-                                                ),
-                                              Container(
-                                                height: 30,
-                                                width: 84,
-                                                decoration: BoxDecoration(
-                                                  color: Color.fromRGBO(
-                                                      242, 242, 242, 1),
-                                                  border: Border.all(
-                                                      color:
-                                                          Colors.transparent),
-                                                  borderRadius:
-                                                      BorderRadius.circular(5),
-                                                ),
-                                                padding: EdgeInsets.all(0),
-                                                child: Center(
-                                                  child: Text(
-                                                    "\$ ${product.product.price.toString()}",
-                                                    style: TextStyle(
-                                                        fontSize: 14,
-                                                        fontWeight:
-                                                            FontWeight.w400),
-                                                  ),
-                                                ),
-                                              ),
-                                              //  SizedBox(height: 10),
-                                              // Row(
-                                              //   children: [
-                                              //     Container(
-                                              //       height: 30,
-                                              //       width: 84,
-                                              //       decoration: BoxDecoration(
-                                              //         color: Color.fromRGBO(
-                                              //             242, 242, 242, 1),
-                                              //         border: Border.all(
-                                              //             color: Colors
-                                              //                 .transparent),
-                                              //         borderRadius:
-                                              //             BorderRadius.circular(
-                                              //                 5),
-                                              //       ),
-                                              //       padding: EdgeInsets.all(0),
-                                              //       child: Center(
-                                              //         child: Text(
-                                              //           "\$ ${product.product.price.toString()}",
-                                              //           style: TextStyle(
-                                              //               fontSize: 14,
-                                              //               fontWeight:
-                                              //                   FontWeight
-                                              //                       .w400),
-                                              //         ),
-                                              //       ),
-                                              //     ),
-                                              //     SizedBox(width: 10),
-                                              //     Container(
-                                              //       height: 30,
-                                              //       width: 84,
-                                              //       decoration: BoxDecoration(
-                                              //         color: Color.fromRGBO(
-                                              //             242, 242, 242, 1),
-                                              //         border: Border.all(
-                                              //             color: Colors
-                                              //                 .transparent),
-                                              //         borderRadius:
-                                              //             BorderRadius.circular(
-                                              //                 5),
-                                              //       ),
-                                              //       padding: EdgeInsets.all(0),
-                                              //       child: Center(
-                                              //           child: Row(
-                                              //         mainAxisAlignment:
-                                              //             MainAxisAlignment
-                                              //                 .spaceBetween,
-                                              //         children: [
-                                              //           SizedBox(width: 10),
-                                              //           Text(
-                                              //             "Qty ${product.quantity} ",
-                                              //             style: const TextStyle(
-                                              //                 fontSize: 14,
-                                              //                 fontWeight:
-                                              //                     FontWeight
-                                              //                         .w400),
-                                              //           ),
-                                              //           Padding(
-                                              //             padding:
-                                              //                 const EdgeInsets
-                                              //                     .only(
-                                              //                     bottom: 10),
-                                              //             child: Icon(
-                                              //               Icons
-                                              //                   .keyboard_control_key,
-                                              //               size: 17,
-                                              //             ),
-                                              //           )
-                                              //         ],
-                                              //       )),
-                                              //     ),
-                                              //   ],
-                                              // ),
-                                              SizedBox(
-                                                height: 10,
-                                              ),
-                                              Row(
-                                                mainAxisAlignment:
-                                                    MainAxisAlignment.start,
-                                                children: [
-                                                  GestureDetector(
-                                                    onTap: () async {
-                                                      if ((product.quantity ==
-                                                          1)) {
-                                                        setState(() {
-                                                          isRemoveFromCart =
-                                                              true;
-                                                        });
-
-                                                        await cartProvider
-                                                            .removeFromCart(
-                                                                userProvider
-                                                                    .user!.id,
-                                                                product.product,
-                                                                context);
-                                                        setState(() {
-                                                          isRemoveFromCart =
-                                                              false;
-                                                        });
-                                                      } else {
-                                                        setState(() {
-                                                          isRemoveFromCart =
-                                                              true;
-                                                        });
-                                                        await cartProvider
-                                                            .decreaseProductQuantity(
-                                                                userProvider
-                                                                    .user!.id,
-                                                                product.product,
-                                                                context);
-                                                        setState(() {
-                                                          isRemoveFromCart =
-                                                              false;
-                                                        });
-                                                      }
-                                                    },
-                                                    child: Container(
-                                                      width: SizeConfig
-                                                              .screenHeight *
-                                                          0.07,
-                                                      height: SizeConfig
-                                                              .screenWidth *
-                                                          0.1,
-                                                      decoration:
-                                                          const BoxDecoration(
-                                                        color: Colors
-                                                            .grey, // Background color for the container
-                                                        borderRadius:
-                                                            BorderRadius.only(
-                                                          topLeft:
-                                                              Radius.circular(
-                                                                  4.0),
-                                                          bottomLeft:
-                                                              Radius.circular(
-                                                                  4.0),
-                                                        ),
-                                                      ),
-                                                      child: (product
-                                                                  .quantity ==
-                                                              1)
-                                                          ? Icon(Icons.delete)
-                                                          : Icon(Icons.remove),
-                                                    ),
-                                                  ),
-                                                  Container(
-                                                    width: SizeConfig
-                                                            .screenHeight *
-                                                        0.07,
-                                                    height:
-                                                        SizeConfig.screenWidth *
-                                                            0.1,
-                                                    decoration: BoxDecoration(
-                                                      border: Border.all(
-                                                          color: Colors.grey),
-                                                      color: Colors
-                                                          .white, // Background color for the container
-                                                    ),
-                                                    child: Center(
-                                                      child: Text(
-                                                        product.quantity
-                                                            .toString(),
-                                                        style: const TextStyle(
-                                                          fontWeight:
-                                                              FontWeight.w500,
-                                                          fontSize: 14,
-                                                        ),
-                                                      ),
-                                                    ),
-                                                  ),
-                                                  GestureDetector(
-                                                    onTap: () async {
-                                                      setState(() {
-                                                        isRemoveFromCart = true;
-                                                      });
-                                                      await cartProvider
-                                                          .increaseProductQuantity(
-                                                              userProvider
-                                                                  .user!.id,
-                                                              product.product,
-                                                              context);
-                                                      setState(() {
-                                                        isRemoveFromCart =
-                                                            false;
-                                                      });
-                                                    },
-                                                    child: Container(
-                                                      width: SizeConfig
-                                                              .screenHeight *
-                                                          0.07,
-                                                      height: SizeConfig
-                                                              .screenWidth *
-                                                          0.1,
-                                                      decoration:
-                                                          const BoxDecoration(
-                                                        color: Colors
-                                                            .grey, // Background color for the container
-                                                        borderRadius:
-                                                            BorderRadius.only(
-                                                          topRight:
-                                                              Radius.circular(
-                                                                  4.0),
-                                                          bottomRight:
-                                                              Radius.circular(
-                                                                  4.0),
-                                                        ),
-                                                      ),
-                                                      child:
-                                                          const Icon(Icons.add),
-                                                    ),
-                                                  ),
-                                                ],
-                                              ),
-                                            ],
+                                              ],
+                                            ),
                                           ),
-                                        ),
-                                      ],
+                                        ],
+                                      ),
                                     ),
                                   ),
-                                ),
-                              ),
-                            );
+                                ));
                           },
                         ),
                       )

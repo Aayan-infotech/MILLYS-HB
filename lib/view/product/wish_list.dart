@@ -70,7 +70,7 @@ class _WishListScreenState extends State<WishListScreen> {
       // Call setState to update the UI after the bottom sheet is closed
       setState(() {});
     });
-    ;
+    
   }
 
   @override

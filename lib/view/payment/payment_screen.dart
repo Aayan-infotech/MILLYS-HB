@@ -126,8 +126,8 @@ class _PaymentScreenState extends State<PaymentScreen> {
                           width: 60,
                           child: Image.asset("assets/images/visa.png"),
                         ),
-                        Padding(
-                          padding: const EdgeInsets.only(right: 20),
+                        const Padding(
+                          padding: EdgeInsets.only(right: 20),
                           child: Text("******2109"),
                         )
                       ],
@@ -239,8 +239,7 @@ class _PaymentScreenState extends State<PaymentScreen> {
                               Provider.of<CartProvider>(context, listen: false);
                           final userProvider =
                               Provider.of<UserProvider>(context, listen: false);
-                          print(userProvider.user!.id);
-                          print(widget.deliverySlot.id);
+
                           await cartProvider.createOrder(userProvider.user!.id,
                               widget.deliverySlot.id, context);
 

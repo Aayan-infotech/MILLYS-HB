@@ -8,6 +8,8 @@ import 'package:millyshb/models/coupon_model.dart';
 import 'package:millyshb/models/delivery_slot_model.dart';
 import 'package:millyshb/models/product_model.dart';
 import 'package:millyshb/view/payment/payment_success_screen.dart';
+import 'package:millyshb/view_model/product_view_model.dart';
+import 'package:provider/provider.dart';
 
 class CartProvider with ChangeNotifier {
   Cart _cart = Cart(
@@ -172,8 +174,12 @@ class CartProvider with ChangeNotifier {
       slotId,
     );
     if (response.success) {
+      await getCart(userId, context);
+      final productProvider =
+          Provider.of<ProductProvider>(context, listen: false);
+      productProvider.getOrderList(userId, context, isForceRefresh: true);
       Navigator.of(context).push(MaterialPageRoute(builder: (context) {
-        return PaymentSuccessScreen();
+        return const PaymentSuccessScreen();
       }));
     } else {
       ScaffoldMessenger.of(context).showSnackBar(

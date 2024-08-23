@@ -20,7 +20,8 @@ import 'package:provider/provider.dart';
 // Import your Cart class
 
 class ProductList extends StatefulWidget {
-  const ProductList({super.key});
+  bool isBackbutton;
+  ProductList({this.isBackbutton = true, super.key});
 
   @override
   State<ProductList> createState() => _ProductListState();
@@ -29,12 +30,12 @@ class ProductList extends StatefulWidget {
 class _ProductListState extends State<ProductList> {
   final TextEditingController _searchController = TextEditingController();
 
-  final List<Product> _products = [];
+  final List<dynamic> _products = [];
+  List<dynamic> _filteredProducts = [];
   bool isLoading = false;
   bool isAddToCartLoading = false;
+
   void _showLoginBottomSheet(BuildContext context) {
-    final TextEditingController _userNameController = TextEditingController();
-    final TextEditingController _emailController = TextEditingController();
     showModalBottomSheet(
       context: context,
       isScrollControlled: true,
@@ -56,11 +57,11 @@ class _ProductListState extends State<ProductList> {
                       color: Colors.black.withOpacity(0.1),
                       blurRadius: 20,
                       spreadRadius: 5,
-                      offset: Offset(0, -5),
+                      offset: const Offset(0, -5),
                     ),
                   ],
                 ),
-                child: LoginScreen(
+                child: const LoginScreen(
                   isbottomSheet: true,
                 ));
           },
@@ -76,6 +77,11 @@ class _ProductListState extends State<ProductList> {
   @override
   void initState() {
     super.initState();
+
+    // Add a listener to the search controller
+    _searchController.addListener(() {
+      _filterProducts();
+    });
   }
 
   @override
@@ -89,8 +95,22 @@ class _ProductListState extends State<ProductList> {
         productProvider.selectedSubCategoryId, context);
     setState(() {
       isLoading = false;
+      _filteredProducts =
+          productProvider.products; // Initialize with all products
     });
     super.didChangeDependencies();
+  }
+
+  void _filterProducts() {
+    String query = _searchController.text.toLowerCase();
+    final productProvider =
+        Provider.of<ProductProvider>(context, listen: false);
+
+    setState(() {
+      _filteredProducts = productProvider.products.where((product) {
+        return product.name.toLowerCase().contains(query);
+      }).toList();
+    });
   }
 
   @override
@@ -106,6 +126,7 @@ class _ProductListState extends State<ProductList> {
         Scaffold(
           backgroundColor: Colors.white,
           appBar: AppBar(
+            automaticallyImplyLeading: widget.isBackbutton,
             backgroundColor: Colors.white,
             forceMaterialTransparency: true,
             centerTitle: true,
@@ -138,35 +159,6 @@ class _ProductListState extends State<ProductList> {
               ),
             ],
           ),
-          persistentFooterButtons: (cart.userCart as Cart).products.length > 0
-              ? [
-                  Row(
-                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                    children: [
-                      Expanded(
-                        child: BrandedPrimaryButton(
-                          isEnabled: true,
-                          name: "Go to cart",
-                          onPressed: () {
-                            final selectedStore =
-                                Provider.of<SelectStoreProvider>(context,
-                                        listen: false)
-                                    .selectedStore;
-
-                            if (selectedStore == Store.FOOD) {
-                              Navigator.of(context)
-                                  .pushNamed(RoutesName.selectSlot);
-                            } else {
-                              Navigator.of(context)
-                                  .pushNamed(RoutesName.shoppingBag);
-                            }
-                          },
-                        ),
-                      ),
-                    ],
-                  )
-                ]
-              : null,
           body: Padding(
             padding: const EdgeInsets.symmetric(horizontal: 10),
             child: Column(
@@ -188,9 +180,11 @@ class _ProductListState extends State<ProductList> {
                 const SizedBox(height: 20),
                 Expanded(
                   child: ListView.builder(
-                    itemCount: productProvider.products.length,
+                    itemCount:
+                        _filteredProducts.length, // Use filtered products
                     itemBuilder: (context, index) {
-                      Product product = productProvider.products[index];
+                      Product product =
+                          _filteredProducts[index]; // Use filtered products
 
                       bool inCart = false;
                       for (var cartProduct
@@ -224,7 +218,6 @@ class _ProductListState extends State<ProductList> {
                               padding: EdgeInsets.all(8.0),
                               child: Container(
                                 height: SizeConfig.screenHeight * .18,
-                                // width: MediaQuery.of(context).size.width,
                                 child: Row(
                                   children: [
                                     Container(
@@ -238,7 +231,7 @@ class _ProductListState extends State<ProductList> {
                                         borderRadius:
                                             BorderRadius.circular(10.0),
                                         child: Image.network(
-                                          product.image,
+                                          "https://res.cloudinary.com/dqhh1rff5/image/upload/v1722194860/Blog/gwvd3q1gi0ctsi43bae8.png", // product.image,
                                           fit: BoxFit.cover,
                                           width:
                                               MediaQuery.of(context).size.width,
@@ -309,7 +302,7 @@ class _ProductListState extends State<ProductList> {
                                           const SizedBox(height: 20),
                                           Text(
                                             "\$${product.price.toString()}",
-                                            style: TextStyle(
+                                            style: const TextStyle(
                                               fontWeight: FontWeight.bold,
                                               fontSize: 12,
                                             ),
@@ -358,7 +351,7 @@ class _ProductListState extends State<ProductList> {
                                               ),
                                               child: Center(
                                                 child: !inCart
-                                                    ? Text(
+                                                    ? const Text(
                                                         "Add To Cart",
                                                         style: TextStyle(
                                                           color: Color.fromRGBO(
@@ -368,7 +361,7 @@ class _ProductListState extends State<ProductList> {
                                                               FontWeight.w600,
                                                         ),
                                                       )
-                                                    : Text(
+                                                    : const Text(
                                                         "Go To Cart",
                                                         style: TextStyle(
                                                           color: Color.fromRGBO(

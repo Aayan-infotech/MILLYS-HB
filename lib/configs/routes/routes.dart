@@ -24,11 +24,11 @@ class Routes {
             builder: (BuildContext context) => const LoginScreen());
       case RoutesName.productList:
         return MaterialPageRoute(
-            builder: (BuildContext context) => const ProductList());
+            builder: (BuildContext context) => ProductList());
 
       case RoutesName.shoppingBag:
         return MaterialPageRoute(
-            builder: (BuildContext context) => const ShoppingBagScreen());
+            builder: (BuildContext context) => ShoppingBagScreen());
       case RoutesName.selectSlot:
         return MaterialPageRoute(
             builder: (BuildContext context) => SelectSlots(

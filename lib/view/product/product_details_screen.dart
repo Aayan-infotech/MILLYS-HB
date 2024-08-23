@@ -1,12 +1,15 @@
 import 'package:carousel_slider/carousel_slider.dart';
 import 'package:flutter/material.dart';
 import 'package:millyshb/configs/components/branded_primary_button.dart';
+import 'package:millyshb/configs/components/constants.dart';
 import 'package:millyshb/configs/components/miscellaneous.dart';
+import 'package:millyshb/configs/components/shared_preferences.dart';
 import 'package:millyshb/configs/components/size_config.dart';
 import 'package:millyshb/configs/routes/routes_names.dart';
 import 'package:millyshb/configs/theme/colors.dart';
 import 'package:millyshb/models/cart_product_model.dart';
 import 'package:millyshb/models/product_model.dart';
+import 'package:millyshb/view/login_signup/login_screen.dart';
 import 'package:millyshb/view/product/checkout.dart';
 import 'package:millyshb/view_model/cart_view_model.dart';
 import 'package:millyshb/view_model/user_view_model.dart';
@@ -27,6 +30,45 @@ class _ProductDetailsScreenState extends State<ProductDetailsScreen> {
   bool isInCart = false;
   bool isStackLoading = false;
 
+  void _showLoginBottomSheet(BuildContext context) {
+    showModalBottomSheet(
+      context: context,
+      isScrollControlled: true,
+      builder: (BuildContext context) {
+        return DraggableScrollableSheet(
+          initialChildSize: .8, // Set to 1.0 to cover the full screen initially
+          minChildSize: .1, // Minimum height when partially dragged
+          maxChildSize: 1, // Maximum height when fully dragged
+          expand: true,
+          builder: (context, scrollController) {
+            return Container(
+                decoration: BoxDecoration(
+                  color: Colors.white,
+                  borderRadius: const BorderRadius.vertical(
+                    top: Radius.circular(20),
+                  ),
+                  boxShadow: [
+                    BoxShadow(
+                      color: Colors.black.withOpacity(0.1),
+                      blurRadius: 20,
+                      spreadRadius: 5,
+                      offset: const Offset(0, -5),
+                    ),
+                  ],
+                ),
+                child: const LoginScreen(
+                  isbottomSheet: true,
+                ));
+          },
+        );
+      },
+    ).whenComplete(() {
+      // Call setState to update the UI after the bottom sheet is closed
+      setState(() {});
+    });
+    ;
+  }
+
   @override
   void initState() {
     // TODO: implement initState
@@ -35,6 +77,8 @@ class _ProductDetailsScreenState extends State<ProductDetailsScreen> {
 
   @override
   Widget build(BuildContext context) {
+    bool isLogin = SharedPrefUtil.getValue(isLogedIn, false) as bool;
+
     final List<String> imgList = [
       widget.product.image,
     ];
@@ -86,18 +130,23 @@ class _ProductDetailsScreenState extends State<ProductDetailsScreen> {
                     isEnabled: true,
                     name: inCart ? "Go to cart" : "Add to cart",
                     onPressed: () async {
-                      setState(() {
-                        isStackLoading = true;
-                      });
-                      if (inCart) {
-                        Navigator.of(context).pushNamed(RoutesName.shoppingBag);
+                      if (isLogin) {
+                        setState(() {
+                          isStackLoading = true;
+                        });
+                        if (inCart) {
+                          Navigator.of(context)
+                              .pushNamed(RoutesName.shoppingBag);
+                        } else {
+                          await cart.addTOCart(
+                              widget.product, userProvider.user!.id, context);
+                        }
+                        setState(() {
+                          isStackLoading = false;
+                        });
                       } else {
-                        await cart.addTOCart(
-                            widget.product, userProvider.user!.id, context);
+                        _showLoginBottomSheet(context);
                       }
-                      setState(() {
-                        isStackLoading = false;
-                      });
                     },
                   ),
                 ),

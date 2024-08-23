@@ -94,9 +94,10 @@ class _CheckOutScreenState extends State<CheckOutScreen> {
                 ),
                 persistentFooterButtons: [
                   BrandedPrimaryButton(
-                    isEnabled: true,
+                    isEnabled:selectedTimeSlot.id.isNotEmpty,
                     name: "Proceed",
                     onPressed: () {
+                      
                       Navigator.of(context)
                           .push(MaterialPageRoute(builder: (context) {
                         return OrderSummery(
@@ -606,6 +607,8 @@ class _CheckOutScreenState extends State<CheckOutScreen> {
                                                             selectedTimeSlot =
                                                                 value!;
                                                           });
+                                                          selectedTimeSlot
+                                                              .price = "0";
                                                         },
                                                       ),
                                                       Expanded(

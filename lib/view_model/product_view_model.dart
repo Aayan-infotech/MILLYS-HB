@@ -1,16 +1,22 @@
+import 'dart:convert';
+
 import 'package:flutter/material.dart';
+import 'package:millyshb/configs/components/constants.dart';
+import 'package:millyshb/configs/components/pdf_api.dart';
 import 'package:millyshb/configs/network/call_helper.dart';
-import 'package:millyshb/configs/network/server_calls/cart_api.dart';
 import 'package:millyshb/configs/network/server_calls/product_api.dart';
 import 'package:millyshb/models/category_model.dart';
+import 'package:millyshb/models/order_model.dart';
 import 'package:millyshb/models/product_model.dart';
 import 'package:millyshb/models/sub_category_model.dart';
 
 class ProductProvider with ChangeNotifier {
   List<dynamic> _products = [];
   List<dynamic> _favProducts = [];
+  List<dynamic> _recommendedProducts = [];
   List<dynamic> _category = [];
   List<dynamic> _subCategory = [];
+  List<Order> _orders = [];
   bool _isLoading = false;
   bool get isLoading => _isLoading;
   String _selectedCategoryId = '';
@@ -18,9 +24,12 @@ class ProductProvider with ChangeNotifier {
   String get selectedCategoryId => _selectedCategoryId;
   String get selectedSubCategoryId => _selectedSubCategoryId;
   List<dynamic> get products => _products;
+  List<dynamic> get recommendedProducts => _recommendedProducts;
+
   List<dynamic> get favProduct => _favProducts;
   List<dynamic> get category => _category;
   List<dynamic> get subCategory => _subCategory;
+  List<Order> get orders => _orders;
 
   set selectedCategoryId(String selectedCategoryId) {
     _selectedCategoryId = selectedCategoryId;
@@ -71,8 +80,31 @@ class ProductProvider with ChangeNotifier {
     }
   }
 
-  Future<void> getFavProduct(String id, BuildContext context) async {
+  getOrderList(String userId, BuildContext context,
+      {bool isForceRefresh = false}) async {
+    bool isfound = await PDFApi.checkIfFileExists(userOrderListFilePath);
+    if (isfound && !isForceRefresh) {
+      var json = await PDFApi.readFileFromLocalDirectory(userOrderListFilePath);
+      var data = jsonDecode(json);
+      _orders =
+          (data["data"] as List).map((item) => Order.fromJson(item)).toList();
+    } else {
+      ApiResponseWithData response = await ProductAPIs().getOrders(userId);
+
+      if (response.success) {
+        _orders = (response.data["data"] as List)
+            .map((item) => Order.fromJson(item))
+            .toList();
+        PDFApi.saveFileToLocalDirectory(
+            json.encode(response.data), userOrderListFilePath);
+      } else {}
+    }
+  }
+
+  Future<void> getFavProduct(String id, BuildContext context,{bool isForceRefresh=false}) async {
     try {
+    bool isfound = await PDFApi.checkIfFileExists(userFavProduct);
+
       ApiResponseWithData response = await ProductAPIs().getFavoriteProduct(id);
       if (response.success) {
         _favProducts = (response.data['data']["products"] as List)
@@ -83,6 +115,23 @@ class ProductProvider with ChangeNotifier {
       }
     } catch (e) {
       _showErrorSnackbar(context, 'Failed to load subcategories');
+    } finally {}
+    notifyListeners();
+  }
+
+  Future<void> getRecomProduct(String id, BuildContext context) async {
+    try {
+      ApiResponseWithData response =
+          await ProductAPIs().getRecommendedProductById(id);
+      if (response.success) {
+        _recommendedProducts = (response.data['data'] as List)
+            .map((item) => Product.fromJson(item))
+            .toList();
+      } else {
+       // _showErrorSnackbar(context, 'Internal server error');
+      }
+    } catch (e) {
+     // _showErrorSnackbar(context, 'Failed to load subcategories');
     } finally {}
     notifyListeners();
   }
@@ -106,6 +155,31 @@ class ProductProvider with ChangeNotifier {
     } finally {
       notifyListeners();
     }
+  }
+
+  Future<List<Product>> getListOfProduct(
+      String id, BuildContext context) async {
+    _setLoading(true); // Assuming this sets a loading state in your view model
+    List<Product> productList = []; // Initialize an empty product list
+
+    try {
+      ApiResponseWithData response = await ProductAPIs().getProductById(id);
+      if (response.success) {
+        if (response.data["status"] != 404) {
+          productList = (response.data["data"] as List)
+              .map((item) => Product.fromJson(item))
+              .toList();
+        }
+      } else {
+        _showErrorSnackbar(context, 'Internal server error');
+      }
+    } catch (e) {
+      _showErrorSnackbar(context, 'Failed to load products');
+    } finally {
+      _setLoading(false); // Stop loading
+    }
+
+    return productList; // Return the product list
   }
 
   addFavProduct(Product product, String userId, BuildContext context) async {

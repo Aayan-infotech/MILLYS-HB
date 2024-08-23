@@ -3,6 +3,7 @@ import 'package:millyshb/configs/components/constants.dart';
 import 'package:millyshb/configs/components/shared_preferences.dart';
 import 'package:millyshb/view/address/address_list.dart';
 import 'package:millyshb/view/login_signup/login_screen.dart';
+import 'package:millyshb/view/product/order_history.dart';
 import 'package:millyshb/view/settings/about_us.dart';
 import 'package:millyshb/view/settings/update_password.dart';
 import 'package:millyshb/view_model/user_view_model.dart';
@@ -12,7 +13,6 @@ class SettingsScreen extends StatefulWidget {
   @override
   _SettingsScreenState createState() => _SettingsScreenState();
 }
-
 
 class _SettingsScreenState extends State<SettingsScreen> {
   UserProvider? _userProvider;
@@ -77,6 +77,7 @@ class _SettingsScreenState extends State<SettingsScreen> {
 
     return Scaffold(
       appBar: AppBar(
+        automaticallyImplyLeading: false,
         title: Text('Settings'),
         centerTitle: true,
       ),
@@ -110,14 +111,23 @@ class _SettingsScreenState extends State<SettingsScreen> {
           ),
           Divider(),
           ListTile(
-            title: Text('Update Password'),
+            title: Text('Order'),
             onTap: () {
-              // Navigator.push(
-              //   context,
-              //   MaterialPageRoute(builder: (context) => UpdatePasswordScreen()),
-              // );
+              Navigator.push(
+                context,
+                MaterialPageRoute(builder: (context) => MyOrdersPage()),
+              );
             },
           ),
+          // ListTile(
+          //   title: Text('Update Password'),
+          //   onTap: () {
+          //     // Navigator.push(
+          //     //   context,
+          //     //   MaterialPageRoute(builder: (context) => UpdatePasswordScreen()),
+          //     // );
+          //   },
+          // ),
           Divider(),
           ListTile(
             title: Text('About Us'),

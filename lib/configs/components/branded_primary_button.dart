@@ -30,7 +30,7 @@ class BrandedPrimaryButton extends StatelessWidget {
                   elevation: 0,
                   shape: RoundedRectangleBorder(
                     side: const BorderSide(
-                      color: Pallete.accentColor,
+                      color: Pallete.greyColor,
                     ),
                     borderRadius: BorderRadius.circular(6.0),
                   ),

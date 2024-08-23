@@ -80,16 +80,12 @@ class _HomeScreenState extends State<HomeScreen> {
         Provider.of<ProductProvider>(context, listen: false);
     await productProvider.getSubCategoryList(
         productProvider.selectedCategoryId, context);
-    if (productProvider.subCategory.isNotEmpty)
-      await productProvider.getProductList(
-          (productProvider.subCategory[0] as SubCategory).id, context);
-    if (productProvider.subCategory.isNotEmpty)
-      await productProvider.getRecomProduct(
-          (productProvider.subCategory[0] as SubCategory).id, context);
-    // Fetch the subcategories and products
-    await Future.wait(productProvider.subCategory.map((item) async {
-      await productProvider.getListOfProduct((item as SubCategory).id, context);
-    }));
+
+    await productProvider.getProductList(
+        (productProvider.subCategory[0] as SubCategory).id, context);
+    print((productProvider.subCategory[0] as SubCategory).id);
+    await productProvider.getRecomProduct(
+        (productProvider.subCategory[0] as SubCategory).id, context);
 
     setState(() {
       isLoading = false;
@@ -401,6 +397,7 @@ class _HomeScreenState extends State<HomeScreen> {
             SizedBox(
               height: 10,
             ),
+            const SizedBox(height: 10),
             Container(
               height: 230,
               child: ListView.builder(
@@ -882,7 +879,7 @@ class _HomeScreenState extends State<HomeScreen> {
               ],
             ),
             const SizedBox(height: 10),
-            if (productProvider.favProduct.isNotEmpty)
+            if (productProvider.favProduct.length != 0)
               Container(
                 color: const Color.fromRGBO(56, 53, 100, 1),
                 height: 70,
@@ -991,8 +988,8 @@ class _HomeScreenState extends State<HomeScreen> {
                 child: Row(
                   children: [
                     Image.asset("assets/images/product.png"),
-                    const Padding(
-                      padding: EdgeInsets.only(left: 20),
+                    Padding(
+                      padding: const EdgeInsets.only(left: 20),
                       child: Column(
                         crossAxisAlignment: CrossAxisAlignment.start,
                         children: [
@@ -1023,54 +1020,45 @@ class _HomeScreenState extends State<HomeScreen> {
             SizedBox(
               height: 15,
             ),
-            // Column(
-            //   children: productProvider.subCategory.map<Widget>((item) {
-            //     return FutureBuilder<List<Product>>(
-            //       future: productProvider.getListOfProduct(
-            //           (item as SubCategory).id, context),
-            //       builder: (context, snapshot) {
-            //         if (snapshot.connectionState == ConnectionState.waiting) {
-            //           return Center(
-            //               child:
-            //                   CircularProgressIndicator()); // Loading indicator
-            //         } else if (snapshot.hasError) {
-            //           return Center(
-            //               child: Text(
-            //                   'Error: ${snapshot.error}')); // Handle errors
-            //         } else if (snapshot.hasData) {
-            //           return Column(
-            //             children: [
-            //               focusCard(context, item),
-            //               SizedBox(
-            //                 height: 10,
-            //               ),
-            //               Container(
-            //                 height: 230,
-            //                 child: ListView.builder(
-            //                   scrollDirection: Axis.horizontal,
-            //                   itemCount: snapshot.data!
-            //                       .length, // Use the length of the fetched product list
-            //                   itemBuilder: (BuildContext context, index) {
-            //                     return Padding(
-            //                         padding: EdgeInsets.only(right: 8),
-            //                         child: ProductCard(
-            //                             product: snapshot.data![
-            //                                 index]) // Pass the product data to foodCard
-            //                         );
-            //                   },
-            //                 ),
-            //               ),
-            //             ],
-            //           );
-            //         } else {
-            //           return Center(
-            //               child: Text(
-            //                   'No products available')); // Handle the empty state
-            //         }
-            //       },
-            //     );
-            //   }).toList(),
-            // ),
+          Column(
+  children: productProvider.subCategory.map<Widget>((item) {
+    return FutureBuilder<List<Product>>(
+      future: productProvider.getListOfProduct((item as SubCategory).id,context),
+      builder: (context, snapshot) {
+        if (snapshot.connectionState == ConnectionState.waiting) {
+          return Center(child: CircularProgressIndicator()); // Loading indicator
+        } else if (snapshot.hasError) {
+          return Center(child: Text('Error: ${snapshot.error}')); // Handle errors
+        } else if (snapshot.hasData) {
+          return Column(
+            children: [
+              focusCard(context, item),
+              SizedBox(
+                height: 10,
+              ),
+              Container(
+                height: 230,
+                child: ListView.builder(
+                  scrollDirection: Axis.horizontal,
+                  itemCount: snapshot.data!.length, // Use the length of the fetched product list
+                  itemBuilder: (BuildContext context, index) {
+                    return Padding(
+                      padding: EdgeInsets.only(right: 8),
+                      child: ProductCard(product: snapshot.data![index])// Pass the product data to foodCard
+                    );
+                  },
+                ),
+              ),
+            ],
+          );
+        } else {
+          return Center(child: Text('No products available')); // Handle the empty state
+        }
+      },
+    );
+  }).toList(),
+),
+
 
             // SizedBox(
             //   height: 210,
@@ -1192,3 +1180,4 @@ class _HomeScreenState extends State<HomeScreen> {
     );
   }
 }
+

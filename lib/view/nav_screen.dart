@@ -30,8 +30,13 @@ class _NavScreenState extends State<NavScreen> {
 
   List<Widget> homeScreenItems = [
     HomeScreen(),
-    const ProductList(),
-    ShoppingBagScreen(),
+    ProductList(
+      isBackbutton: false,
+    ),
+    // WishListScreen()
+    ShoppingBagScreen(
+      isBackButton: false,
+    ),
     SettingsScreen()
   ];
   @override

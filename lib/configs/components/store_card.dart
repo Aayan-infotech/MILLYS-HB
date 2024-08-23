@@ -90,7 +90,7 @@ class _StoreCardState extends State<StoreCard> {
                           onPressed: () {
                             Provider.of<ProductProvider>(context, listen: false)
                                 .selectedCategoryId = widget.category.id;
-                            print(widget.category.id);
+
                             if (widget.isFood) {
                               Provider.of<SelectStoreProvider>(context,
                                       listen: false)
