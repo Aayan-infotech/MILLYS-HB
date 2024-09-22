@@ -16,7 +16,7 @@ class UserContextData {
         Provider.of<ProductProvider>(context, listen: false);
     final addressProvider =
         Provider.of<AddressProvider>(context, listen: false);
-    final userProvider = Provider.of<UserProvider>(context, listen: false);
+  final userProvider = Provider.of<UserProvider>(context, listen: false);
     final cartProvider = Provider.of<CartProvider>(context, listen: false);
 
     _user = user;

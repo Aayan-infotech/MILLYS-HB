@@ -1,22 +1,36 @@
+import 'package:firebase_core/firebase_core.dart';
+import 'package:firebase_messaging/firebase_messaging.dart';
 import 'package:flutter/material.dart';
+import 'package:millyshb/configs/components/notification.dart';
 import 'package:millyshb/configs/network/call_helper.dart';
 import 'package:millyshb/configs/routes/routes.dart';
 import 'package:millyshb/configs/routes/routes_names.dart';
-import 'package:millyshb/configs/theme/app_theme.dart';
 import 'package:millyshb/configs/components/shared_preferences.dart';
 import 'package:millyshb/configs/components/size_config.dart';
-import 'package:millyshb/view/select_store_screen.dart';
 import 'package:millyshb/view/splash/splash_screen.dart';
 import 'package:millyshb/view_model/address_view_model.dart';
 import 'package:millyshb/view_model/cart_view_model.dart';
 import 'package:millyshb/view_model/product_view_model.dart';
 import 'package:millyshb/view_model/select_store_view_model.dart';
-import 'package:millyshb/view_model/theme_viewmodel.dart';
 import 'package:millyshb/view_model/user_view_model.dart';
 import 'package:provider/provider.dart';
 
-void main() {
-  CallHelper.url = "http://13.200.240.28:3003/";
+Future<void> _firebaseMessginBackgroundHandler(RemoteMessage event) async {
+  await NotificationService.showNotification(event);
+
+  debugPrint("background-------");
+}
+
+Future<void> main() async {
+  CallHelper.url = "http://3.111.163.2:5001/";
+  WidgetsFlutterBinding.ensureInitialized();
+  await Firebase.initializeApp();
+
+  FirebaseMessaging messaging = FirebaseMessaging.instance;
+  FirebaseMessaging.onBackgroundMessage(_firebaseMessginBackgroundHandler);
+  // Get the device token
+  String? token = await messaging.getToken();
+  print("Device Token: $token");
   runApp(
     MultiProvider(
       providers: [
@@ -52,7 +66,7 @@ class MyApp extends StatelessWidget {
               ),
               onGenerateRoute: Routes.generateRoute,
               initialRoute: RoutesName.splash,
-              home: SplashScreen(),
+              home: const SplashScreen(),
             );
           },
         );

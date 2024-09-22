@@ -72,7 +72,7 @@ class _NavScreenState extends State<NavScreen> {
             Pallete.accentColor, // Set the color for selected items
         unselectedItemColor:
             Pallete.black87, // Set the color for unselected items
-        items: <BottomNavigationBarItem>[
+        items: const <BottomNavigationBarItem>[
           BottomNavigationBarItem(
             icon: Icon(
               size: 30,

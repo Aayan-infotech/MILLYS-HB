@@ -59,6 +59,6 @@ class ProductAPIs extends ApiBase {
   }
 
   Future<ApiResponse> deleteAddress(String userId) async {
-    return await CallHelper().delete('api/address/delete/${userId}', {});
+    return await CallHelper().delete('api/address/delete/$userId', {});
   }
 }

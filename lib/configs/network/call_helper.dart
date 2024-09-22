@@ -109,7 +109,7 @@ class CallHelper {
 
     var decodedResponse =
         (response.statusCode != 404) ? jsonDecode(response.body) : "";
-
+    print(decodedResponse);
     if (response.statusCode == 200 && decodedResponse != null) {
       return ApiResponseWithData(decodedResponse as T, true);
     } else if (response.statusCode == 404) {
