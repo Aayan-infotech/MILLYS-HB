@@ -138,7 +138,6 @@ class _LoginScreenState extends State<LoginScreen> {
                       isEnabled: _passwordController.text.isNotEmpty,
                       name: "Login",
                       onPressed: () async {
-                        SharedPrefUtil.setValue(isLogedIn, true);
 
                         setState(() {
                           isLoading = true;

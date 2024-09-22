@@ -31,6 +31,8 @@ class UserProvider with ChangeNotifier {
     ApiResponseWithData response =
         await LoginAPIs().login(userNameOrEmail, password);
     if (response.success) {
+      SharedPrefUtil.setValue(isLogedIn, true);
+
       String token = response.data['token'];
 
       SharedPrefUtil.setValue(userToken, token);

@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:millyshb/configs/components/constants.dart';
 import 'package:millyshb/configs/components/shared_preferences.dart';
+import 'package:millyshb/configs/theme/colors.dart';
 import 'package:millyshb/view/login_signup/login_screen.dart';
 import 'package:millyshb/view/login_signup/sign_up_screen.dart';
 import 'package:millyshb/view/select_store_screen.dart';
@@ -130,25 +131,44 @@ class WelcomeScreenState extends State<WelcomeScreen> {
                       ],
                     ),
                   ),
-                  GestureDetector(
-                    onTap: () {
+                  TextButton(
+                    onPressed: () {
                       SharedPrefUtil.setValue(isLogedIn, false);
-                      
+
                       Navigator.of(context)
                           .push(MaterialPageRoute(builder: (context) {
                         return const SelectStoreScreen();
                       }));
                     },
+                    style: TextButton.styleFrom(
+                      padding: const EdgeInsets.symmetric(
+                          vertical: 10.0, horizontal: 20.0),
+                      backgroundColor:
+                          Colors.transparent, // Transparent background
+                      // Text color
+                      textStyle: const TextStyle(
+                          fontSize: 16,
+                          fontWeight: FontWeight.w500,
+                          color: Pallete.accentColor
+                          // decoration: TextDecoration.underline,
+                          ),
+                      side: const BorderSide(
+                        color: Colors.black, // Border color
+                        width: 1.0, // Border width
+                      ),
+                      shape: RoundedRectangleBorder(
+                        borderRadius:
+                            BorderRadius.circular(8.0), // Rounded border
+                      ),
+                    ),
                     child: const Text(
                       "Skip without Login",
-                      style: TextStyle(
-                        fontSize: 16,
-                        color: Color.fromRGBO(
-                            0, 0, 0, 1), // Adjust color as needed
-                        fontWeight: FontWeight.w500,
-                        decoration:
-                            TextDecoration.underline, // Add underline here
-                      ),
+                      style: const TextStyle(
+                          fontSize: 16,
+                          fontWeight: FontWeight.w500,
+                          color: Pallete.accentColor
+                          // decoration: TextDecoration.underline,
+                          ),
                     ),
                   )
                 ],

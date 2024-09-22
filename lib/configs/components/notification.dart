@@ -34,7 +34,7 @@ class NotificationService {
         htmlFormatContentTitle: true);
 
     var platformChannelSpecifics = AndroidNotificationDetails(
-      "app.milly", "Milly",
+      "app.milly", "MillyHB",
       importance: Importance.high,
       styleInformation: bigTextStyleInformation,
       priority: Priority.defaultPriority,

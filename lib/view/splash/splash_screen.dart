@@ -1,5 +1,6 @@
 import 'dart:convert';
 
+import 'package:firebase_messaging/firebase_messaging.dart';
 import 'package:flutter/material.dart';
 import 'package:millyshb/view_model/cart_view_model.dart';
 import 'package:provider/provider.dart';
@@ -31,6 +32,9 @@ class SplashScreenState extends State<SplashScreen> {
 
   Future<void> navigate() async {
     try {
+      FirebaseMessaging messaging = FirebaseMessaging.instance;
+      String? token = await messaging.getToken();
+      SharedPrefUtil.setValue(fcmToken, token!);
       await _loadInitialData();
       bool isLogin = SharedPrefUtil.getValue(isLogedIn, false) as bool;
 

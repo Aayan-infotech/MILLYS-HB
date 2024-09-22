@@ -32,7 +32,7 @@ class CallHelper {
   );
 
   static String url =
-      "http://13.200.240.28:3003/"; //this is initialized in main.dart based on the config choosen
+      "http://3.111.163.2:5001/"; //this is initialized in main.dart based on the config choosen
 
   int timeoutInSeconds = 20;
   String internalServerErrorMessage = "Internal server error.";

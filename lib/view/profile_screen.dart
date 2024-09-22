@@ -109,40 +109,40 @@ class _ProfilePageState extends State<ProfilePage> {
                     const SizedBox(
                       height: 20,
                     ),
-                    Center(
-                      child: InkWell(
-                        onTap: () async {
-                          setState(() {});
-                        },
-                        child: CircleAvatar(
-                          backgroundColor: Pallete.greyColor,
-                          radius: 55,
-                          child: isImageLoading
-                              ? const CircularProgressIndicator()
-                              : ClipOval(
-                                  clipBehavior: Clip.hardEdge,
-                                  child: _bytesData != null
-                                      ? Image.memory(
-                                          _bytesData!,
-                                          width: 200,
-                                          height: 200,
-                                          fit: BoxFit.cover,
-                                        )
-                                      : picture.isNotEmpty
-                                          ? Image.network(
-                                              picture,
-                                              width: 200,
-                                              height: 200,
-                                              fit: BoxFit.cover,
-                                            )
-                                          : const Icon(
-                                              Icons.photo_camera,
-                                              size: 38,
-                                              color: Pallete.whiteColor,
-                                            )),
-                        ),
-                      ),
-                    ),
+                    // Center(
+                    //   child: InkWell(
+                    //     onTap: () async {
+                    //       setState(() {});
+                    //     },
+                    //     child: CircleAvatar(
+                    //       backgroundColor: Pallete.greyColor,
+                    //       radius: 55,
+                    //       child: isImageLoading
+                    //           ? const CircularProgressIndicator()
+                    //           : ClipOval(
+                    //               clipBehavior: Clip.hardEdge,
+                    //               child: _bytesData != null
+                    //                   ? Image.memory(
+                    //                       _bytesData!,
+                    //                       width: 200,
+                    //                       height: 200,
+                    //                       fit: BoxFit.cover,
+                    //                     )
+                    //                   : picture.isNotEmpty
+                    //                       ? Image.network(
+                    //                           picture,
+                    //                           width: 200,
+                    //                           height: 200,
+                    //                           fit: BoxFit.cover,
+                    //                         )
+                    //                       : const Icon(
+                    //                           Icons.photo_camera,
+                    //                           size: 38,
+                    //                           color: Pallete.whiteColor,
+                    //                         )),
+                    //     ),
+                    //   ),
+                    // ),
                     Center(
                       child: TextButton(
                         onPressed: () async {},

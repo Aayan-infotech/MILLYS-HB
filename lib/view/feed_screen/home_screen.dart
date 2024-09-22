@@ -76,6 +76,10 @@ class _HomeScreenState extends State<HomeScreen> {
     setState(() {
       isLoading = true;
     });
+    String productId =
+        SharedPrefUtil.getValue(recommendedProductsId, "") as String;
+    print("Vikas");
+    print(productId);
     final productProvider =
         Provider.of<ProductProvider>(context, listen: false);
     await productProvider.getSubCategoryList(
@@ -83,9 +87,9 @@ class _HomeScreenState extends State<HomeScreen> {
     if (productProvider.subCategory.isNotEmpty)
       await productProvider.getProductList(
           (productProvider.subCategory[0] as SubCategory).id, context);
-    if (productProvider.subCategory.isNotEmpty)
-      await productProvider.getRecomProduct(
-          (productProvider.subCategory[0] as SubCategory).id, context);
+    // if (productId.isNotEmpty) {
+    await productProvider.getRecomProduct("66d006f0f5b1857ad49ceefe", context);
+    // }
     // Fetch the subcategories and products
     await Future.wait(productProvider.subCategory.map((item) async {
       await productProvider.getListOfProduct((item as SubCategory).id, context);
@@ -137,9 +141,10 @@ class _HomeScreenState extends State<HomeScreen> {
             ),
             body: Consumer<SelectStoreProvider>(
               builder: (context, provider, child) {
-                return (provider.selectedStore == Store.FOOD)
-                    ? foodFeed(context)
-                    : cosmeticsFeed(context);
+                return cosmeticsFeed(context);
+                // return (provider.selectedStore == Store.FOOD)
+                //     ? foodFeed(context)
+                //     : cosmeticsFeed(context);
               },
             ),
           );
@@ -1087,7 +1092,8 @@ class _HomeScreenState extends State<HomeScreen> {
             //         );
             //       }),
             // ),
-            headingCard("Recommended For You "),
+            if (productProvider.recommendedProducts.isNotEmpty)
+              headingCard("Recommended For You "),
             const SizedBox(
               height: 10,
             ),
@@ -1097,10 +1103,10 @@ class _HomeScreenState extends State<HomeScreen> {
                   height: 210,
                   child: ListView.builder(
                     scrollDirection: Axis.horizontal,
-                    itemCount: productProvider.products.length,
+                    itemCount: productProvider.recommendedProducts.length,
                     itemBuilder: (BuildContext context, item) {
                       Product recommendedProducts =
-                          productProvider.products[item];
+                          productProvider.recommendedProducts[item];
                       return Padding(
                         padding: EdgeInsets.symmetric(horizontal: 4),
                         child: ProductCard(

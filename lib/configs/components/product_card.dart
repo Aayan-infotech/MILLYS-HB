@@ -53,6 +53,7 @@ class _ProductCardState extends State<ProductCard> {
                   width: 170,
                   child: Text(
                     widget.product.description,
+                    maxLines: 2,
                     style: TextStyle(
                         color: Color.fromRGBO(0, 0, 0, 1),
                         fontWeight: FontWeight.w400,

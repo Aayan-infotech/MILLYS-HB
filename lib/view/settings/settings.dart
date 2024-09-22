@@ -3,6 +3,7 @@ import 'package:millyshb/configs/components/constants.dart';
 import 'package:millyshb/configs/components/shared_preferences.dart';
 import 'package:millyshb/view/address/address_list.dart';
 import 'package:millyshb/view/login_signup/login_screen.dart';
+import 'package:millyshb/view/notification/notifications.dart';
 import 'package:millyshb/view/product/order_history.dart';
 import 'package:millyshb/view/settings/about_us.dart';
 import 'package:millyshb/view/settings/update_password.dart';
@@ -85,15 +86,12 @@ class _SettingsScreenState extends State<SettingsScreen> {
         padding: EdgeInsets.all(16.0),
         children: <Widget>[
           ListTile(
+            onTap: () {
+              Navigator.of(context).push(MaterialPageRoute(builder: (context) {
+                return NotificationScreen();
+              }));
+            },
             title: const Text('Notifications'),
-            trailing: Switch(
-              value: _notificationsEnabled,
-              onChanged: (bool value) {
-                setState(() {
-                  _notificationsEnabled = value;
-                });
-              },
-            ),
           ),
           Divider(),
           ListTile(
