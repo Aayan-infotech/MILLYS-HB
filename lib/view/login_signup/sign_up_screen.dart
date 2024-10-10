@@ -321,7 +321,7 @@ class _SignUpScreenState extends State<SignUpScreen> {
                           isEnabled: true,
                           name: "Create Account",
                           onPressed: () {
-                            User user = User(
+                            UserModel user = UserModel(
                               token: '',
                               id: "",
                               userName: _userNameController.text,

@@ -78,15 +78,16 @@ class _HomeScreenState extends State<HomeScreen> {
     });
     String productId =
         SharedPrefUtil.getValue(recommendedProductsId, "") as String;
-    print("Vikas");
+
     print(productId);
     final productProvider =
         Provider.of<ProductProvider>(context, listen: false);
     await productProvider.getSubCategoryList(
         productProvider.selectedCategoryId, context);
-    if (productProvider.subCategory.isNotEmpty)
+    if (productProvider.subCategory.isNotEmpty) {
       await productProvider.getProductList(
           (productProvider.subCategory[0] as SubCategory).id, context);
+    }
     // if (productId.isNotEmpty) {
     await productProvider.getRecomProduct("66d006f0f5b1857ad49ceefe", context);
     // }
@@ -150,336 +151,336 @@ class _HomeScreenState extends State<HomeScreen> {
           );
   }
 
-  SingleChildScrollView foodFeed(
-    BuildContext context,
-  ) {
-    final productProvider =
-        Provider.of<ProductProvider>(context, listen: false);
+  // SingleChildScrollView foodFeed(
+  //   BuildContext context,
+  // ) {
+  //   final productProvider =
+  //       Provider.of<ProductProvider>(context, listen: false);
 
-    return SingleChildScrollView(
-      child: Padding(
-        padding: const EdgeInsets.symmetric(horizontal: 10),
-        child: Column(
-          crossAxisAlignment: CrossAxisAlignment.start,
-          children: [
-            BrandedTextField(
-                isFilled: false,
-                height: 40,
-                sufix: const Icon(
-                  Icons.mic_outlined,
-                  size: 16,
-                ),
-                prefix: const Icon(
-                  Icons.search,
-                  size: 16,
-                ),
-                controller: _searchController,
-                labelText: "Search any product"),
-            const SizedBox(height: 20),
-            Row(
-              mainAxisAlignment: MainAxisAlignment.spaceBetween,
-              children: [
-                const Text(
-                  "All Featured",
-                  style: TextStyle(fontSize: 18, fontWeight: FontWeight.w600),
-                ),
-                SizedBox(
-                  width: 140,
-                  child: Row(
-                    children: [
-                      SizedBox(
-                        height: 24,
-                        width: 61,
-                        child: OutlinedButton(
-                          onPressed: () {},
-                          style: OutlinedButton.styleFrom(
-                            padding: const EdgeInsets.only(left: 12),
-                            backgroundColor: Colors.white,
-                            side: const BorderSide(color: Colors.transparent),
-                            shape: RoundedRectangleBorder(
-                              borderRadius: BorderRadius.circular(5),
-                            ),
-                          ),
-                          child: const Row(
-                            children: [
-                              Text(
-                                "Sort",
-                                style: TextStyle(
-                                    color: Colors.black,
-                                    fontSize: 12,
-                                    fontWeight: FontWeight.w400),
-                              ),
-                              Icon(
-                                Icons.sort,
-                                color: Colors.black,
-                                size: 16,
-                              ),
-                            ],
-                          ),
-                        ),
-                      ),
-                      const SizedBox(width: 15),
-                      SizedBox(
-                        height: 24,
-                        width: 61,
-                        child: OutlinedButton(
-                          onPressed: () {},
-                          style: OutlinedButton.styleFrom(
-                            padding: const EdgeInsets.only(left: 12),
-                            backgroundColor: Colors.white,
-                            side: const BorderSide(color: Colors.transparent),
-                            shape: RoundedRectangleBorder(
-                              borderRadius: BorderRadius.circular(5),
-                            ),
-                          ),
-                          child: const Row(
-                            children: [
-                              Text(
-                                "Filter",
-                                style: TextStyle(
-                                    fontSize: 12,
-                                    color: Colors.black,
-                                    fontWeight: FontWeight.w400),
-                              ),
-                              Icon(
-                                Icons.filter_alt_outlined,
-                                color: Colors.black,
-                                size: 16,
-                              ),
-                            ],
-                          ),
-                        ),
-                      ),
-                    ],
-                  ),
-                ),
-              ],
-            ),
-            const SizedBox(height: 10),
-            SizedBox(
-              height: 100,
-              child: ListView.builder(
-                  scrollDirection: Axis.horizontal,
-                  itemCount: productProvider.subCategory.length,
-                  itemBuilder: (BuildContext context, item) {
-                    SubCategory subCategory =
-                        productProvider.subCategory[item] as SubCategory;
-                    return ImageWidget(subCategory: subCategory);
-                  }),
-            ),
-            const SizedBox(height: 10),
-            headingCard("Discount guaranteed!"),
-            const SizedBox(height: 10),
-            Container(
-              height: 230,
-              child: ListView.builder(
-                  scrollDirection: Axis.horizontal,
-                  itemCount: 5,
-                  itemBuilder: (BuildContext context, item) {
-                    return Padding(
-                      padding: EdgeInsets.only(right: 8),
-                      child: foodCard(context),
-                    );
-                  }),
-            ),
-            SizedBox(
-              height: 20,
-            ),
-            Stack(
-              children: [
-                Padding(
-                  padding: EdgeInsets.only(
-                      left: MediaQuery.of(context).size.width * 0.62),
-                  child: ClipRRect(
-                    borderRadius: BorderRadius.circular(16),
-                    child: Image.asset(
-                      "assets/images/roasted.png",
-                      width: MediaQuery.of(context).size.width * 0.6,
-                      height: 100,
-                    ),
-                  ),
-                ),
-                CustomShapeContainer(),
-                Row(
-                  children: [
-                    Expanded(
-                      flex: 2,
-                      child: Padding(
-                        padding: const EdgeInsets.only(left: 8, top: 8),
-                        child: Column(
-                          mainAxisAlignment: MainAxisAlignment.center,
-                          crossAxisAlignment: CrossAxisAlignment.start,
-                          children: [
-                            const Text(
-                              'Some interesting events \nof YUMMY FOOD',
-                              style: TextStyle(
-                                color: Colors.white,
-                                fontSize: 16,
-                                fontWeight: FontWeight.bold,
-                              ),
-                            ),
-                            SizedBox(height: 5),
-                            SizedBox(
-                              height: 28,
-                              child: ElevatedButton(
-                                onPressed: () {
-                                  // Add your onPressed code here!
-                                },
-                                child: Text('Discover'),
-                                style: ElevatedButton.styleFrom(
-                                  shape: RoundedRectangleBorder(
-                                    borderRadius: BorderRadius.circular(20),
-                                  ),
-                                ),
-                              ),
-                            ),
-                          ],
-                        ),
-                      ),
-                    ),
-                  ],
-                ),
-              ],
-            ),
-            SizedBox(
-              height: 25,
-            ),
-            headingCard("What's delicious around here?"),
-            SizedBox(
-              height: 10,
-            ),
-            Container(
-              height: 230,
-              child: ListView.builder(
-                  scrollDirection: Axis.horizontal,
-                  itemCount: 5,
-                  itemBuilder: (BuildContext context, item) {
-                    return Padding(
-                      padding: const EdgeInsets.only(right: 8),
-                      child: foodCard(context),
-                    );
-                  }),
-            ),
-            Container(
-              height: 180,
-              child: ListView.builder(
-                  scrollDirection: Axis.horizontal,
-                  itemCount: 5,
-                  itemBuilder: (BuildContext context, item) {
-                    return Padding(
-                      padding: const EdgeInsets.only(right: 8),
-                      child: Column(
-                        crossAxisAlignment: CrossAxisAlignment.start,
-                        children: [
-                          Container(
-                            width: MediaQuery.of(context).size.width,
-                            height: 123,
-                            child: ClipRRect(
-                              borderRadius: BorderRadius.circular(
-                                  15.0), // Adjust the radius as needed
-                              child: Image.network(
-                                "https://media.istockphoto.com/id/1316145932/photo/table-top-view-of-spicy-food.jpg?s=1024x1024&w=is&k=20&c=VaRsD5pHXDCMcwcAsOGaaBadptx0nHaJUuVKpyWaq3A=",
-                                fit: BoxFit
-                                    .cover, // This will ensure the image covers the entire container
-                                width: MediaQuery.of(context)
-                                    .size
-                                    .width, // Ensure the image takes the full width
-                              ),
-                            ),
-                          ),
-                          SizedBox(
-                            height: 5,
-                          ),
-                          const Text(
-                            "Frozen Food",
-                            style: TextStyle(
-                                color: Color.fromRGBO(0, 0, 0, 1),
-                                fontSize: 16,
-                                fontWeight: FontWeight.w600),
-                          )
-                        ],
-                      ),
-                    );
-                  }),
-            ),
-            headingCard("Highlights of March"),
-            SizedBox(
-              height: 10,
-            ),
-            Container(
-              height: 230,
-              child: ListView.builder(
-                  scrollDirection: Axis.horizontal,
-                  itemCount: 5,
-                  itemBuilder: (BuildContext context, item) {
-                    return Padding(
-                      padding: EdgeInsets.only(right: 8),
-                      child: foodCard(context),
-                    );
-                  }),
-            ),
-            SizedBox(
-              height: 25,
-            ),
-            headingCard("Nearby Restaurants"),
-            SizedBox(
-              height: 10,
-            ),
-            Container(
-              height: 220,
-              child: ListView.builder(
-                  scrollDirection: Axis.horizontal,
-                  itemCount: 5,
-                  itemBuilder: (BuildContext context, item) {
-                    return Padding(
-                      padding: const EdgeInsets.only(right: 8),
-                      child: Column(
-                        crossAxisAlignment: CrossAxisAlignment.start,
-                        children: [
-                          ClipRRect(
-                            borderRadius: BorderRadius.circular(16),
-                            child: Image.asset(
-                              "assets/images/1.jpg",
-                              fit: BoxFit.cover,
-                              width: 192,
-                              height: 156,
-                            ),
-                          ),
-                          const Column(
-                            crossAxisAlignment: CrossAxisAlignment.start,
-                            children: [
-                              Text(
-                                "Elisandra Restaurant ",
-                                style: TextStyle(
-                                  fontWeight: FontWeight.w600,
-                                  fontSize: 18,
-                                ),
-                              ),
-                              Row(
-                                children: [
-                                  Icon(Icons.location_on_outlined,
-                                      color: Color.fromRGBO(102, 112, 122, 1)),
-                                  Text("Elisandra Restaurant",
-                                      style: TextStyle(
-                                          color:
-                                              Color.fromRGBO(102, 112, 122, 1)))
-                                ],
-                              )
-                            ],
-                          ),
-                        ],
-                      ),
-                    );
-                  }),
-            ),
-            const SizedBox(
-              height: 10,
-            ),
-          ],
-        ),
-      ),
-    );
-  }
+  //   return SingleChildScrollView(
+  //     child: Padding(
+  //       padding: const EdgeInsets.symmetric(horizontal: 10),
+  //       child: Column(
+  //         crossAxisAlignment: CrossAxisAlignment.start,
+  //         children: [
+  //           BrandedTextField(
+  //               isFilled: false,
+  //               height: 40,
+  //               sufix: const Icon(
+  //                 Icons.mic_outlined,
+  //                 size: 16,
+  //               ),
+  //               prefix: const Icon(
+  //                 Icons.search,
+  //                 size: 16,
+  //               ),
+  //               controller: _searchController,
+  //               labelText: "Search any product"),
+  //           const SizedBox(height: 20),
+  //           // Row(
+  //           //   mainAxisAlignment: MainAxisAlignment.spaceBetween,
+  //           //   children: [
+  //           //     const Text(
+  //           //       "All Featured",
+  //           //       style: TextStyle(fontSize: 18, fontWeight: FontWeight.w600),
+  //           //     ),
+  //           //     SizedBox(
+  //           //       width: 140,
+  //           //       child: Row(
+  //           //         children: [
+  //           //           SizedBox(
+  //           //             height: 24,
+  //           //             width: 61,
+  //           //             child: OutlinedButton(
+  //           //               onPressed: () {},
+  //           //               style: OutlinedButton.styleFrom(
+  //           //                 padding: const EdgeInsets.only(left: 12),
+  //           //                 backgroundColor: Colors.white,
+  //           //                 side: const BorderSide(color: Colors.transparent),
+  //           //                 shape: RoundedRectangleBorder(
+  //           //                   borderRadius: BorderRadius.circular(5),
+  //           //                 ),
+  //           //               ),
+  //           //               child: const Row(
+  //           //                 children: [
+  //           //                   Text(
+  //           //                     "Sort",
+  //           //                     style: TextStyle(
+  //           //                         color: Colors.black,
+  //           //                         fontSize: 12,
+  //           //                         fontWeight: FontWeight.w400),
+  //           //                   ),
+  //           //                   Icon(
+  //           //                     Icons.sort,
+  //           //                     color: Colors.black,
+  //           //                     size: 16,
+  //           //                   ),
+  //           //                 ],
+  //           //               ),
+  //           //             ),
+  //           //           ),
+  //           //           const SizedBox(width: 15),
+  //           //           SizedBox(
+  //           //             height: 24,
+  //           //             width: 61,
+  //           //             child: OutlinedButton(
+  //           //               onPressed: () {},
+  //           //               style: OutlinedButton.styleFrom(
+  //           //                 padding: const EdgeInsets.only(left: 12),
+  //           //                 backgroundColor: Colors.white,
+  //           //                 side: const BorderSide(color: Colors.transparent),
+  //           //                 shape: RoundedRectangleBorder(
+  //           //                   borderRadius: BorderRadius.circular(5),
+  //           //                 ),
+  //           //               ),
+  //           //               child: const Row(
+  //           //                 children: [
+  //           //                   Text(
+  //           //                     "Filter",
+  //           //                     style: TextStyle(
+  //           //                         fontSize: 12,
+  //           //                         color: Colors.black,
+  //           //                         fontWeight: FontWeight.w400),
+  //           //                   ),
+  //           //                   Icon(
+  //           //                     Icons.filter_alt_outlined,
+  //           //                     color: Colors.black,
+  //           //                     size: 16,
+  //           //                   ),
+  //           //                 ],
+  //           //               ),
+  //           //             ),
+  //           //           ),
+  //           //         ],
+  //           //       ),
+  //           //     ),
+  //           //   ],
+  //           // ),
+  //           const SizedBox(height: 10),
+  //           SizedBox(
+  //             height: 100,
+  //             child: ListView.builder(
+  //                 scrollDirection: Axis.horizontal,
+  //                 itemCount: productProvider.subCategory.length,
+  //                 itemBuilder: (BuildContext context, item) {
+  //                   SubCategory subCategory =
+  //                       productProvider.subCategory[item] as SubCategory;
+  //                   return ImageWidget(subCategory: subCategory);
+  //                 }),
+  //           ),
+  //           const SizedBox(height: 10),
+  //           headingCard("Discount guaranteed!"),
+  //           const SizedBox(height: 10),
+  //           Container(
+  //             height: 230,
+  //             child: ListView.builder(
+  //                 scrollDirection: Axis.horizontal,
+  //                 itemCount: 5,
+  //                 itemBuilder: (BuildContext context, item) {
+  //                   return Padding(
+  //                     padding: EdgeInsets.only(right: 8),
+  //                     child: foodCard(context),
+  //                   );
+  //                 }),
+  //           ),
+  //           SizedBox(
+  //             height: 20,
+  //           ),
+  //           Stack(
+  //             children: [
+  //               Padding(
+  //                 padding: EdgeInsets.only(
+  //                     left: MediaQuery.of(context).size.width * 0.62),
+  //                 child: ClipRRect(
+  //                   borderRadius: BorderRadius.circular(16),
+  //                   child: Image.asset(
+  //                     "assets/images/roasted.png",
+  //                     width: MediaQuery.of(context).size.width * 0.6,
+  //                     height: 100,
+  //                   ),
+  //                 ),
+  //               ),
+  //               CustomShapeContainer(),
+  //               Row(
+  //                 children: [
+  //                   Expanded(
+  //                     flex: 2,
+  //                     child: Padding(
+  //                       padding: const EdgeInsets.only(left: 8, top: 8),
+  //                       child: Column(
+  //                         mainAxisAlignment: MainAxisAlignment.center,
+  //                         crossAxisAlignment: CrossAxisAlignment.start,
+  //                         children: [
+  //                           const Text(
+  //                             'Some interesting events \nof YUMMY FOOD',
+  //                             style: TextStyle(
+  //                               color: Colors.white,
+  //                               fontSize: 16,
+  //                               fontWeight: FontWeight.bold,
+  //                             ),
+  //                           ),
+  //                           SizedBox(height: 5),
+  //                           SizedBox(
+  //                             height: 28,
+  //                             child: ElevatedButton(
+  //                               onPressed: () {
+  //                                 // Add your onPressed code here!
+  //                               },
+  //                               child: Text('Discover'),
+  //                               style: ElevatedButton.styleFrom(
+  //                                 shape: RoundedRectangleBorder(
+  //                                   borderRadius: BorderRadius.circular(20),
+  //                                 ),
+  //                               ),
+  //                             ),
+  //                           ),
+  //                         ],
+  //                       ),
+  //                     ),
+  //                   ),
+  //                 ],
+  //               ),
+  //             ],
+  //           ),
+  //           SizedBox(
+  //             height: 25,
+  //           ),
+  //           headingCard("What's delicious around here?"),
+  //           SizedBox(
+  //             height: 10,
+  //           ),
+  //           Container(
+  //             height: 230,
+  //             child: ListView.builder(
+  //                 scrollDirection: Axis.horizontal,
+  //                 itemCount: 5,
+  //                 itemBuilder: (BuildContext context, item) {
+  //                   return Padding(
+  //                     padding: const EdgeInsets.only(right: 8),
+  //                     child: foodCard(context),
+  //                   );
+  //                 }),
+  //           ),
+  //           Container(
+  //             height: 180,
+  //             child: ListView.builder(
+  //                 scrollDirection: Axis.horizontal,
+  //                 itemCount: 5,
+  //                 itemBuilder: (BuildContext context, item) {
+  //                   return Padding(
+  //                     padding: const EdgeInsets.only(right: 8),
+  //                     child: Column(
+  //                       crossAxisAlignment: CrossAxisAlignment.start,
+  //                       children: [
+  //                         Container(
+  //                           width: MediaQuery.of(context).size.width,
+  //                           height: 123,
+  //                           child: ClipRRect(
+  //                             borderRadius: BorderRadius.circular(
+  //                                 15.0), // Adjust the radius as needed
+  //                             child: Image.network(
+  //                               "https://media.istockphoto.com/id/1316145932/photo/table-top-view-of-spicy-food.jpg?s=1024x1024&w=is&k=20&c=VaRsD5pHXDCMcwcAsOGaaBadptx0nHaJUuVKpyWaq3A=",
+  //                               fit: BoxFit
+  //                                   .cover, // This will ensure the image covers the entire container
+  //                               width: MediaQuery.of(context)
+  //                                   .size
+  //                                   .width, // Ensure the image takes the full width
+  //                             ),
+  //                           ),
+  //                         ),
+  //                         SizedBox(
+  //                           height: 5,
+  //                         ),
+  //                         const Text(
+  //                           "Frozen Food",
+  //                           style: TextStyle(
+  //                               color: Color.fromRGBO(0, 0, 0, 1),
+  //                               fontSize: 16,
+  //                               fontWeight: FontWeight.w600),
+  //                         )
+  //                       ],
+  //                     ),
+  //                   );
+  //                 }),
+  //           ),
+  //           headingCard("Highlights of March"),
+  //           SizedBox(
+  //             height: 10,
+  //           ),
+  //           Container(
+  //             height: 230,
+  //             child: ListView.builder(
+  //                 scrollDirection: Axis.horizontal,
+  //                 itemCount: 5,
+  //                 itemBuilder: (BuildContext context, item) {
+  //                   return Padding(
+  //                     padding: EdgeInsets.only(right: 8),
+  //                     child: foodCard(context),
+  //                   );
+  //                 }),
+  //           ),
+  //           SizedBox(
+  //             height: 25,
+  //           ),
+  //           headingCard("Nearby Restaurants"),
+  //           SizedBox(
+  //             height: 10,
+  //           ),
+  //           Container(
+  //             height: 220,
+  //             child: ListView.builder(
+  //                 scrollDirection: Axis.horizontal,
+  //                 itemCount: 5,
+  //                 itemBuilder: (BuildContext context, item) {
+  //                   return Padding(
+  //                     padding: const EdgeInsets.only(right: 8),
+  //                     child: Column(
+  //                       crossAxisAlignment: CrossAxisAlignment.start,
+  //                       children: [
+  //                         ClipRRect(
+  //                           borderRadius: BorderRadius.circular(16),
+  //                           child: Image.asset(
+  //                             "assets/images/1.jpg",
+  //                             fit: BoxFit.cover,
+  //                             width: 192,
+  //                             height: 156,
+  //                           ),
+  //                         ),
+  //                         const Column(
+  //                           crossAxisAlignment: CrossAxisAlignment.start,
+  //                           children: [
+  //                             Text(
+  //                               "Elisandra Restaurant ",
+  //                               style: TextStyle(
+  //                                 fontWeight: FontWeight.w600,
+  //                                 fontSize: 18,
+  //                               ),
+  //                             ),
+  //                             Row(
+  //                               children: [
+  //                                 Icon(Icons.location_on_outlined,
+  //                                     color: Color.fromRGBO(102, 112, 122, 1)),
+  //                                 Text("Elisandra Restaurant",
+  //                                     style: TextStyle(
+  //                                         color:
+  //                                             Color.fromRGBO(102, 112, 122, 1)))
+  //                               ],
+  //                             )
+  //                           ],
+  //                         ),
+  //                       ],
+  //                     ),
+  //                   );
+  //                 }),
+  //           ),
+  //           const SizedBox(
+  //             height: 10,
+  //           ),
+  //         ],
+  //       ),
+  //     ),
+  //   );
+  // }
 
   Row headingCard(String text) {
     return Row(
@@ -507,10 +508,12 @@ class _HomeScreenState extends State<HomeScreen> {
                 .selectedSubCategoryId =
             (productProvider.subCategory[0] as SubCategory).id;
 
-        Navigator.of(context).pushNamed(RoutesName.productList);
-        // Navigator.of(context).push(MaterialPageRoute(builder: (context) {
-        //   return ProductList();
-        // }));
+        // Navigator.of(context).pushNamed(RoutesName.productList);
+        Navigator.of(context).push(MaterialPageRoute(builder: (context) {
+          return ProductList(
+            id: (productProvider.subCategory[0] as SubCategory).id,
+          );
+        }));
       },
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
@@ -662,86 +665,86 @@ class _HomeScreenState extends State<HomeScreen> {
                 ),
                 controller: _searchController,
                 labelText: "Search any product"),
-            const SizedBox(height: 20),
-            Row(
-              mainAxisAlignment: MainAxisAlignment.spaceBetween,
-              children: [
-                const Text(
-                  "All Featured",
-                  style: TextStyle(fontSize: 18, fontWeight: FontWeight.w600),
-                ),
-                SizedBox(
-                  width: 140,
-                  child: Row(
-                    children: [
-                      SizedBox(
-                        height: 24,
-                        width: 61,
-                        child: OutlinedButton(
-                          onPressed: () {},
-                          style: OutlinedButton.styleFrom(
-                            padding: const EdgeInsets.only(left: 12),
-                            backgroundColor: Colors.white,
-                            side: const BorderSide(color: Colors.transparent),
-                            shape: RoundedRectangleBorder(
-                              borderRadius: BorderRadius.circular(5),
-                            ),
-                          ),
-                          child: const Row(
-                            children: [
-                              Text(
-                                "Sort",
-                                style: TextStyle(
-                                    color: Colors.black,
-                                    fontSize: 12,
-                                    fontWeight: FontWeight.w400),
-                              ),
-                              Icon(
-                                Icons.sort,
-                                color: Colors.black,
-                                size: 16,
-                              ),
-                            ],
-                          ),
-                        ),
-                      ),
-                      const SizedBox(width: 15),
-                      SizedBox(
-                        height: 24,
-                        width: 61,
-                        child: OutlinedButton(
-                          onPressed: () {},
-                          style: OutlinedButton.styleFrom(
-                            padding: const EdgeInsets.only(left: 12),
-                            backgroundColor: Colors.white,
-                            side: const BorderSide(color: Colors.transparent),
-                            shape: RoundedRectangleBorder(
-                              borderRadius: BorderRadius.circular(5),
-                            ),
-                          ),
-                          child: const Row(
-                            children: [
-                              Text(
-                                "Filter",
-                                style: TextStyle(
-                                    color: Colors.black,
-                                    fontSize: 12,
-                                    fontWeight: FontWeight.w400),
-                              ),
-                              Icon(
-                                Icons.filter_alt_outlined,
-                                color: Colors.black,
-                                size: 16,
-                              ),
-                            ],
-                          ),
-                        ),
-                      ),
-                    ],
-                  ),
-                ),
-              ],
-            ),
+            //const SizedBox(height: 20),
+            // Row(
+            //   mainAxisAlignment: MainAxisAlignment.spaceBetween,
+            //   children: [
+            //     const Text(
+            //       "All Featured",
+            //       style: TextStyle(fontSize: 18, fontWeight: FontWeight.w600),
+            //     ),
+            //     SizedBox(
+            //       width: 140,
+            //       child: Row(
+            //         children: [
+            //           SizedBox(
+            //             height: 24,
+            //             width: 61,
+            //             child: OutlinedButton(
+            //               onPressed: () {},
+            //               style: OutlinedButton.styleFrom(
+            //                 padding: const EdgeInsets.only(left: 12),
+            //                 backgroundColor: Colors.white,
+            //                 side: const BorderSide(color: Colors.transparent),
+            //                 shape: RoundedRectangleBorder(
+            //                   borderRadius: BorderRadius.circular(5),
+            //                 ),
+            //               ),
+            //               child: const Row(
+            //                 children: [
+            //                   Text(
+            //                     "Sort",
+            //                     style: TextStyle(
+            //                         color: Colors.black,
+            //                         fontSize: 12,
+            //                         fontWeight: FontWeight.w400),
+            //                   ),
+            //                   Icon(
+            //                     Icons.sort,
+            //                     color: Colors.black,
+            //                     size: 16,
+            //                   ),
+            //                 ],
+            //               ),
+            //             ),
+            //           ),
+            //           const SizedBox(width: 15),
+            //           SizedBox(
+            //             height: 24,
+            //             width: 61,
+            //             child: OutlinedButton(
+            //               onPressed: () {},
+            //               style: OutlinedButton.styleFrom(
+            //                 padding: const EdgeInsets.only(left: 12),
+            //                 backgroundColor: Colors.white,
+            //                 side: const BorderSide(color: Colors.transparent),
+            //                 shape: RoundedRectangleBorder(
+            //                   borderRadius: BorderRadius.circular(5),
+            //                 ),
+            //               ),
+            //               child: const Row(
+            //                 children: [
+            //                   Text(
+            //                     "Filter",
+            //                     style: TextStyle(
+            //                         color: Colors.black,
+            //                         fontSize: 12,
+            //                         fontWeight: FontWeight.w400),
+            //                   ),
+            //                   Icon(
+            //                     Icons.filter_alt_outlined,
+            //                     color: Colors.black,
+            //                     size: 16,
+            //                   ),
+            //                 ],
+            //               ),
+            //             ),
+            //           ),
+            //         ],
+            //       ),
+            //     ),
+            //   ],
+            // ),
             const SizedBox(height: 10),
             SizedBox(
               height: 100,
@@ -776,9 +779,15 @@ class _HomeScreenState extends State<HomeScreen> {
                                   .selectedSubCategoryId = (productProvider
                                       .subCategory[0] as SubCategory)
                                   .id;
-
                               Navigator.of(context)
-                                  .pushNamed(RoutesName.productList);
+                                  .push(MaterialPageRoute(builder: (context) {
+                                return ProductList(
+                                    id: (productProvider.subCategory[0]
+                                            as SubCategory)
+                                        .id);
+                              }));
+                              // Navigator.of(context)
+                              //     .pushNamed(RoutesName.productList);
                               // Navigator.of(context)
                               //     .push(MaterialPageRoute(builder: (context) {
                               //   return ProductList();
@@ -841,7 +850,9 @@ class _HomeScreenState extends State<HomeScreen> {
                                                 Navigator.of(context).push(
                                                     MaterialPageRoute(
                                                         builder: (context) {
-                                                  return ProductList();
+                                                  return ProductList(
+                                                    id: "",
+                                                  );
                                                 }));
                                               },
                                               child: const Row(
@@ -1093,7 +1104,7 @@ class _HomeScreenState extends State<HomeScreen> {
             //       }),
             // ),
             if (productProvider.recommendedProducts.isNotEmpty)
-              headingCard("Recommended For You "),
+              headingCard("Recomended For You "),
             const SizedBox(
               height: 10,
             ),
@@ -1176,7 +1187,9 @@ class _HomeScreenState extends State<HomeScreen> {
                         .selectedSubCategoryId = subCategory.id;
                     Navigator.of(context)
                         .push(MaterialPageRoute(builder: (context) {
-                      return ProductList();
+                      return ProductList(
+                        id: subCategory.id,
+                      );
                     }));
                   },
                   child: const Row(

@@ -130,23 +130,26 @@ class _ProductDetailsScreenState extends State<ProductDetailsScreen> {
                     isEnabled: true,
                     name: inCart ? "Go to cart" : "Add to cart",
                     onPressed: () async {
-                      if (isLogin) {
-                        setState(() {
-                          isStackLoading = true;
-                        });
-                        if (inCart) {
-                          Navigator.of(context)
-                              .pushNamed(RoutesName.shoppingBag);
-                        } else {
+                      //  if (isLogin) {
+                      setState(() {
+                        isStackLoading = true;
+                      });
+                      if (inCart) {
+                        Navigator.of(context).pushNamed(RoutesName.shoppingBag);
+                      } else {
+                        if (isLogin) {
                           await cart.addTOCart(
                               widget.product, userProvider.user!.id, context);
+                        } else {
+                          await cart.addTOCart(widget.product, '', context);
                         }
-                        setState(() {
-                          isStackLoading = false;
-                        });
-                      } else {
-                        _showLoginBottomSheet(context);
                       }
+                      setState(() {
+                        isStackLoading = false;
+                      });
+                      // } else {
+                      //   _showLoginBottomSheet(context);
+                      // }
                     },
                   ),
                 ),
@@ -156,10 +159,17 @@ class _ProductDetailsScreenState extends State<ProductDetailsScreen> {
                     isEnabled: true,
                     name: "Buy Now",
                     onPressed: () {
-                      Navigator.of(context)
-                          .push(MaterialPageRoute(builder: (context) {
-                        return CheckOutScreen();
-                      }));
+                      if (isLogin) {
+                        Navigator.of(context)
+                            .push(MaterialPageRoute(builder: (context) {
+                          return CheckOutScreen();
+                        }));
+                        setState(() {
+                          isStackLoading = false;
+                        });
+                      } else {
+                        _showLoginBottomSheet(context);
+                      }
                     },
                   ),
                 ),

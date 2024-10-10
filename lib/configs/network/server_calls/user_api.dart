@@ -25,7 +25,8 @@ class LoginAPIs extends ApiBase {
   //     mobileNumber,
   //     age,
   //     gender
-  Future<ApiResponseWithData<Map<String, dynamic>>> signUp(User user) async {
+  Future<ApiResponseWithData<Map<String, dynamic>>> signUp(
+      UserModel user) async {
     String token = SharedPrefUtil.getValue(fcmToken, "") as String;
 
     Map<String, String> data = {

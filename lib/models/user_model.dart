@@ -1,6 +1,6 @@
 import 'dart:convert';
 
-class User {
+class UserModel {
   String id;
   String userName;
   String mobileNumber;
@@ -9,7 +9,7 @@ class User {
   String email;
   String password;
   String token;
-  User(
+  UserModel(
       {required this.id,
       required this.userName,
       required this.mobileNumber,
@@ -17,13 +17,12 @@ class User {
       required this.gender,
       required this.email,
       required this.token,
-
       required this.password});
 
   // Factory method to create a User from JSON
-  factory User.fromJson(Map<String, dynamic> json) {
-    return User(
-      token: json["token"]??"",
+  factory UserModel.fromJson(Map<String, dynamic> json) {
+    return UserModel(
+      token: json["token"] ?? "",
       password: json['password'] ?? "",
       id: json['id'] ?? "",
       userName: json['userName'] ?? "",

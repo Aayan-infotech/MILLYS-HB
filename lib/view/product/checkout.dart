@@ -1,10 +1,13 @@
 import 'package:flutter/material.dart';
 import 'package:intl/intl.dart';
+import 'package:millyshb/configs/components/constants.dart';
 import 'package:millyshb/configs/components/miscellaneous.dart';
+import 'package:millyshb/configs/components/shared_preferences.dart';
 import 'package:millyshb/configs/components/size_config.dart';
 import 'package:millyshb/configs/theme/colors.dart';
 import 'package:millyshb/models/address_model.dart';
 import 'package:millyshb/models/delivery_slot_model.dart';
+import 'package:millyshb/view/address/address_list.dart';
 import 'package:millyshb/view/address/address_screen.dart';
 import 'package:millyshb/configs/components/branded_primary_button.dart';
 import 'package:millyshb/view/product/order_summery_screen.dart';
@@ -31,6 +34,18 @@ class _CheckOutScreenState extends State<CheckOutScreen> {
   DeliverySlot selectedTimeSlot = DeliverySlot.defaultDeliverySlot();
 
   bool isLoading = false;
+  Address selectedAddress = Address(
+    houseNumber: "12",
+    userId: "",
+    name: "Home",
+    mobileNumber: "",
+    street: "",
+    city: "",
+    state: "state",
+    postalCode: "",
+    country: "",
+    addressType: AddressType.HOME,
+  );
 
   loadSlot() async {
     setState(() {
@@ -52,26 +67,71 @@ class _CheckOutScreenState extends State<CheckOutScreen> {
     super.initState();
   }
 
+  getAddress() {
+    String addressId = SharedPrefUtil.getValue(selectedAddressId, "") as String;
+
+    if (addressId.isNotEmpty) {
+      // Fetch the list of addresses from the provider
+      List<dynamic> addresses =
+          Provider.of<AddressProvider>(context, listen: false).address;
+
+      // Find the address where the id matches the given addressId
+      selectedAddress = addresses.firstWhere(
+        (item) => item.addressId == addressId,
+        orElse: () => Address(
+          houseNumber: "12",
+          userId: "",
+          name: "Home",
+          mobileNumber: "",
+          street: "",
+          city: "",
+          state: "state",
+          postalCode: "",
+          country: "",
+          addressType: AddressType.HOME,
+        ),
+      );
+    } else {
+      // If no addressId is available, use default address
+      selectedAddress = Address(
+        houseNumber: "12",
+        userId: "",
+        name: "Home",
+        mobileNumber: "",
+        street: "",
+        city: "",
+        state: "state",
+        postalCode: "",
+        country: "",
+        addressType: AddressType.HOME,
+      );
+    }
+  }
+
   @override
   Widget build(BuildContext context) {
+    getAddress();
     final cartProvider = Provider.of<CartProvider>(context, listen: false);
     DateTime today = DateTime.now();
     DateTime tomorrow = today.add(Duration(days: 1));
+    // String addressId=  SharedPrefUtil.getValue(selectedAddressId, "") as String;
 
-    Address selectedAddress =
-        Provider.of<AddressProvider>(context, listen: false).address.isNotEmpty
-            ? Provider.of<AddressProvider>(context, listen: false).address[0]
-            : Address(
-                houseNumber: "12",
-                userId: "",
-                name: "Home",
-                mobileNumber: "",
-                street: "",
-                city: "",
-                state: "state",
-                postalCode: "",
-                country: "",
-                addressType: AddressType.HOME);
+    // Address selectedAddress =
+    //   //  Provider.of<AddressProvider>(context, listen: false).address.isNotEmpty
+    //   addressId.isNotEmpty
+    //         ? Provider.of<AddressProvider>(context, listen: false).address[0]
+    //         :
+    //          Address(
+    //             houseNumber: "12",
+    //             userId: "",
+    //             name: "Home",
+    //             mobileNumber: "",
+    //             street: "",
+    //             city: "",
+    //             state: "state",
+    //             postalCode: "",
+    //             country: "",
+    //             addressType: AddressType.HOME);
 
     String formatDate(DateTime date) {
       return DateFormat('d MMM').format(date);
@@ -94,10 +154,9 @@ class _CheckOutScreenState extends State<CheckOutScreen> {
                 ),
                 persistentFooterButtons: [
                   BrandedPrimaryButton(
-                    isEnabled:selectedTimeSlot.id.isNotEmpty,
+                    isEnabled: selectedTimeSlot.id.isNotEmpty,
                     name: "Proceed",
                     onPressed: () {
-                      
                       Navigator.of(context)
                           .push(MaterialPageRoute(builder: (context) {
                         return OrderSummery(
@@ -119,6 +178,53 @@ class _CheckOutScreenState extends State<CheckOutScreen> {
                         const SizedBox(
                           height: 10,
                         ),
+                        if (selectedAddress.mobileNumber.isEmpty)
+                          Padding(
+                            padding: const EdgeInsets.only(bottom: 20),
+                            child: TextButton(
+                              onPressed: () {
+                                Navigator.of(context)
+                                    .push(MaterialPageRoute(builder: (context) {
+                                  return AddressList();
+                                })).then((value) {
+                                  setState(() {});
+                                });
+                              },
+                              child: Container(
+                                decoration: BoxDecoration(
+                                  border: Border.all(
+                                    color: Colors
+                                        .grey, // You can change the border color
+                                    width: 1.0, // Border width
+                                  ),
+                                  borderRadius: BorderRadius.circular(
+                                      8.0), // Rounded border
+                                ),
+                                padding: const EdgeInsets.symmetric(
+                                    vertical: 12, horizontal: 16),
+                                child: Row(
+                                  mainAxisAlignment: MainAxisAlignment
+                                      .center, // Center the Row content
+                                  children: const [
+                                    Icon(
+                                      Icons.location_on_outlined,
+                                    ),
+                                    SizedBox(
+                                        width:
+                                            8), // Spacing between icon and text
+                                    Text(
+                                      "Please Select Address",
+                                      style: TextStyle(
+                                        fontSize: 14,
+                                        fontWeight: FontWeight.w600,
+                                      ),
+                                    ),
+                                  ],
+                                ),
+                              ),
+                            ),
+                          ),
+
                         if (selectedAddress.mobileNumber.isNotEmpty)
                           const Row(
                             children: [
@@ -165,23 +271,22 @@ class _CheckOutScreenState extends State<CheckOutScreen> {
                                             Icons.edit_square,
                                             size: 16,
                                           ),
-                                          onPressed: () {},
+                                          onPressed: () {
+                                            Navigator.push(
+                                              context,
+                                              MaterialPageRoute(
+                                                  builder: (context) =>
+                                                      AddressList()),
+                                            ).then((value) {
+                                              setState(() {});
+                                            });
+                                          },
                                         )
                                       ],
                                     ),
                                   ),
                                   Text(
-                                    selectedAddress.houseNumber +
-                                        ' ' +
-                                        selectedAddress.street +
-                                        ' ' +
-                                        selectedAddress.city +
-                                        ' ' +
-                                        selectedAddress.state +
-                                        ' ' +
-                                        selectedAddress.country +
-                                        ' ' +
-                                        selectedAddress.postalCode,
+                                    '${selectedAddress.houseNumber} ${selectedAddress.street} ${selectedAddress.city} ${selectedAddress.state} ${selectedAddress.country} ${selectedAddress.postalCode}',
                                     style: TextStyle(
                                         fontSize: 12,
                                         fontWeight: FontWeight.w400),
@@ -215,17 +320,17 @@ class _CheckOutScreenState extends State<CheckOutScreen> {
                                 child: InkWell(
                                   onTap: () async {
                                     setState(() {
-                                      isLoading = true;
+                                      //isLoading = true;
                                       selectedDate = "Today";
                                       _dateController.text =
                                           DateFormat('yyyy-MM-dd')
                                               .format(DateTime.now());
                                     });
-                                    await cartProvider.getSlot(
-                                        _dateController.text, context);
-                                    setState(() {
-                                      isLoading = false;
-                                    });
+                                    // await cartProvider.getSlot(
+                                    //     _dateController.text, context);
+                                    // setState(() {
+                                    //   isLoading = false;
+                                    // });
                                   },
                                   child: Container(
                                     height: 70,
@@ -257,11 +362,11 @@ class _CheckOutScreenState extends State<CheckOutScreen> {
                                     : Colors.white,
                                 child: InkWell(
                                   onTap: () {
-                                    // setState(() {
-                                    //   selectedDate = "Tomorrow";
-                                    //   _dateController.text = DateFormat('yyyy-MM-dd')
-                                    //       .format(DateTime.now().add(Duration(days: 1)));
-                                    // });
+                                    setState(() {
+                                      selectedDate = "Tomorrow";
+                                      // _dateController.text = DateFormat('yyyy-MM-dd')
+                                      //     .format(DateTime.now().add(Duration(days: 1)));
+                                    });
                                   },
                                   child: Container(
                                     height: 70,
@@ -387,16 +492,30 @@ class _CheckOutScreenState extends State<CheckOutScreen> {
                                         title: Padding(
                                           padding:
                                               const EdgeInsets.only(left: 10),
-                                          child: Text(
-                                            "Morning Delivery \n- Rs ${cartProvider.lstMorningSlot[0].price}",
-                                            style: TextStyle(
-                                              fontSize: 12,
-                                              fontWeight: selectedDeliveryType ==
-                                                      "Morning Delivery - Rs 19"
-                                                  ? FontWeight.bold
-                                                  : FontWeight.normal,
-                                            ),
-                                          ),
+                                          child: cartProvider
+                                                  .lstMorningSlot.isNotEmpty
+                                              ? Text(
+                                                  "Morning Delivery \n- Rs ${cartProvider.lstMorningSlot[0].price}",
+                                                  style: TextStyle(
+                                                    fontSize: 12,
+                                                    fontWeight:
+                                                        selectedDeliveryType ==
+                                                                "Morning Delivery - Rs 19"
+                                                            ? FontWeight.bold
+                                                            : FontWeight.normal,
+                                                  ),
+                                                )
+                                              : Text(
+                                                  "Morning Delivery \n- Rs 40",
+                                                  style: TextStyle(
+                                                    fontSize: 12,
+                                                    fontWeight:
+                                                        selectedDeliveryType ==
+                                                                "Morning Delivery - Rs 19"
+                                                            ? FontWeight.bold
+                                                            : FontWeight.normal,
+                                                  ),
+                                                ),
                                         ),
                                         onTap: () {
                                           setState(() {
@@ -410,16 +529,31 @@ class _CheckOutScreenState extends State<CheckOutScreen> {
                                         title: Padding(
                                           padding:
                                               const EdgeInsets.only(left: 10),
-                                          child: Text(
-                                            "Express Delivery \n-  Rs ${cartProvider.lstExpressDeliverySlot[0].price}",
-                                            style: TextStyle(
-                                              fontSize: 12,
-                                              fontWeight: selectedDeliveryType ==
-                                                      "Express Delivery - Rs 49"
-                                                  ? FontWeight.bold
-                                                  : FontWeight.normal,
-                                            ),
-                                          ),
+                                          child: cartProvider
+                                                  .lstExpressDeliverySlot
+                                                  .isNotEmpty
+                                              ? Text(
+                                                  "Express Delivery \n-  Rs ${cartProvider.lstExpressDeliverySlot[0].price}",
+                                                  style: TextStyle(
+                                                    fontSize: 12,
+                                                    fontWeight:
+                                                        selectedDeliveryType ==
+                                                                "Express Delivery - Rs 49"
+                                                            ? FontWeight.bold
+                                                            : FontWeight.normal,
+                                                  ),
+                                                )
+                                              : Text(
+                                                  "Express Delivery \n-  Rs 60",
+                                                  style: TextStyle(
+                                                    fontSize: 12,
+                                                    fontWeight:
+                                                        selectedDeliveryType ==
+                                                                "Express Delivery - Rs 49"
+                                                            ? FontWeight.bold
+                                                            : FontWeight.normal,
+                                                  ),
+                                                ),
                                         ),
                                         onTap: () {
                                           setState(() {
@@ -433,17 +567,31 @@ class _CheckOutScreenState extends State<CheckOutScreen> {
                                         title: Padding(
                                           padding:
                                               const EdgeInsets.only(left: 10),
-                                          child: Text(
-                                            "Fixed Time Delivery \n ${cartProvider.lstfixedTimeDelivery[0].price}",
-                                            style: TextStyle(
-                                              fontSize: 12,
-                                              fontWeight:
-                                                  selectedDeliveryType ==
-                                                          "FixedTimeDelivery"
-                                                      ? FontWeight.bold
-                                                      : FontWeight.normal,
-                                            ),
-                                          ),
+                                          child: cartProvider
+                                                  .lstfixedTimeDelivery
+                                                  .isNotEmpty
+                                              ? Text(
+                                                  "Fixed Time Delivery \n ${cartProvider.lstfixedTimeDelivery[0].price}",
+                                                  style: TextStyle(
+                                                    fontSize: 12,
+                                                    fontWeight:
+                                                        selectedDeliveryType ==
+                                                                "FixedTimeDelivery"
+                                                            ? FontWeight.bold
+                                                            : FontWeight.normal,
+                                                  ),
+                                                )
+                                              : Text(
+                                                  "Fixed Time Delivery \n 50",
+                                                  style: TextStyle(
+                                                    fontSize: 12,
+                                                    fontWeight:
+                                                        selectedDeliveryType ==
+                                                                "FixedTimeDelivery"
+                                                            ? FontWeight.bold
+                                                            : FontWeight.normal,
+                                                  ),
+                                                ),
                                         ),
                                         onTap: () {
                                           setState(() {

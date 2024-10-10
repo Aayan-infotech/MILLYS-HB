@@ -101,9 +101,10 @@ class ProductProvider with ChangeNotifier {
     }
   }
 
-  Future<void> getFavProduct(String id, BuildContext context,{bool isForceRefresh=false}) async {
+  Future<void> getFavProduct(String id, BuildContext context,
+      {bool isForceRefresh = false}) async {
     try {
-    bool isfound = await PDFApi.checkIfFileExists(userFavProduct);
+      bool isfound = await PDFApi.checkIfFileExists(userFavProduct);
 
       ApiResponseWithData response = await ProductAPIs().getFavoriteProduct(id);
       if (response.success) {
@@ -128,10 +129,10 @@ class ProductProvider with ChangeNotifier {
             .map((item) => Product.fromJson(item))
             .toList();
       } else {
-       // _showErrorSnackbar(context, 'Internal server error');
+        // _showErrorSnackbar(context, 'Internal server error');
       }
     } catch (e) {
-     // _showErrorSnackbar(context, 'Failed to load subcategories');
+      // _showErrorSnackbar(context, 'Failed to load subcategories');
     } finally {}
     notifyListeners();
   }
@@ -148,10 +149,9 @@ class ProductProvider with ChangeNotifier {
                 .map((item) => Product.fromJson(item))
                 .toList();
       } else {
-        _showErrorSnackbar(context, 'Internal server error');
+        _products = [];
       }
     } catch (e) {
-      _showErrorSnackbar(context, 'Failed to load products');
     } finally {
       notifyListeners();
     }

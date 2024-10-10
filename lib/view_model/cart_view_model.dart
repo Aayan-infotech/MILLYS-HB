@@ -1,5 +1,7 @@
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
+import 'package:millyshb/configs/components/constants.dart';
+import 'package:millyshb/configs/components/shared_preferences.dart';
 import 'package:millyshb/configs/network/call_helper.dart';
 import 'package:millyshb/configs/network/server_calls/cart_api.dart';
 import 'package:millyshb/configs/network/server_calls/order_api.dart';
@@ -38,23 +40,31 @@ class CartProvider with ChangeNotifier {
   dynamic get userCart => _cart;
 
   addTOCart(Product product, String userId, BuildContext context) async {
-    ApiResponseWithData response =
-        await CartAPIs().addProductToCart(product.id, userId);
-    if (response.success) {
-      // (userCart as Cart).products.add(product);
-      await getCart(userId, context);
-      // ScaffoldMessenger.of(context).showSnackBar(const SnackBar(
-      //   content: Text("Product Added"),
-      //   backgroundColor: Colors.green,
-      // ));
+    bool isLogin = SharedPrefUtil.getValue(isLogedIn, false) as bool;
+
+    if (isLogin) {
+      ApiResponseWithData response =
+          await CartAPIs().addProductToCart(product.id, userId);
+      if (response.success) {
+        // (userCart as Cart).products.add(product);
+        await getCart(userId, context);
+        // ScaffoldMessenger.of(context).showSnackBar(const SnackBar(
+        //   content: Text("Product Added"),
+        //   backgroundColor: Colors.green,
+        // ));
+      } else {
+        // ScaffoldMessenger.of(context).showSnackBar(
+        //   SnackBar(
+        //     content: Text(response.message),
+        //     backgroundColor: Colors.red,
+        //   ),
+        // );
+      }
     } else {
-      // ScaffoldMessenger.of(context).showSnackBar(
-      //   SnackBar(
-      //     content: Text(response.message),
-      //     backgroundColor: Colors.red,
-      //   ),
-      // );
+      CartItem cartItem = CartItem(id: "", product: product, quantity: 1);
+      _cart.products.add(cartItem);
     }
+
     notifyListeners();
   }
 

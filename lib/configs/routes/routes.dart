@@ -22,9 +22,9 @@ class Routes {
       case RoutesName.login:
         return MaterialPageRoute(
             builder: (BuildContext context) => const LoginScreen());
-      case RoutesName.productList:
-        return MaterialPageRoute(
-            builder: (BuildContext context) => ProductList());
+      // case RoutesName.productList:
+      //   return MaterialPageRoute(
+      //       builder: (BuildContext context) => ProductList());
 
       case RoutesName.shoppingBag:
         return MaterialPageRoute(

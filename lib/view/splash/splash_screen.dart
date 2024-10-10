@@ -32,9 +32,9 @@ class SplashScreenState extends State<SplashScreen> {
 
   Future<void> navigate() async {
     try {
-      FirebaseMessaging messaging = FirebaseMessaging.instance;
-      String? token = await messaging.getToken();
-      SharedPrefUtil.setValue(fcmToken, token!);
+      // FirebaseMessaging messaging = FirebaseMessaging.instance;
+      // String? token = await messaging.getToken();
+      // SharedPrefUtil.setValue(fcmToken, token!);
       await _loadInitialData();
       bool isLogin = SharedPrefUtil.getValue(isLogedIn, false) as bool;
 
@@ -54,7 +54,7 @@ class SplashScreenState extends State<SplashScreen> {
         Provider.of<ProductProvider>(context, listen: false);
 
     final cartProvider = Provider.of<CartProvider>(context, listen: false);
-    await cartProvider.getSlot("", context);
+    // await cartProvider.getSlot("", context);
     await productProvider.getCategoryList(context);
   }
 
@@ -63,7 +63,7 @@ class SplashScreenState extends State<SplashScreen> {
       String userJsonString =
           await PDFApi.readFileFromLocalDirectory(userDetailsLocalFilePath);
       Map<String, dynamic> userJson = jsonDecode(userJsonString);
-      User user = User.fromJson(userJson);
+      UserModel user = UserModel.fromJson(userJson);
       Provider.of<UserProvider>(context, listen: false).user = user;
       await UserContextData.setCurrentUserAndFetchUserData(context);
     }

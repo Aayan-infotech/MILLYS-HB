@@ -41,16 +41,23 @@ dependencies:
   carousel_slider:
   horizontal_center_date_picker:
   provider: ^6.1.2
-  shared_preferences: ^2.2.3
   exponential_back_off: ^0.1.0+2
   badges:
+  firebase_auth: ^5.3.1
   intl_phone_field:
   image_picker: ^1.1.2
   path_provider: ^2.1.4
+  shared_preferences: ^2.2.3
+  google_sign_in: ^6.2.1
   firebase_core: ^3.4.1
   firebase_messaging:
   flutter_local_notifications: ^17.2.2
   device_info_plus: ^10.1.2
+  flutter_stripe: ^11.1.0
+  dio:
+  sign_in_button: ^3.2.0
+  google_auth: ^0.0.3
+
   # sumup: ^0.10.0
   # flutter_stripe: ^11.0.0
 

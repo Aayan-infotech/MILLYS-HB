@@ -1,6 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:http/http.dart';
+import 'package:millyshb/configs/components/constants.dart';
 import 'package:millyshb/configs/components/error_success_dialogue.dart';
+import 'package:millyshb/configs/components/shared_preferences.dart';
 import 'package:millyshb/configs/network/call_helper.dart';
 import 'package:millyshb/configs/network/server_calls/address_api.dart';
 import 'package:millyshb/models/address_model.dart';
@@ -65,9 +67,7 @@ class AddressProvider with ChangeNotifier {
       });
       await getAddressList(userProvider.user!.id, context);
       Navigator.of(context).pop();
-    } else {
-      
-    }
+    } else {}
   }
 
   deleteAddress(Address address, BuildContext context) async {
@@ -90,8 +90,10 @@ class AddressProvider with ChangeNotifier {
   }
 
   selectAddress(String addressId, String userId, BuildContext context) async {
+    SharedPrefUtil.setValue(selectedAddressId, addressId);
     ApiResponse response = await AddressAPIs().selectAddress(userId, addressId);
     if (response.success) {
+      SharedPrefUtil.setValue(selectedAddressId, addressId);
     } else {}
   }
 

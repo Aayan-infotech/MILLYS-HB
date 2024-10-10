@@ -7,16 +7,16 @@ import 'package:millyshb/view_model/user_view_model.dart';
 import 'package:provider/provider.dart';
 
 class UserContextData {
-  static User? _user;
+  static UserModel? _user;
 
-  static User? get user => _user;
+  static UserModel? get user => _user;
 
   static setCurrentUserAndFetchUserData(BuildContext context) async {
     final productProvider =
         Provider.of<ProductProvider>(context, listen: false);
     final addressProvider =
         Provider.of<AddressProvider>(context, listen: false);
-  final userProvider = Provider.of<UserProvider>(context, listen: false);
+    final userProvider = Provider.of<UserProvider>(context, listen: false);
     final cartProvider = Provider.of<CartProvider>(context, listen: false);
 
     _user = user;

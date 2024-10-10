@@ -105,7 +105,8 @@ class _ShoppingBagScreenState extends State<ShoppingBagScreen> {
                                               borderRadius:
                                                   BorderRadius.circular(10.0),
                                               child: Image.network(
-                                                "https://res.cloudinary.com/dqhh1rff5/image/upload/v1722194860/Blog/gwvd3q1gi0ctsi43bae8.png", //product.product.image,
+                                                product.product.image,
+                                                //"https://res.cloudinary.com/dqhh1rff5/image/upload/v1722194860/Blog/gwvd3q1gi0ctsi43bae8.png", //product.product.image,
                                                 fit: BoxFit.cover,
                                                 width: MediaQuery.of(context)
                                                     .size
@@ -199,7 +200,6 @@ class _ShoppingBagScreenState extends State<ShoppingBagScreen> {
                                                 // Show final price
                                                 Container(
                                                   height: 30,
-                                                  width: 84,
                                                   decoration: BoxDecoration(
                                                     color: Color.fromRGBO(
                                                         242, 242, 242, 1),
@@ -210,7 +210,8 @@ class _ShoppingBagScreenState extends State<ShoppingBagScreen> {
                                                         BorderRadius.circular(
                                                             5),
                                                   ),
-                                                  padding: EdgeInsets.all(0),
+                                                  padding: EdgeInsets.symmetric(
+                                                      horizontal: 5),
                                                   child: Center(
                                                     child: Text(
                                                       "\$ ${((product.product.price - product.product.discount) * product.quantity).toStringAsFixed(2)}",

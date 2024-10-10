@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:millyshb/configs/components/branded_primary_button.dart';
 import 'package:millyshb/configs/components/miscellaneous.dart';
 import 'package:millyshb/configs/components/size_config.dart';
+import 'package:millyshb/configs/components/stripe_service.dart';
 import 'package:millyshb/models/delivery_slot_model.dart';
 import 'package:millyshb/view/payment/payment_success_screen.dart';
 import 'package:millyshb/view_model/cart_view_model.dart';
@@ -232,20 +233,21 @@ class _PaymentScreenState extends State<PaymentScreen> {
                         isEnabled: true,
                         name: "Continue",
                         onPressed: () async {
-                          setState(() {
-                            isLoading = true;
-                          });
-                          final cartProvider =
-                              Provider.of<CartProvider>(context, listen: false);
-                          final userProvider =
-                              Provider.of<UserProvider>(context, listen: false);
+                          await StripeService.instance.makePayment();
+                          // setState(() {
+                          //   isLoading = true;
+                          // });
+                          // final cartProvider =
+                          //     Provider.of<CartProvider>(context, listen: false);
+                          // final userProvider =
+                          //     Provider.of<UserProvider>(context, listen: false);
 
-                          await cartProvider.createOrder(userProvider.user!.id,
-                              widget.deliverySlot.id, context);
+                          // await cartProvider.createOrder(userProvider.user!.id,
+                          //     widget.deliverySlot.id, context);
 
-                          setState(() {
-                            isLoading = false;
-                          });
+                          // setState(() {
+                          //   isLoading = false;
+                          // });
                         }),
                   )
                 ],

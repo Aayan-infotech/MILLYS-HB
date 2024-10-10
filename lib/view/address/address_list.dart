@@ -8,7 +8,8 @@ import 'package:millyshb/view_model/user_view_model.dart';
 import 'package:provider/provider.dart';
 
 class AddressList extends StatefulWidget {
-  const AddressList({super.key});
+  bool isSelectAddress;
+   AddressList({this.isSelectAddress=false,super.key});
 
   @override
   State<AddressList> createState() => _AddressListState();

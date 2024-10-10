@@ -1,19 +1,15 @@
 import 'package:flutter/gestures.dart';
 import 'package:flutter/material.dart';
-import 'package:millyshb/configs/components/constants.dart';
 import 'package:millyshb/configs/components/miscellaneous.dart';
-import 'package:millyshb/configs/components/shared_preferences.dart';
-import 'package:millyshb/configs/network/call_helper.dart';
-import 'package:millyshb/configs/network/server_calls/user_api.dart';
 import 'package:millyshb/view/login_signup/forget_password.dart';
 import 'package:millyshb/view/login_signup/sign_up_screen.dart';
-import 'package:millyshb/view/select_store_screen.dart';
 import 'package:millyshb/configs/components/branded_primary_button.dart';
 import 'package:millyshb/configs/components/branded_text_field.dart';
 import 'package:millyshb/configs/theme/colors.dart';
 import 'package:millyshb/view_model/user_view_model.dart';
 
 import 'package:provider/provider.dart';
+import 'package:sign_in_button/sign_in_button.dart';
 
 class LoginScreen extends StatefulWidget {
   final bool isbottomSheet;
@@ -75,7 +71,7 @@ class _LoginScreenState extends State<LoginScreen> {
               child: SingleChildScrollView(
                 child: Column(
                   mainAxisAlignment: MainAxisAlignment.start,
-                  crossAxisAlignment: CrossAxisAlignment.start,
+                  crossAxisAlignment: CrossAxisAlignment.center,
                   children: [
                     const SizedBox(
                       height: 30,
@@ -138,7 +134,6 @@ class _LoginScreenState extends State<LoginScreen> {
                       isEnabled: _passwordController.text.isNotEmpty,
                       name: "Login",
                       onPressed: () async {
-
                         setState(() {
                           isLoading = true;
                         });
@@ -154,6 +149,19 @@ class _LoginScreenState extends State<LoginScreen> {
                           isLoading = false;
                         });
                       },
+                    ),
+                    SizedBox(
+                      height: 25,
+                    ),
+                    SignInButton(
+                      Buttons.google,
+                      onPressed: () async {
+                        await userProvider.loginWithGoogle(context);
+                      },
+                      shape: RoundedRectangleBorder(
+                        borderRadius: BorderRadius.circular(5.0),
+                      ),
+                      text: "Sign in with Google",
                     ),
                     const SizedBox(
                       height: 50,

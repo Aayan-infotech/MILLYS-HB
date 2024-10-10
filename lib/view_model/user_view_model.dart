@@ -1,27 +1,32 @@
 import 'dart:convert';
 
+import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
+
 import 'package:millyshb/configs/components/constants.dart';
 import 'package:millyshb/configs/components/pdf_api.dart';
 import 'package:millyshb/configs/components/shared_preferences.dart';
 import 'package:millyshb/configs/components/user_constext_data.dart';
 import 'package:millyshb/configs/network/call_helper.dart';
+import 'package:millyshb/configs/network/server_calls/google_auth.dart';
 import 'package:millyshb/configs/network/server_calls/user_api.dart';
 import 'package:millyshb/models/user_model.dart';
+import 'package:millyshb/view/feed_screen/home_screen.dart';
 import 'package:millyshb/view/select_store_screen.dart';
 
 class UserProvider with ChangeNotifier {
-  User? _user;
+  UserModel? _user;
   bool get isLoading => _isLoading;
   bool _isLoading = false;
+  final GoogleAuth _googleAuth = GoogleAuth();
 
   // Getter to retrieve the current user
-  User? get user => _user;
+  UserModel? get user => _user;
 
   // Getter to check loading state
 
   // Setter to update the current user
-  set user(User? user) {
+  set user(UserModel? user) {
     _user = user;
     notifyListeners();
   }
@@ -37,7 +42,7 @@ class UserProvider with ChangeNotifier {
 
       SharedPrefUtil.setValue(userToken, token);
 
-      _user = User.fromJson(response.data['data']);
+      _user = UserModel.fromJson(response.data['data']);
       await UserContextData.setCurrentUserAndFetchUserData(context);
 
       PDFApi.saveFileToLocalDirectory(
@@ -51,7 +56,7 @@ class UserProvider with ChangeNotifier {
     _setLoading(false);
   }
 
-  userSignup(User user, BuildContext context) async {
+  userSignup(UserModel user, BuildContext context) async {
     _setLoading(true);
     ApiResponseWithData response = await LoginAPIs().signUp(user);
     if (response.success) {
@@ -61,6 +66,25 @@ class UserProvider with ChangeNotifier {
       _showSnackBar(context, "Invalid email/username or password", Colors.red);
     }
     _setLoading(false);
+  }
+
+  Future<void> loginWithGoogle(BuildContext context) async {
+    User? user = await _googleAuth.signInWithGoogle();
+
+    if (user != null) {
+      print('Google user ID: ${user.uid}');
+      print('Google user email: ${user.email}');
+      Navigator.push(
+        context,
+        MaterialPageRoute(builder: (context) => const HomeScreen()),
+      );
+    } else {
+      print('Failed to sign in with Google.');
+      // Handle Google sign-in failure
+      ScaffoldMessenger.of(context).showSnackBar(
+        SnackBar(content: Text('Google sign-in failed.')),
+      );
+    }
   }
 
   void _setLoading(bool loading) {

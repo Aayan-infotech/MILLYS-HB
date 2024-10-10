@@ -31,6 +31,7 @@ class _NavScreenState extends State<NavScreen> {
   List<Widget> homeScreenItems = [
     HomeScreen(),
     ProductList(
+      id: "",
       isBackbutton: false,
     ),
     // WishListScreen()

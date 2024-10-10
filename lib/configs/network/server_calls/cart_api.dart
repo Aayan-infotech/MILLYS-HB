@@ -20,11 +20,10 @@ class CartAPIs extends ApiBase {
   Future<ApiResponse> removeProduct(String productId, String userId) async {
     Map<String, String> data = {
       'userId': userId,
-      'productId': productId,
     };
 
     return await CallHelper().delete(
-      'api/cart/delete',
+      'api/cart/delete/$productId',
       data,
     );
   }
@@ -33,10 +32,11 @@ class CartAPIs extends ApiBase {
     Map<String, String> data = {
       'userId': userId,
       'productId': productId,
+      'operation': "increase"
     };
 
     return await CallHelper().put(
-      'api/cart/increase',
+      'api/cart/change',
       data,
     );
   }
@@ -45,17 +45,21 @@ class CartAPIs extends ApiBase {
     Map<String, String> data = {
       'userId': userId,
       'productId': productId,
+      'operation': "decrease"
     };
 
     return await CallHelper().put(
-      'api/cart/decrease',
+      'api/cart/change',
       data,
     );
   }
 
   Future<ApiResponseWithData<Map<String, dynamic>>> getCart(
       String userId) async {
-    return await CallHelper().getWithData('api/cart/get/${userId}', {});
+    Map<String, String> data = {
+      'userId': userId,
+    };
+    return await CallHelper().getWithData('api/cart/get/${userId}', data);
   }
 
   Future<ApiResponseWithData<Map<String, dynamic>>> getSlot(

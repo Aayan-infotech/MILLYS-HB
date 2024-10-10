@@ -33,7 +33,7 @@ class _ProductListState extends State<ProductList> {
   List<dynamic> _filteredProducts = [];
   bool isLoading = false;
   bool isAddToCartLoading = false;
-  Cart cart = Cart(
+  Cart userCart = Cart(
       id: "",
       user: "",
       products: [],
@@ -166,20 +166,29 @@ class _ProductListState extends State<ProductList> {
                   actions: [
                     badges.Badge(
                       ignorePointer: true,
-                      badgeContent: Consumer<CartProvider>(
-                        builder: (context, cart, child) {
-                          return Center(
-                            child: Text(
-                              (cart.userCart as Cart)
-                                  .products
-                                  .length
-                                  .toString(),
-                              style: const TextStyle(color: Colors.white),
+                      badgeContent: isLogin
+                          ? Consumer<CartProvider>(
+                              builder: (context, cart, child) {
+                                return Center(
+                                  child: Text(
+                                    (cart.userCart as Cart)
+                                        .products
+                                        .length
+                                        .toString(),
+                                    style: const TextStyle(color: Colors.white),
+                                  ),
+                                );
+                              },
+                            )
+                          : Center(
+                              child: Text(
+                                (userCart as Cart).products.length.toString(),
+                                style: const TextStyle(color: Colors.white),
+                              ),
                             ),
-                          );
-                        },
-                      ),
-                      showBadge: (cart.userCart as Cart).products.length > 0,
+                      showBadge: isLogin
+                          ? (cart.userCart as Cart).products.isNotEmpty
+                          : userCart.products.isNotEmpty,
                       position: badges.BadgePosition.topEnd(top: 0, end: 3),
                       child: IconButton(
                         onPressed: () {
@@ -234,10 +243,21 @@ class _ProductListState extends State<ProductList> {
                                       index]; // Use filtered products
 
                                   bool inCart = false;
-                                  for (var cartProduct
-                                      in (cart.userCart as Cart).products) {
-                                    if (cartProduct.product.id == product.id) {
-                                      inCart = true;
+                                  if (isLogin) {
+                                    for (var cartProduct
+                                        in (cart.userCart as Cart).products) {
+                                      if (cartProduct.product.id ==
+                                          product.id) {
+                                        inCart = true;
+                                      }
+                                    }
+                                  } else {
+                                    for (var cartProduct
+                                        in (userCart as Cart).products) {
+                                      if (cartProduct.product.id ==
+                                          product.id) {
+                                        inCart = true;
+                                      }
                                     }
                                   }
 
@@ -390,45 +410,59 @@ class _ProductListState extends State<ProductList> {
                                                         width: 84,
                                                         child: OutlinedButton(
                                                           onPressed: () async {
-                                                            if (inCart) {
-                                                              Navigator.of(
-                                                                      context)
-                                                                  .pushNamed(
-                                                                      RoutesName
-                                                                          .shoppingBag);
-                                                            } else {
-                                                              setState(() {
-                                                                isAddToCartLoading =
-                                                                    true;
-                                                              });
-                                                              if (isLogin) {
+                                                            if (isLogin) {
+                                                              if (inCart) {
+                                                                Navigator.of(
+                                                                        context)
+                                                                    .pushNamed(
+                                                                        RoutesName
+                                                                            .shoppingBag);
+                                                              } else {
+                                                                setState(() {
+                                                                  isAddToCartLoading =
+                                                                      true;
+                                                                });
                                                                 await cart.addTOCart(
                                                                     product,
                                                                     userProvider
                                                                         .user!
                                                                         .id,
                                                                     context);
-                                                              } else {
-                                                                await cart
-                                                                    .addTOCart(
-                                                                        product,
-                                                                        '',
-                                                                        context);
+                                                                setState(() {
+                                                                  isAddToCartLoading =
+                                                                      false;
+                                                                });
                                                               }
-                                                              // if( userProvider
-                                                              //             .user!
-                                                              //             .id!=)
-
+                                                            } else {
+                                                              if (inCart) {
+                                                                Navigator.of(
+                                                                        context)
+                                                                    .pushNamed(
+                                                                        RoutesName
+                                                                            .shoppingBag);
+                                                              } else {
+                                                                setState(() {
+                                                                  isAddToCartLoading =
+                                                                      true;
+                                                                });
+                                                                CartItem
+                                                                    cartItem =
+                                                                    CartItem(
+                                                                        id: "",
+                                                                        product:
+                                                                            product,
+                                                                        quantity:
+                                                                            1);
+                                                                userCart
+                                                                    .products
+                                                                    .add(
+                                                                        cartItem);
+                                                              }
                                                               setState(() {
                                                                 isAddToCartLoading =
                                                                     false;
                                                               });
                                                             }
-                                                            // if (isLogin) {
-                                                            // } else {
-                                                            //   // _showLoginBottomSheet(
-                                                            //   //     context);
-                                                            // }
                                                           },
                                                           style: OutlinedButton
                                                               .styleFrom(

@@ -1,7 +1,7 @@
 class Product {
   final String id;
   final String name;
-   double price;
+  double price;
   final String description;
   final String subcategory;
   final String image;
@@ -29,7 +29,7 @@ class Product {
       subcategory: json['subcategory'],
       image: json['image'],
       stock: json['stock'],
-      discount: json['discount'],
+      discount: json['discount'] ?? 0,
     );
   }
   factory Product.JsonForCart(Map<String, dynamic> json) {

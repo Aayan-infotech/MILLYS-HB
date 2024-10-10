@@ -13,6 +13,7 @@ Widget addressCard(BuildContext context, Address customerAddress,
     onTap: () async {
       await addressProvider.selectAddress(
           customerAddress.addressId, customerAddress.userId, context);
+      Navigator.of(context).pop();
     },
     child: Card(
       elevation: 1,

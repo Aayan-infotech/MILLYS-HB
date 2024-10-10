@@ -4,6 +4,8 @@ import 'dart:io';
 import 'package:exponential_back_off/exponential_back_off.dart';
 import 'package:flutter/foundation.dart';
 import 'package:http/http.dart' as http;
+import 'package:millyshb/configs/components/constants.dart';
+import 'package:millyshb/configs/components/shared_preferences.dart';
 
 class ApiResponse {
   final String message;
@@ -31,13 +33,14 @@ class CallHelper {
     maxDelay: const Duration(seconds: 30),
   );
 
-  static String url =
-      "http://3.111.163.2:5001/"; //this is initialized in main.dart based on the config choosen
+  static String url = "http://44.196.192.232:5172";
+  // "http://3.111.163.2:3129/"; //this is initialized in main.dart based on the config choosen
 
   int timeoutInSeconds = 20;
   String internalServerErrorMessage = "Internal server error.";
 
   Future<Map<String, String>> getHeaders() async {
+    String accessToken = SharedPrefUtil.getValue(userToken, "") as String;
     final String role =
         ''; //SharedPrefUtil.getValue(roleSharedPref, "") as String;
     final String id = '';
@@ -47,6 +50,13 @@ class CallHelper {
       'role': role.toUpperCase(),
       'id': id,
     };
+    // var headers = {
+    //   'role': role.toUpperCase(),
+    //   'id': id,
+    //   'Authorization':
+    //       'Bearer $accessToken', // Include the token in the headers
+    //   'Content-Type': 'application/json', // Optional, but often needed
+    // };
 
     return headers;
   }
@@ -100,7 +110,7 @@ class CallHelper {
     }
     final response =
         await httpClient.get(uri, headers: await getHeaders()).timeout(
-      Duration(seconds: timeoutInSeconds),
+      Duration(seconds: 30),
       onTimeout: () {
         return http.Response(
             'Error', 408); // Request Timeout response status code

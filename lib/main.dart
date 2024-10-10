@@ -1,6 +1,7 @@
 import 'package:firebase_core/firebase_core.dart';
 import 'package:firebase_messaging/firebase_messaging.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_stripe/flutter_stripe.dart';
 import 'package:millyshb/configs/components/constants.dart';
 import 'package:millyshb/configs/components/notification.dart';
 import 'package:millyshb/configs/network/call_helper.dart';
@@ -18,13 +19,14 @@ import 'package:provider/provider.dart';
 
 Future<void> _firebaseMessginBackgroundHandler(RemoteMessage event) async {
   await NotificationService.showNotification(event);
-
   debugPrint("background-------");
 }
 
 Future<void> main() async {
-  CallHelper.url = "http://3.111.163.2:5001/";
+  CallHelper.url = "http://44.196.192.232:3129/";
   WidgetsFlutterBinding.ensureInitialized();
+  Stripe.publishableKey = publishableKey;
+
   await Firebase.initializeApp();
   final RemoteMessage? _message =
       await FirebaseMessaging.instance.getInitialMessage();
