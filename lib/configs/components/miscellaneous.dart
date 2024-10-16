@@ -23,7 +23,7 @@ class MillysHBTheme {
 class loadingIndicator extends StatelessWidget {
   final bool isTransParent;
 
-  loadingIndicator({
+  const loadingIndicator({
     this.isTransParent = false,
     super.key,
   });

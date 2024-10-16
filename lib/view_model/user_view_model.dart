@@ -1,8 +1,6 @@
 import 'dart:convert';
-
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
-
 import 'package:millyshb/configs/components/constants.dart';
 import 'package:millyshb/configs/components/pdf_api.dart';
 import 'package:millyshb/configs/components/shared_preferences.dart';
@@ -72,8 +70,7 @@ class UserProvider with ChangeNotifier {
     User? user = await _googleAuth.signInWithGoogle();
 
     if (user != null) {
-      print('Google user ID: ${user.uid}');
-      print('Google user email: ${user.email}');
+    
       Navigator.push(
         context,
         MaterialPageRoute(builder: (context) => const HomeScreen()),
@@ -82,7 +79,7 @@ class UserProvider with ChangeNotifier {
       print('Failed to sign in with Google.');
       // Handle Google sign-in failure
       ScaffoldMessenger.of(context).showSnackBar(
-        SnackBar(content: Text('Google sign-in failed.')),
+        const SnackBar(content: Text('Google sign-in failed.')),
       );
     }
   }

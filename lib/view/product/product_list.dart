@@ -77,7 +77,6 @@ class _ProductListState extends State<ProductList> {
       // Call setState to update the UI after the bottom sheet is closed
       setState(() {});
     });
-    ;
   }
 
   @override
@@ -179,7 +178,7 @@ class _ProductListState extends State<ProductList> {
                           );
                         },
                       ),
-                      showBadge: (cart.userCart as Cart).products.length > 0,
+                      showBadge: (cart.userCart as Cart).products.isNotEmpty,
                       position: badges.BadgePosition.topEnd(top: 0, end: 3),
                       child: IconButton(
                         onPressed: () {
@@ -266,8 +265,8 @@ class _ProductListState extends State<ProductList> {
                                         color: Colors.white,
                                         elevation: 1,
                                         child: Padding(
-                                          padding: EdgeInsets.all(8.0),
-                                          child: Container(
+                                          padding: const EdgeInsets.all(8.0),
+                                          child: SizedBox(
                                             height:
                                                 SizeConfig.screenHeight * .18,
                                             child: Row(
@@ -313,7 +312,7 @@ class _ProductListState extends State<ProductList> {
                                                             MainAxisAlignment
                                                                 .spaceBetween,
                                                         children: [
-                                                          Container(
+                                                          SizedBox(
                                                             width: SizeConfig
                                                                     .screenWidth *
                                                                 0.39,

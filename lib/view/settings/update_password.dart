@@ -34,7 +34,7 @@ class _UpdatePasswordScreenState extends State<UpdatePasswordScreen> {
       children: [
         Scaffold(
           appBar: AppBar(
-            title: Text('Reset Password'),
+            title: const Text('Reset Password'),
           ),
           body: Padding(
             padding: const EdgeInsets.all(16.0),
@@ -43,13 +43,13 @@ class _UpdatePasswordScreenState extends State<UpdatePasswordScreen> {
                 BrandedTextField(
                     controller: _newPasswordController,
                     labelText: "New Password"),
-                SizedBox(
+                const SizedBox(
                   height: 20,
                 ),
                 BrandedTextField(
                     controller: _currentPasswordController,
                     labelText: "Confirm New Password"),
-                SizedBox(height: 50),
+                const SizedBox(height: 50),
                 Padding(
                   padding: const EdgeInsets.symmetric(horizontal: 50),
                   child: BrandedPrimaryButton(

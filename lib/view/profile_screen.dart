@@ -43,7 +43,7 @@ class _ProfilePageState extends State<ProfilePage> {
     }
 
     // Simulate image upload and get a static URL
-    await Future.delayed(Duration(seconds: 2));
+    await Future.delayed(const Duration(seconds: 2));
     picture = "https://example.com/cropped_profile_pic.jpg";
 
     setState(() {
@@ -74,7 +74,7 @@ class _ProfilePageState extends State<ProfilePage> {
           //     .titleTextStyle!
           //     .copyWith(color: Pallete.black87),
         ),
-        actions: [
+        actions: const [
           // IconButton(
           //   icon: isEdit ? Icon(Icons.done) : Icon(Icons.edit),
           //   onPressed: () {

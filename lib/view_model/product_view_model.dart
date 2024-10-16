@@ -151,11 +151,29 @@ class ProductProvider with ChangeNotifier {
       } else {
         _products = [];
       }
-    } catch (e) {
     } finally {
       notifyListeners();
     }
   }
+    Future<void> getDiscountedProductList(String id, BuildContext context) async {
+    _setLoading(true);
+
+    try {
+      ApiResponseWithData response = await ProductAPIs().getDiscountedProduct(id);
+      if (response.success) {
+        _products = response.data["status"] == 404
+            ? []
+            : (response.data["data"] as List)
+                .map((item) => Product.fromJson(item))
+                .toList();
+      } else {
+        _products = [];
+      }
+    } finally {
+      notifyListeners();
+    }
+  }
+
 
   Future<List<Product>> getListOfProduct(
       String id, BuildContext context) async {

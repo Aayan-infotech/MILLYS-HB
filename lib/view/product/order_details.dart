@@ -6,15 +6,15 @@ import 'package:intl/intl.dart';
 class OrderDetailsScreen extends StatelessWidget {
   final Order order;
 
-  OrderDetailsScreen({required this.order, super.key});
+  const OrderDetailsScreen({required this.order, super.key});
 
   @override
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: Text("Order Details"),
+        title: const Text("Order Details"),
         leading: IconButton(
-          icon: Icon(Icons.arrow_back),
+          icon: const Icon(Icons.arrow_back),
           onPressed: () {
             Navigator.pop(context);
           },
@@ -27,9 +27,9 @@ class OrderDetailsScreen extends StatelessWidget {
           children: [
             Text(
               'Order ID - ${order.id}',
-              style: TextStyle(fontSize: 16, color: Colors.grey),
+              style: const TextStyle(fontSize: 16, color: Colors.grey),
             ),
-            SizedBox(height: 20),
+            const SizedBox(height: 20),
             Row(
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [
@@ -38,20 +38,20 @@ class OrderDetailsScreen extends StatelessWidget {
                   height: 80,
                   width: 80,
                 ),
-                SizedBox(width: 16),
+                const SizedBox(width: 16),
                 Expanded(
                   child: Column(
                     crossAxisAlignment: CrossAxisAlignment.start,
                     children: [
                       Text(
                         order.items.first.product.name,
-                        style: TextStyle(
+                        style: const TextStyle(
                             fontSize: 18, fontWeight: FontWeight.bold),
                       ),
-                      SizedBox(height: 8),
+                      const SizedBox(height: 8),
                       Text(
                         '\$ ${order.totalAmount}',
-                        style: TextStyle(
+                        style: const TextStyle(
                             fontSize: 18, fontWeight: FontWeight.bold),
                       ),
                     ],
@@ -59,9 +59,9 @@ class OrderDetailsScreen extends StatelessWidget {
                 ),
               ],
             ),
-            SizedBox(height: 20),
+            const SizedBox(height: 20),
             _buildOrderStatusTimeline(order),
-            Spacer(),
+            const Spacer(),
             Row(
               children: [
                 Expanded(
@@ -77,7 +77,7 @@ class OrderDetailsScreen extends StatelessWidget {
 
                           print(order.expectedDeliveryDate);
                         })),
-                SizedBox(
+                const SizedBox(
                   width: 10,
                 ),
                 Expanded(
@@ -131,7 +131,7 @@ class OrderDetailsScreen extends StatelessWidget {
             isFirstStep: i == 0,
           ),
         ],
-        SizedBox(height: 20),
+        const SizedBox(height: 20),
       ],
     );
   }
@@ -154,7 +154,7 @@ class OrderDetailsScreen extends StatelessWidget {
                 tween: ColorTween(
                     begin: Colors.grey,
                     end: isCompleted ? Colors.green : Colors.grey),
-                duration: Duration(milliseconds: 500),
+                duration: const Duration(milliseconds: 500),
                 builder: (context, color, child) {
                   return Container(
                     height: 30,
@@ -175,7 +175,7 @@ class OrderDetailsScreen extends StatelessWidget {
                 tween: ColorTween(
                     begin: Colors.grey,
                     end: isCompleted ? Colors.green : Colors.grey),
-                duration: Duration(milliseconds: 500),
+                duration: const Duration(milliseconds: 500),
                 builder: (context, color, child) {
                   return Container(
                     height: 30,
@@ -186,7 +186,7 @@ class OrderDetailsScreen extends StatelessWidget {
               ),
           ],
         ),
-        SizedBox(width: 8),
+        const SizedBox(width: 8),
         Expanded(
           child: Text(
             text,

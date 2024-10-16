@@ -41,11 +41,11 @@ class AddressAPIs extends ApiBase {
 
   Future<ApiResponseWithData<Map<String, dynamic>>> getAddressList(
       String userId) async {
-    return await CallHelper().getWithData('api/address/get/${userId}', {});
+    return await CallHelper().getWithData('api/address/get/$userId', {});
   }
 
   Future<ApiResponse> deleteAddress(String userId) async {
-    return await CallHelper().delete('api/address/delete/${userId}', {});
+    return await CallHelper().delete('api/address/delete/$userId', {});
   }
 
   Future<ApiResponse> selectAddress(String userId, String addressId) async {

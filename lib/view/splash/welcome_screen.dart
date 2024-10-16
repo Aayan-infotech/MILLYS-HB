@@ -163,7 +163,7 @@ class WelcomeScreenState extends State<WelcomeScreen> {
                     ),
                     child: const Text(
                       "Skip without Login",
-                      style: const TextStyle(
+                      style: TextStyle(
                           fontSize: 16,
                           fontWeight: FontWeight.w500,
                           color: Pallete.accentColor

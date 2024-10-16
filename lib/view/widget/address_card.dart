@@ -28,24 +28,14 @@ Widget addressCard(BuildContext context, Address customerAddress,
             getAddressWidget(customerAddress),
             const SizedBox(height: 5),
             Text(
-              customerAddress.houseNumber +
-                  ' ' +
-                  customerAddress.street +
-                  ' ' +
-                  customerAddress.city +
-                  ' ' +
-                  customerAddress.state +
-                  ' ' +
-                  customerAddress.country +
-                  ' ' +
-                  customerAddress.postalCode,
+              '${customerAddress.houseNumber} ${customerAddress.street} ${customerAddress.city} ${customerAddress.state} ${customerAddress.country} ${customerAddress.postalCode}',
               // "${customerAddress.name} ${customerAddress.postalCode}",
-              style: TextStyle(fontSize: 12, color: Pallete.subHeading),
+              style: const TextStyle(fontSize: 12, color: Pallete.subHeading),
             ),
             const SizedBox(height: 5),
             Text(
               'Phone number: ${customerAddress.mobileNumber}',
-              style: TextStyle(fontSize: 12),
+              style: const TextStyle(fontSize: 12),
             ),
             const SizedBox(height: 5),
             Row(
@@ -87,18 +77,18 @@ Widget addressCard(BuildContext context, Address customerAddress,
 Widget getAddressWidget(Address customerAddress) {
   switch (customerAddress.addressType) {
     case AddressType.HOME:
-      return Row(
+      return const Row(
         mainAxisAlignment: MainAxisAlignment.start,
         children: [
-          const Icon(
+          Icon(
             Icons.home_outlined,
             color: Pallete.black87,
           ),
-          const SizedBox(width: 8),
+          SizedBox(width: 8),
           Text(
             "Home",
             // customerAddress.name,
-            style: const TextStyle(fontWeight: FontWeight.bold),
+            style: TextStyle(fontWeight: FontWeight.bold),
           ),
         ],
       );

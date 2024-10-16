@@ -1,7 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:millyshb/configs/components/size_config.dart';
 import 'package:millyshb/models/category_model.dart';
-import 'package:millyshb/view/nav_screen.dart';
 import 'package:millyshb/view/splash/store_splash.dart';
 import 'package:millyshb/configs/components/branded_primary_button.dart';
 import 'package:millyshb/view_model/product_view_model.dart';

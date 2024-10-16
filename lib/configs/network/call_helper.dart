@@ -41,9 +41,9 @@ class CallHelper {
 
   Future<Map<String, String>> getHeaders() async {
     String accessToken = SharedPrefUtil.getValue(userToken, "") as String;
-    final String role =
+    const String role =
         ''; //SharedPrefUtil.getValue(roleSharedPref, "") as String;
-    final String id = '';
+    const String id = '';
     //SharedPrefUtil.getValue(loggedInUserMobileSharedPrefName, "") as String;
 
     var headers = {
@@ -110,7 +110,7 @@ class CallHelper {
     }
     final response =
         await httpClient.get(uri, headers: await getHeaders()).timeout(
-      Duration(seconds: 30),
+      const Duration(seconds: 30),
       onTimeout: () {
         return http.Response(
             'Error', 408); // Request Timeout response status code

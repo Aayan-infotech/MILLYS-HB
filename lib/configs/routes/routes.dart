@@ -17,7 +17,7 @@ class Routes {
 
       case RoutesName.home:
         return MaterialPageRoute(
-            builder: (BuildContext context) => HomeScreen());
+            builder: (BuildContext context) => const HomeScreen());
 
       case RoutesName.login:
         return MaterialPageRoute(
@@ -32,8 +32,8 @@ class Routes {
       case RoutesName.selectSlot:
         return MaterialPageRoute(
             builder: (BuildContext context) => SelectSlots(
-                  duration: [],
-                  serviceId: [],
+                  duration: const [],
+                  serviceId: const [],
                 ));
 
       default:

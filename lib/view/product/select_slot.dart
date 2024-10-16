@@ -15,12 +15,12 @@ class SelectSlots extends StatefulWidget {
   final Function? action;
 
   SelectSlots({
-    Key? key,
+    super.key,
     this.isWeb = false,
     required this.duration,
     required this.serviceId,
     this.action,
-  }) : super(key: key);
+  });
 
   @override
   State<SelectSlots> createState() => _SelectSlotsState();
@@ -28,10 +28,10 @@ class SelectSlots extends StatefulWidget {
 
 class _SelectSlotsState extends State<SelectSlots> {
   // List<dynamic> allAvailableSlots = [];
-  DatePickerController _datePickerController = DatePickerController();
+  final DatePickerController _datePickerController = DatePickerController();
 
-  DateTime startDate = DateTime.now().subtract(Duration(days: 14));
-  DateTime endDate = DateTime.now().add(Duration(days: 7));
+  DateTime startDate = DateTime.now().subtract(const Duration(days: 14));
+  DateTime endDate = DateTime.now().add(const Duration(days: 7));
   DateTime selectedDate = DateTime.now();
 
   int selectedSlot = 0;
@@ -178,7 +178,7 @@ class _SelectSlotsState extends State<SelectSlots> {
                     backgroundColor: Theme.of(context).cardColor,
                     elevation: 0,
                     centerTitle: widget.isWeb ? false : true,
-                    title: Text(
+                    title: const Text(
                       'Select Slot',
                       // style: Theme.of(context)
                       //     .appBarTheme
@@ -188,7 +188,7 @@ class _SelectSlotsState extends State<SelectSlots> {
                   ),
             body: SingleChildScrollView(
               child: Padding(
-                padding: EdgeInsets.symmetric(horizontal: 10),
+                padding: const EdgeInsets.symmetric(horizontal: 10),
                 child: Column(
                   children: [
                     const Align(

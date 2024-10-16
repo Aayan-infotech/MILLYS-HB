@@ -29,7 +29,7 @@ class _NavScreenState extends State<NavScreen> {
   }
 
   List<Widget> homeScreenItems = [
-    HomeScreen(),
+    const HomeScreen(),
     ProductList(
       id: "",
       isBackbutton: false,

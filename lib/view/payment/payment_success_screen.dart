@@ -20,7 +20,7 @@ class _PaymentSuccessScreenState extends State<PaymentSuccessScreen>
 
     _controller = AnimationController(
       vsync: this,
-      duration: Duration(seconds: 2),
+      duration: const Duration(seconds: 2),
     );
 
     _scaleAnimation = Tween<double>(begin: 0.0, end: 1.0).animate(
@@ -68,7 +68,7 @@ class _PaymentSuccessScreenState extends State<PaymentSuccessScreen>
                     builder: (context, child) {
                       return Transform.scale(
                         scale: _scaleAnimation.value,
-                        child: Icon(
+                        child: const Icon(
                           Icons.done,
                           size: 40,
                           color: Colors.white,
@@ -80,10 +80,10 @@ class _PaymentSuccessScreenState extends State<PaymentSuccessScreen>
               ),
             ],
           ),
-          SizedBox(height: 20),
+          const SizedBox(height: 20),
           FadeTransition(
             opacity: _fadeAnimation,
-            child: Text(
+            child: const Text(
               "Successful",
               style: TextStyle(
                 fontSize: 20,
@@ -93,14 +93,14 @@ class _PaymentSuccessScreenState extends State<PaymentSuccessScreen>
           ),
           FadeTransition(
             opacity: _fadeAnimation,
-            child: Text(
+            child: const Text(
               "Your Order has been received",
               style: TextStyle(
                 color: Colors.red,
               ),
             ),
           ),
-          SizedBox(height: 10),
+          const SizedBox(height: 10),
           FadeTransition(
             opacity: _fadeAnimation,
             child: const Text(
@@ -108,7 +108,7 @@ class _PaymentSuccessScreenState extends State<PaymentSuccessScreen>
               style: TextStyle(color: Color.fromRGBO(53, 45, 168, 1)),
             ),
           ),
-          SizedBox(height: 20),
+          const SizedBox(height: 20),
           Padding(
             padding: const EdgeInsets.symmetric(horizontal: 20),
             child: BrandedPrimaryButton(

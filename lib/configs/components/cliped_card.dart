@@ -1,6 +1,8 @@
 import 'package:flutter/material.dart';
 
 class CustomShapeContainer extends StatelessWidget {
+  const CustomShapeContainer({super.key});
+
   @override
   Widget build(BuildContext context) {
     return ClipPath(
@@ -9,7 +11,7 @@ class CustomShapeContainer extends StatelessWidget {
         width: MediaQuery.of(context).size.width * 0.7,
         height: 100,
         color:
-            Color(0xFF3D348B), // Background color similar to the provided image
+            const Color(0xFF3D348B), // Background color similar to the provided image
       ),
     );
   }

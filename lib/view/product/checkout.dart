@@ -24,7 +24,7 @@ class CheckOutScreen extends StatefulWidget {
 }
 
 class _CheckOutScreenState extends State<CheckOutScreen> {
-  TextEditingController _dateController = TextEditingController(
+  final TextEditingController _dateController = TextEditingController(
       text: DateFormat('yyyy-MM-dd').format(DateTime.now()));
 
   String selectedDate = "Today";
@@ -113,7 +113,7 @@ class _CheckOutScreenState extends State<CheckOutScreen> {
     getAddress();
     final cartProvider = Provider.of<CartProvider>(context, listen: false);
     DateTime today = DateTime.now();
-    DateTime tomorrow = today.add(Duration(days: 1));
+    DateTime tomorrow = today.add(const Duration(days: 1));
     // String addressId=  SharedPrefUtil.getValue(selectedAddressId, "") as String;
 
     // Address selectedAddress =
@@ -202,10 +202,10 @@ class _CheckOutScreenState extends State<CheckOutScreen> {
                                 ),
                                 padding: const EdgeInsets.symmetric(
                                     vertical: 12, horizontal: 16),
-                                child: Row(
+                                child: const Row(
                                   mainAxisAlignment: MainAxisAlignment
                                       .center, // Center the Row content
-                                  children: const [
+                                  children: [
                                     Icon(
                                       Icons.location_on_outlined,
                                     ),
@@ -246,7 +246,7 @@ class _CheckOutScreenState extends State<CheckOutScreen> {
                               borderRadius: BorderRadius.circular(8),
                             ),
                             elevation: 2,
-                            margin: EdgeInsets.symmetric(vertical: 8),
+                            margin: const EdgeInsets.symmetric(vertical: 8),
                             child: Padding(
                               padding: const EdgeInsets.all(8.0),
                               child: Column(
@@ -266,7 +266,7 @@ class _CheckOutScreenState extends State<CheckOutScreen> {
                                           ),
                                         ),
                                         IconButton(
-                                          padding: EdgeInsets.all(0),
+                                          padding: const EdgeInsets.all(0),
                                           icon: const Icon(
                                             Icons.edit_square,
                                             size: 16,
@@ -287,13 +287,13 @@ class _CheckOutScreenState extends State<CheckOutScreen> {
                                   ),
                                   Text(
                                     '${selectedAddress.houseNumber} ${selectedAddress.street} ${selectedAddress.city} ${selectedAddress.state} ${selectedAddress.country} ${selectedAddress.postalCode}',
-                                    style: TextStyle(
+                                    style: const TextStyle(
                                         fontSize: 12,
                                         fontWeight: FontWeight.w400),
                                   ),
                                   Text(
                                     "Contact : ${selectedAddress.mobileNumber}",
-                                    style: TextStyle(
+                                    style: const TextStyle(
                                         fontSize: 12,
                                         fontWeight: FontWeight.w400),
                                   )
@@ -301,11 +301,11 @@ class _CheckOutScreenState extends State<CheckOutScreen> {
                               ),
                             ),
                           )),
-                        Text(
+                        const Text(
                           "Select a Date",
                           style: TextStyle(fontWeight: FontWeight.w600),
                         ),
-                        SizedBox(
+                        const SizedBox(
                           height: 20,
                         ),
                         Row(
@@ -353,7 +353,7 @@ class _CheckOutScreenState extends State<CheckOutScreen> {
                                 ),
                               ),
                             ),
-                            SizedBox(width: 10),
+                            const SizedBox(width: 10),
                             Expanded(
                               child: Card(
                                 elevation: selectedDate == "Tomorrow" ? 4 : 2,
@@ -375,13 +375,13 @@ class _CheckOutScreenState extends State<CheckOutScreen> {
                                       mainAxisAlignment:
                                           MainAxisAlignment.center,
                                       children: [
-                                        Text(
+                                        const Text(
                                           "Tomorrow",
                                           style: TextStyle(
                                               color: Colors.grey,
                                               fontWeight: FontWeight.bold),
                                         ),
-                                        SizedBox(height: 5),
+                                        const SizedBox(height: 5),
                                         Text(formatDate(tomorrow)),
                                       ],
                                     ),
@@ -389,7 +389,7 @@ class _CheckOutScreenState extends State<CheckOutScreen> {
                                 ),
                               ),
                             ),
-                            SizedBox(width: 10),
+                            const SizedBox(width: 10),
                             Expanded(
                               child: Card(
                                 elevation: selectedDate == "Later" ? 4 : 2,
@@ -420,13 +420,13 @@ class _CheckOutScreenState extends State<CheckOutScreen> {
                                       mainAxisAlignment:
                                           MainAxisAlignment.center,
                                       children: [
-                                        Text(
+                                        const Text(
                                           "Later",
                                           style: TextStyle(
                                               color: Colors.grey,
                                               fontWeight: FontWeight.bold),
                                         ),
-                                        SizedBox(height: 5),
+                                        const SizedBox(height: 5),
                                         Text(selectedDate == "Later" &&
                                                 _dateController.text.isNotEmpty
                                             ? formatDate(DateTime.parse(
@@ -440,15 +440,15 @@ class _CheckOutScreenState extends State<CheckOutScreen> {
                             ),
                           ],
                         ),
-                        SizedBox(
+                        const SizedBox(
                           height: 20,
                         ),
 
-                        Text(
+                        const Text(
                           "Time Slot",
                           style: TextStyle(fontWeight: FontWeight.w600),
                         ),
-                        SizedBox(height: 10),
+                        const SizedBox(height: 10),
                         Row(
                           crossAxisAlignment: CrossAxisAlignment.start,
                           children: [
@@ -605,7 +605,7 @@ class _CheckOutScreenState extends State<CheckOutScreen> {
                                 ),
                               ),
                             ),
-                            SizedBox(width: 10),
+                            const SizedBox(width: 10),
                             Expanded(
                               child: Container(
                                 decoration: BoxDecoration(
@@ -825,7 +825,7 @@ class _CheckOutScreenState extends State<CheckOutScreen> {
                         //     ),
                         //   ),
                         // ),
-                        SizedBox(
+                        const SizedBox(
                           height: 20,
                         ),
                       ],

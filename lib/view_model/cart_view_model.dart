@@ -1,4 +1,3 @@
-import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:millyshb/configs/components/constants.dart';
 import 'package:millyshb/configs/components/shared_preferences.dart';
@@ -28,7 +27,6 @@ class CartProvider with ChangeNotifier {
   List<Coupon> _lstCoupon = [];
   List<Coupon> get lstCoupon => _lstCoupon;
   List<DeliverySlot> _lstMorningSlot = [];
-
   List<DeliverySlot> get lstMorningSlot => _lstMorningSlot;
   List<DeliverySlot> _lstFreeDelivery = [];
   List<DeliverySlot> get lstFreeDelivery => _lstFreeDelivery;
@@ -36,7 +34,7 @@ class CartProvider with ChangeNotifier {
   List<DeliverySlot> get lstfixedTimeDelivery => _lstfixedTimeDelivery;
   List<DeliverySlot> _lstExpressDeliverySlot = [];
   List<DeliverySlot> get lstExpressDeliverySlot => _lstExpressDeliverySlot;
-  // Getter for the product list
+
   dynamic get userCart => _cart;
 
   addTOCart(Product product, String userId, BuildContext context) async {
@@ -46,25 +44,12 @@ class CartProvider with ChangeNotifier {
       ApiResponseWithData response =
           await CartAPIs().addProductToCart(product.id, userId);
       if (response.success) {
-        // (userCart as Cart).products.add(product);
         await getCart(userId, context);
-        // ScaffoldMessenger.of(context).showSnackBar(const SnackBar(
-        //   content: Text("Product Added"),
-        //   backgroundColor: Colors.green,
-        // ));
-      } else {
-        // ScaffoldMessenger.of(context).showSnackBar(
-        //   SnackBar(
-        //     content: Text(response.message),
-        //     backgroundColor: Colors.red,
-        //   ),
-        // );
       }
     } else {
       CartItem cartItem = CartItem(id: "", product: product, quantity: 1);
       _cart.products.add(cartItem);
     }
-
     notifyListeners();
   }
 
@@ -72,7 +57,7 @@ class CartProvider with ChangeNotifier {
     ApiResponseWithData response = await CartAPIs().getCart(userId);
     if (response.success) {
       _cart = Cart.fromJson(response.data["data"]);
-    } else {}
+    }
   }
 
   getCoupon(BuildContext context) async {
@@ -81,18 +66,15 @@ class CartProvider with ChangeNotifier {
       _lstCoupon = (response.data["data"] as List)
           .map((item) => Coupon.fromJson(item))
           .toList();
-      //_lstCoupon = Coupon.fromJson(response.data["data"]);
-    } else {}
+    }
   }
 
   getSlot(String deliveryDate, BuildContext context) async {
     ApiResponseWithData response = await CartAPIs().getSlot(deliveryDate);
-
     if (response.success) {
       _lstSlot = (response.data["data"] as List)
           .map((item) => DeliverySlot.fromJson(item))
           .toList();
-      //Fixed Time Delivery
       _lstFreeDelivery = _lstSlot
           .where((order) => order.deliveryType == "Free Delivery")
           .toList();
@@ -105,7 +87,7 @@ class CartProvider with ChangeNotifier {
       _lstExpressDeliverySlot = _lstSlot
           .where((order) => order.deliveryType == "Express Delivery I")
           .toList();
-    } else {}
+    }
   }
 
   removeFromCart(String userId, Product product, BuildContext context) async {
@@ -114,8 +96,7 @@ class CartProvider with ChangeNotifier {
       userId,
     );
     if (response.success) {
-      int index =
-          _cart.products.indexWhere((product) => product.id == product.id);
+      int index = _cart.products.indexWhere((p) => p.product.id == product.id);
       _cart.products.removeAt(index);
     } else {
       ScaffoldMessenger.of(context).showSnackBar(
@@ -136,12 +117,6 @@ class CartProvider with ChangeNotifier {
     );
     if (response.success) {
       await getCart(userId, context);
-
-      // int index =
-      //     _cart.products.indexWhere((product) => product.id == product.id);
-      // _cart.products.removeAt(index);
-
-      //(userCart as Cart).products.remove(product);
     } else {
       ScaffoldMessenger.of(context).showSnackBar(
         const SnackBar(
@@ -161,12 +136,6 @@ class CartProvider with ChangeNotifier {
     );
     if (response.success) {
       await getCart(userId, context);
-
-      // int index =
-      //     _cart.products.indexWhere((product) => product.id == product.id);
-      // _cart.products.removeAt(index);
-
-      //(userCart as Cart).products.remove(product);
     } else {
       ScaffoldMessenger.of(context).showSnackBar(
         const SnackBar(
@@ -178,19 +147,31 @@ class CartProvider with ChangeNotifier {
     notifyListeners();
   }
 
-  createOrder(String userId, String slotId, BuildContext context) async {
-    ApiResponseWithData response = await OrderApi().createOrder(
-      userId,
-      slotId,
+  // New createOrder method
+  createOrder({
+    required String userId,
+    required String deliverySlotId,
+    required String addressId,
+    required String paymentMethod,
+    required String paymentId,
+    required BuildContext context,
+  }) async {
+    ApiResponseWithData response = await CartAPIs().createOrder(
+      userId: userId,
+      deliverySlotId: deliverySlotId,
+      addressId: addressId,
+      paymentMethod: paymentMethod,
+      paymentId: paymentId,
     );
+
     if (response.success) {
       await getCart(userId, context);
       final productProvider =
           Provider.of<ProductProvider>(context, listen: false);
       productProvider.getOrderList(userId, context, isForceRefresh: true);
-      Navigator.of(context).push(MaterialPageRoute(builder: (context) {
-        return const PaymentSuccessScreen();
-      }));
+      Navigator.of(context).push(MaterialPageRoute(
+        builder: (context) => const PaymentSuccessScreen(),
+      ));
     } else {
       ScaffoldMessenger.of(context).showSnackBar(
         const SnackBar(
@@ -204,6 +185,5 @@ class CartProvider with ChangeNotifier {
 
   void _setLoading(bool loading) {
     _isLoading = loading;
-    // notifyListeners();
   }
 }

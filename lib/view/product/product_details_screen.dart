@@ -66,7 +66,6 @@ class _ProductDetailsScreenState extends State<ProductDetailsScreen> {
       // Call setState to update the UI after the bottom sheet is closed
       setState(() {});
     });
-    ;
   }
 
   @override
@@ -110,7 +109,7 @@ class _ProductDetailsScreenState extends State<ProductDetailsScreen> {
                     );
                   },
                 ),
-                showBadge: (cart.userCart as Cart).products.length > 0,
+                showBadge: (cart.userCart as Cart).products.isNotEmpty,
                 position: badges.BadgePosition.topEnd(top: 0, end: 3),
                 child: IconButton(
                   onPressed: () {
@@ -153,7 +152,7 @@ class _ProductDetailsScreenState extends State<ProductDetailsScreen> {
                     },
                   ),
                 ),
-                SizedBox(width: 10),
+                const SizedBox(width: 10),
                 Expanded(
                   child: BrandedPrimaryButton(
                     isEnabled: true,
@@ -162,7 +161,7 @@ class _ProductDetailsScreenState extends State<ProductDetailsScreen> {
                       if (isLogin) {
                         Navigator.of(context)
                             .push(MaterialPageRoute(builder: (context) {
-                          return CheckOutScreen();
+                          return const CheckOutScreen();
                         }));
                         setState(() {
                           isStackLoading = false;
@@ -222,22 +221,22 @@ class _ProductDetailsScreenState extends State<ProductDetailsScreen> {
                           return Container(
                             width: 8.0,
                             height: 8.0,
-                            margin: EdgeInsets.symmetric(horizontal: 2.0),
+                            margin: const EdgeInsets.symmetric(horizontal: 2.0),
                             decoration: BoxDecoration(
                               shape: BoxShape.circle,
                               color: _currentIndex == index
-                                  ? Color.fromRGBO(0, 0, 0, 0.9)
-                                  : Color.fromRGBO(0, 0, 0, 0.4),
+                                  ? const Color.fromRGBO(0, 0, 0, 0.9)
+                                  : const Color.fromRGBO(0, 0, 0, 0.4),
                             ),
                           );
                         }).toList(),
                       ),
                     ],
                   ),
-                  SizedBox(height: 20),
+                  const SizedBox(height: 20),
                   Text(
                     widget.product.name,
-                    style: TextStyle(
+                    style: const TextStyle(
                         color: Pallete.accentColor,
                         fontWeight: FontWeight.w600,
                         fontSize: 16),
@@ -276,7 +275,7 @@ class _ProductDetailsScreenState extends State<ProductDetailsScreen> {
                   //     Text("Lorem Ipsum")
                   //   ],
                   // ),
-                  SizedBox(height: 20),
+                  const SizedBox(height: 20),
                   Row(
                     mainAxisAlignment: MainAxisAlignment.spaceBetween,
                     children: [
@@ -287,27 +286,27 @@ class _ProductDetailsScreenState extends State<ProductDetailsScreen> {
                           fontWeight: FontWeight.w600,
                         ),
                       ),
-                      SizedBox(width: 20),
+                      const SizedBox(width: 20),
                       Container(
                         height: 30,
                         width: 84,
                         decoration: BoxDecoration(
-                          color: Color.fromRGBO(242, 242, 242, 1),
+                          color: const Color.fromRGBO(242, 242, 242, 1),
                           border: Border.all(color: Colors.transparent),
                           borderRadius: BorderRadius.circular(5),
                         ),
-                        padding: EdgeInsets.all(0),
+                        padding: const EdgeInsets.all(0),
                         child: Center(
                           child: Text(
                             "\$${widget.product.price}",
-                            style: TextStyle(
+                            style: const TextStyle(
                                 fontSize: 14, fontWeight: FontWeight.w500),
                           ),
                         ),
                       ),
                     ],
                   ),
-                  SizedBox(height: 20),
+                  const SizedBox(height: 20),
                   if (isInCart)
                     Row(
                       mainAxisAlignment: MainAxisAlignment.spaceBetween,
@@ -322,7 +321,7 @@ class _ProductDetailsScreenState extends State<ProductDetailsScreen> {
                         Row(
                           children: [
                             IconButton(
-                              icon: Icon(Icons.remove, color: Colors.black),
+                              icon: const Icon(Icons.remove, color: Colors.black),
                               onPressed: () {
                                 // cart.removeProduct(product);
 
@@ -335,11 +334,11 @@ class _ProductDetailsScreenState extends State<ProductDetailsScreen> {
                             ),
                             Text(
                               '$_quantity',
-                              style: TextStyle(
+                              style: const TextStyle(
                                   fontSize: 16, fontWeight: FontWeight.w500),
                             ),
                             IconButton(
-                              icon: Icon(Icons.add, color: Colors.black),
+                              icon: const Icon(Icons.add, color: Colors.black),
                               onPressed: () {
                                 // cart.addProduct(product);
 

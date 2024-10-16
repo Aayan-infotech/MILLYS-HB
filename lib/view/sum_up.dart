@@ -167,7 +167,7 @@ Future<void> main() async {
     notificationCategories: darwinNotificationCategories,
   );
   final LinuxInitializationSettings initializationSettingsLinux =
-      LinuxInitializationSettings(
+      const LinuxInitializationSettings(
     defaultActionName: 'Open notification',
     // defaultIcon: AssetsLinuxIcon('icons/app_icon.png'),
   );
@@ -218,8 +218,8 @@ class PaddedElevatedButton extends StatelessWidget {
   const PaddedElevatedButton({
     required this.buttonText,
     required this.onPressed,
-    Key? key,
-  }) : super(key: key);
+    super.key,
+  });
 
   final String buttonText;
   final VoidCallback onPressed;
@@ -237,8 +237,8 @@ class PaddedElevatedButton extends StatelessWidget {
 class HomePage extends StatefulWidget {
   const HomePage(
     this.notificationAppLaunchDetails, {
-    Key? key,
-  }) : super(key: key);
+    super.key,
+  });
 
   static const String routeName = '/';
 
@@ -2663,7 +2663,7 @@ class _HomePageState extends State<HomePage> {
     }
 
     try {
-      final List<ActiveNotification>? activeNotifications =
+      final List<ActiveNotification> activeNotifications =
           await flutterLocalNotificationsPlugin.getActiveNotifications();
 
       return Column(
@@ -2843,7 +2843,7 @@ class _HomePageState extends State<HomePage> {
                   AndroidFlutterLocalNotificationsPlugin>()!
               .getNotificationChannels();
 
-      return Container(
+      return SizedBox(
         width: double.maxFinite,
         child: ListView(
           children: <Widget>[
@@ -3134,8 +3134,8 @@ Future<LinuxServerCapabilities> getLinuxCapabilities() =>
 class SecondPage extends StatefulWidget {
   const SecondPage(
     this.payload, {
-    Key? key,
-  }) : super(key: key);
+    super.key,
+  });
 
   static const String routeName = '/secondPage';
 
@@ -3180,8 +3180,8 @@ class _InfoValueString extends StatelessWidget {
   const _InfoValueString({
     required this.title,
     required this.value,
-    Key? key,
-  }) : super(key: key);
+    super.key,
+  });
 
   final String title;
   final Object? value;

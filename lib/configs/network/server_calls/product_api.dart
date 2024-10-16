@@ -12,27 +12,31 @@ class ProductAPIs extends ApiBase {
 
   Future<ApiResponseWithData<Map<String, dynamic>>> getSubCategoriesById(
       String id) async {
-    return await CallHelper().getWithData('api/category/get/${id}', {});
+    return await CallHelper().getWithData('api/category/get/$id', {});
   }
 
   Future<ApiResponseWithData<Map<String, dynamic>>> getFavoriteProduct(
       String id) async {
-    return await CallHelper().getWithData('api/favorite/get/${id}', {});
+    return await CallHelper().getWithData('api/favorite/get/$id', {});
+  }
+
+  Future<ApiResponseWithData<Map<String, dynamic>>> getDiscountedProduct(
+      String id) async {
+    return await CallHelper().getWithData('api/favorite/get/$id', {});
   }
 
   Future<ApiResponseWithData<Map<String, dynamic>>> getOrders(String id) async {
-    return await CallHelper()
-        .getWithData('api/product/order-history/${id}', {});
+    return await CallHelper().getWithData('api/product/order-history/$id', {});
   }
 
   Future<ApiResponseWithData<Map<String, dynamic>>> getProductById(
       String id) async {
-    return await CallHelper().getWithData('api/product/subcategory/${id}', {});
+    return await CallHelper().getWithData('api/product/subcategory/$id', {});
   }
 
   Future<ApiResponseWithData<Map<String, dynamic>>> getRecommendedProductById(
       String id) async {
-    return await CallHelper().getWithData('api/product/recommended/${id}', {});
+    return await CallHelper().getWithData('api/product/recommended/$id', {});
   }
   //api/product/recommended/66a338b8dc8ca180402cc419
 

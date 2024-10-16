@@ -59,7 +59,7 @@ class _ShoppingBagScreenState extends State<ShoppingBagScreen> {
                       onPressed: () {
                         Navigator.of(context)
                             .push(MaterialPageRoute(builder: (context) {
-                          return CheckOutScreen();
+                          return const CheckOutScreen();
                         }));
                       },
                     ),
@@ -187,7 +187,7 @@ class _ShoppingBagScreenState extends State<ShoppingBagScreen> {
                                                     0)
                                                   Text(
                                                     "\$ ${((product.product.price) * product.quantity).toStringAsFixed(2)}",
-                                                    style: TextStyle(
+                                                    style: const TextStyle(
                                                       color: Color.fromRGBO(
                                                           187, 187, 187, 1),
                                                       decoration: TextDecoration
@@ -201,7 +201,7 @@ class _ShoppingBagScreenState extends State<ShoppingBagScreen> {
                                                 Container(
                                                   height: 30,
                                                   decoration: BoxDecoration(
-                                                    color: Color.fromRGBO(
+                                                    color: const Color.fromRGBO(
                                                         242, 242, 242, 1),
                                                     border: Border.all(
                                                         color:
@@ -210,7 +210,7 @@ class _ShoppingBagScreenState extends State<ShoppingBagScreen> {
                                                         BorderRadius.circular(
                                                             5),
                                                   ),
-                                                  padding: EdgeInsets.symmetric(
+                                                  padding: const EdgeInsets.symmetric(
                                                       horizontal: 5),
                                                   child: Center(
                                                     child: Text(
@@ -289,8 +289,8 @@ class _ShoppingBagScreenState extends State<ShoppingBagScreen> {
                                                         child: (product
                                                                     .quantity ==
                                                                 1)
-                                                            ? Icon(Icons.delete)
-                                                            : Icon(
+                                                            ? const Icon(Icons.delete)
+                                                            : const Icon(
                                                                 Icons.remove),
                                                       ),
                                                     ),
@@ -375,7 +375,7 @@ class _ShoppingBagScreenState extends State<ShoppingBagScreen> {
                           },
                         ),
                       )
-                    : Expanded(
+                    : const Expanded(
                         child: Center(
                           child: Text(
                             "No Product is added",
@@ -410,16 +410,16 @@ class _ShoppingBagScreenState extends State<ShoppingBagScreen> {
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
               Padding(
-                padding: EdgeInsets.only(left: 10, top: 10),
+                padding: const EdgeInsets.only(left: 10, top: 10),
                 child: Text(
                   name,
-                  style: TextStyle(
+                  style: const TextStyle(
                       color: Colors.white,
                       fontSize: 16,
                       fontWeight: FontWeight.w400),
                 ),
               ),
-              Padding(
+              const Padding(
                 padding: EdgeInsets.only(left: 10),
                 child: Text(
                   "Products",

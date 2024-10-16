@@ -4,13 +4,13 @@ import 'package:millyshb/view/about_us.dart';
 Drawer drawer(BuildContext context) {
   return Drawer(
     width: 200,
-    shape: RoundedRectangleBorder(
+    shape: const RoundedRectangleBorder(
       borderRadius: BorderRadius.zero,
     ),
     child: ListView(
       padding: EdgeInsets.zero,
       children: <Widget>[
-        SizedBox(
+        const SizedBox(
           height: 50,
         ),
         // DrawerHeader(
@@ -26,21 +26,21 @@ Drawer drawer(BuildContext context) {
         //   ),
         // ),
         ListTile(
-          title: Text('Home'),
+          title: const Text('Home'),
           onTap: () {
             // Handle the Home tap
             Navigator.pop(context); // Close the drawer
           },
         ),
         ListTile(
-          title: Text('Product'),
+          title: const Text('Product'),
           onTap: () {
             // Handle the Settings tap
             Navigator.pop(context); // Close the drawer
           },
         ),
         ListTile(
-          title: Text('About Us'),
+          title: const Text('About Us'),
           onTap: () {
             // Handle the Contact Us tap
             Navigator.of(context).push(MaterialPageRoute(builder: (context) {
@@ -49,21 +49,21 @@ Drawer drawer(BuildContext context) {
           },
         ),
         ListTile(
-          title: Text('Support'),
+          title: const Text('Support'),
           onTap: () {
             // Handle the Contact Us tap
             Navigator.pop(context); // Close the drawer
           },
         ),
         ListTile(
-          title: Text('Blogs'),
+          title: const Text('Blogs'),
           onTap: () {
             // Handle the Contact Us tap
             Navigator.pop(context); // Close the drawer
           },
         ),
         ListTile(
-          title: Text('Log out'),
+          title: const Text('Log out'),
           onTap: () {
             // Handle the Contact Us tap
             Navigator.pop(context); // Close the drawer

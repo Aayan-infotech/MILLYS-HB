@@ -11,13 +11,15 @@ import 'package:millyshb/view_model/user_view_model.dart';
 import 'package:provider/provider.dart';
 
 class SettingsScreen extends StatefulWidget {
+  const SettingsScreen({super.key});
+
   @override
   _SettingsScreenState createState() => _SettingsScreenState();
 }
 
 class _SettingsScreenState extends State<SettingsScreen> {
   UserProvider? _userProvider;
-  bool _notificationsEnabled = true;
+  final bool _notificationsEnabled = true;
   bool _isDarkTheme = false;
 
   void _showLoginBottomSheet(BuildContext context) {
@@ -56,7 +58,6 @@ class _SettingsScreenState extends State<SettingsScreen> {
       // Call setState to update the UI after the bottom sheet is closed
       setState(() {});
     });
-    ;
   }
 
   @override
@@ -79,23 +80,23 @@ class _SettingsScreenState extends State<SettingsScreen> {
     return Scaffold(
       appBar: AppBar(
         automaticallyImplyLeading: false,
-        title: Text('Settings'),
+        title: const Text('Settings'),
         centerTitle: true,
       ),
       body: ListView(
-        padding: EdgeInsets.all(16.0),
+        padding: const EdgeInsets.all(16.0),
         children: <Widget>[
           ListTile(
             onTap: () {
               Navigator.of(context).push(MaterialPageRoute(builder: (context) {
-                return NotificationScreen();
+                return const NotificationScreen();
               }));
             },
             title: const Text('Notifications'),
           ),
-          Divider(),
+          const Divider(),
           ListTile(
-            title: Text('Saved Address'),
+            title: const Text('Saved Address'),
             onTap: () {
               if (isLogin) {
                 Navigator.push(
@@ -107,9 +108,9 @@ class _SettingsScreenState extends State<SettingsScreen> {
               }
             },
           ),
-          Divider(),
+          const Divider(),
           ListTile(
-            title: Text('Order'),
+            title: const Text('Order'),
             onTap: () {
               Navigator.push(
                 context,
@@ -126,9 +127,9 @@ class _SettingsScreenState extends State<SettingsScreen> {
           //     // );
           //   },
           // ),
-          Divider(),
+          const Divider(),
           ListTile(
-            title: Text('About Us'),
+            title: const Text('About Us'),
             onTap: () {
               Navigator.push(
                 context,

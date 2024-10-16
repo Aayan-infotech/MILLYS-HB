@@ -72,7 +72,7 @@ class AddressProvider with ChangeNotifier {
 
   deleteAddress(Address address, BuildContext context) async {
     ApiResponse response =
-        await AddressAPIs().deleteAddress(address.addressId!);
+        await AddressAPIs().deleteAddress(address.addressId);
     if (response.success) {
       _address.remove(address);
       showDialog(

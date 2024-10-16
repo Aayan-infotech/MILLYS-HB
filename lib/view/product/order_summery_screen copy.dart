@@ -23,7 +23,7 @@ class _OrderSummeryState extends State<OrderSummery> {
   bool isLoading = false;
   double price = 0.0;
   double totelPrice = 0.0;
-  TextEditingController _codeController = TextEditingController();
+  final TextEditingController _codeController = TextEditingController();
   addPayment() {
     setState(() {
       isLoading = true;
@@ -82,14 +82,14 @@ class _OrderSummeryState extends State<OrderSummery> {
               )
             ],
             body: Padding(
-              padding: EdgeInsets.only(left: 16, right: 16),
+              padding: const EdgeInsets.only(left: 16, right: 16),
               child: SingleChildScrollView(
                 child: Column(
                   crossAxisAlignment: CrossAxisAlignment.start,
                   children: [
                     Card(
                       elevation: 0,
-                      child: Container(
+                      child: SizedBox(
                         width: SizeConfig.blockSizeVertical * 100,
                         child: Padding(
                           padding: const EdgeInsets.all(8.0),
@@ -99,7 +99,7 @@ class _OrderSummeryState extends State<OrderSummery> {
                                 crossAxisAlignment: CrossAxisAlignment.start,
                                 children: [
                                   Image.asset("assets/images/coupon.png"),
-                                  SizedBox(width: 8),
+                                  const SizedBox(width: 8),
                                   const Column(
                                     crossAxisAlignment:
                                         CrossAxisAlignment.start,
@@ -114,7 +114,7 @@ class _OrderSummeryState extends State<OrderSummery> {
                                       ),
                                     ],
                                   ),
-                                  Spacer(),
+                                  const Spacer(),
                                   const Text(
                                     "Select",
                                     style: TextStyle(
@@ -208,7 +208,7 @@ class _OrderSummeryState extends State<OrderSummery> {
                                               children: [
                                                 Padding(
                                                   padding:
-                                                      EdgeInsets.only(top: 10),
+                                                      const EdgeInsets.only(top: 10),
                                                   child: SizedBox(
                                                     width:
                                                         SizeConfig.screenWidth *
@@ -250,7 +250,7 @@ class _OrderSummeryState extends State<OrderSummery> {
                                               ],
                                             ),
                                           ),
-                                          SizedBox(height: 20),
+                                          const SizedBox(height: 20),
                                           if (product.product.discount != 0)
                                             Text(
                                               "\$ ${product.product.price + product.product.discount}",
@@ -267,25 +267,25 @@ class _OrderSummeryState extends State<OrderSummery> {
                                             height: 30,
                                             width: 84,
                                             decoration: BoxDecoration(
-                                              color: Color.fromRGBO(
+                                              color: const Color.fromRGBO(
                                                   242, 242, 242, 1),
                                               border: Border.all(
                                                   color: Colors.transparent),
                                               borderRadius:
                                                   BorderRadius.circular(5),
                                             ),
-                                            padding: EdgeInsets.all(0),
+                                            padding: const EdgeInsets.all(0),
                                             child: Center(
                                               child: Text(
                                                 "\$ ${product.product.price.toString()}",
-                                                style: TextStyle(
+                                                style: const TextStyle(
                                                   fontSize: 14,
                                                   fontWeight: FontWeight.w400,
                                                 ),
                                               ),
                                             ),
                                           ),
-                                          SizedBox(height: 10),
+                                          const SizedBox(height: 10),
                                         ],
                                       ),
                                     ),
@@ -506,7 +506,7 @@ class _OrderSummeryState extends State<OrderSummery> {
                     //     },
                     //   ),
                     // ),
-                    SizedBox(
+                    const SizedBox(
                       height: 20,
                     ),
                     const Text(
@@ -514,43 +514,43 @@ class _OrderSummeryState extends State<OrderSummery> {
                       style:
                           TextStyle(fontSize: 17, fontWeight: FontWeight.w600),
                     ),
-                    SizedBox(
+                    const SizedBox(
                       height: 20,
                     ),
                     Row(
                       mainAxisAlignment: MainAxisAlignment.spaceBetween,
                       children: [
-                        Text(
+                        const Text(
                           "Bag Value",
                           style: TextStyle(),
                         ),
                         Text(
                           "\$ ${price.toStringAsFixed(2)}",
-                          style: TextStyle(fontWeight: FontWeight.w600),
+                          style: const TextStyle(fontWeight: FontWeight.w600),
                         ),
                       ],
                     ),
-                    SizedBox(
+                    const SizedBox(
                       height: 10,
                     ),
                     if (int.parse(widget.deliverySlot.price) != 0)
                       Row(
                         mainAxisAlignment: MainAxisAlignment.spaceBetween,
                         children: [
-                          Text(
+                          const Text(
                             "Delivery Charges",
                             style: TextStyle(),
                           ),
                           Text(
                             "\$ ${widget.deliverySlot.price}",
-                            style: TextStyle(fontWeight: FontWeight.w600),
+                            style: const TextStyle(fontWeight: FontWeight.w600),
                           ),
                         ],
                       ),
-                    SizedBox(
+                    const SizedBox(
                       height: 10,
                     ),
-                    Row(
+                    const Row(
                       mainAxisAlignment: MainAxisAlignment.spaceBetween,
                       children: [
                         Text(
@@ -563,29 +563,29 @@ class _OrderSummeryState extends State<OrderSummery> {
                         ),
                       ],
                     ),
-                    SizedBox(
+                    const SizedBox(
                       height: 20,
                     ),
                     Divider(
                       color: Colors.grey.withOpacity(.5),
                     ),
-                    SizedBox(
+                    const SizedBox(
                       height: 20,
                     ),
                     Row(
                       mainAxisAlignment: MainAxisAlignment.spaceBetween,
                       children: [
-                        Text(
+                        const Text(
                           "Total Amount Payable",
                           style: TextStyle(fontWeight: FontWeight.w600),
                         ),
                         Text(
                           "\$ ${totelPrice.toStringAsFixed(2)}",
-                          style: TextStyle(fontWeight: FontWeight.w600),
+                          style: const TextStyle(fontWeight: FontWeight.w600),
                         ),
                       ],
                     ),
-                    SizedBox(
+                    const SizedBox(
                       height: 10,
                     ),
                     // Row(
@@ -605,13 +605,13 @@ class _OrderSummeryState extends State<OrderSummery> {
                     //     ),
                     //   ],
                     // ),
-                    SizedBox(
+                    const SizedBox(
                       height: 20,
                     ),
                     Divider(
                       color: Colors.grey.withOpacity(.5),
                     ),
-                    SizedBox(
+                    const SizedBox(
                       height: 20,
                     ),
                   ],

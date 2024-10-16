@@ -33,8 +33,8 @@ class _WishListScreenState extends State<WishListScreen> {
   bool isLoading = false;
   bool isAddToCartLoading = false;
   void _showLoginBottomSheet(BuildContext context) {
-    final TextEditingController _userNameController = TextEditingController();
-    final TextEditingController _emailController = TextEditingController();
+    final TextEditingController userNameController = TextEditingController();
+    final TextEditingController emailController = TextEditingController();
     showModalBottomSheet(
       context: context,
       isScrollControlled: true,
@@ -56,11 +56,11 @@ class _WishListScreenState extends State<WishListScreen> {
                       color: Colors.black.withOpacity(0.1),
                       blurRadius: 20,
                       spreadRadius: 5,
-                      offset: Offset(0, -5),
+                      offset: const Offset(0, -5),
                     ),
                   ],
                 ),
-                child: LoginScreen(
+                child: const LoginScreen(
                   isbottomSheet: true,
                 ));
           },
@@ -123,7 +123,7 @@ class _WishListScreenState extends State<WishListScreen> {
                     );
                   },
                 ),
-                showBadge: (cart.userCart as Cart).products.length > 0,
+                showBadge: (cart.userCart as Cart).products.isNotEmpty,
                 position: badges.BadgePosition.topEnd(top: 0, end: 3),
                 child: IconButton(
                   onPressed: () {
@@ -138,7 +138,7 @@ class _WishListScreenState extends State<WishListScreen> {
               ),
             ],
           ),
-          persistentFooterButtons: (cart.userCart as Cart).products.length > 0
+          persistentFooterButtons: (cart.userCart as Cart).products.isNotEmpty
               ? [
                   Row(
                     mainAxisAlignment: MainAxisAlignment.spaceBetween,
@@ -221,8 +221,8 @@ class _WishListScreenState extends State<WishListScreen> {
                             color: Colors.white,
                             elevation: 1,
                             child: Padding(
-                              padding: EdgeInsets.all(8.0),
-                              child: Container(
+                              padding: const EdgeInsets.all(8.0),
+                              child: SizedBox(
                                 height: SizeConfig.screenHeight * .18,
                                 // width: MediaQuery.of(context).size.width,
                                 child: Row(
@@ -255,7 +255,7 @@ class _WishListScreenState extends State<WishListScreen> {
                                             mainAxisAlignment:
                                                 MainAxisAlignment.spaceBetween,
                                             children: [
-                                              Container(
+                                              SizedBox(
                                                 width: SizeConfig.screenWidth *
                                                     0.39,
                                                 child: Text(
@@ -309,7 +309,7 @@ class _WishListScreenState extends State<WishListScreen> {
                                           const SizedBox(height: 20),
                                           Text(
                                             "\$${product.price.toString()}",
-                                            style: TextStyle(
+                                            style: const TextStyle(
                                               fontWeight: FontWeight.bold,
                                               fontSize: 12,
                                             ),
@@ -358,7 +358,7 @@ class _WishListScreenState extends State<WishListScreen> {
                                               ),
                                               child: Center(
                                                 child: !inCart
-                                                    ? Text(
+                                                    ? const Text(
                                                         "Add To Cart",
                                                         style: TextStyle(
                                                           color: Color.fromRGBO(
@@ -368,7 +368,7 @@ class _WishListScreenState extends State<WishListScreen> {
                                                               FontWeight.w600,
                                                         ),
                                                       )
-                                                    : Text(
+                                                    : const Text(
                                                         "Go To Cart",
                                                         style: TextStyle(
                                                           color: Color.fromRGBO(

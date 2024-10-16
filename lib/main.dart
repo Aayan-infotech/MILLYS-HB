@@ -28,7 +28,7 @@ Future<void> main() async {
   Stripe.publishableKey = publishableKey;
 
   await Firebase.initializeApp();
-  final RemoteMessage? _message =
+  final RemoteMessage? message =
       await FirebaseMessaging.instance.getInitialMessage();
 
   FirebaseMessaging.onBackgroundMessage(_firebaseMessginBackgroundHandler);
@@ -43,7 +43,7 @@ Future<void> main() async {
         ChangeNotifierProvider(create: (_) => ProductProvider()),
       ],
       child: MyApp(
-        message: _message,
+        message: message,
       ),
     ),
   );

@@ -44,7 +44,7 @@ class _AddressListState extends State<AddressList> {
       context: context,
       builder: (context) {
         return AlertDialog(
-          title: Text('Edit Address'),
+          title: const Text('Edit Address'),
           content: Text('Edit address for ${address.city}'),
           actions: <Widget>[
             TextButton(
@@ -73,7 +73,7 @@ class _AddressListState extends State<AddressList> {
       context: context,
       builder: (context) {
         return AlertDialog(
-          title: Text('Remove Address'),
+          title: const Text('Remove Address'),
           content: Text(
               'Are you sure you want to remove the address for ${address.city}?'),
           actions: <Widget>[

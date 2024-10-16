@@ -31,7 +31,7 @@ class StripeService {
       // Initialize payment sheet
       await Stripe.instance.initPaymentSheet(
         paymentSheetParameters: SetupPaymentSheetParameters(
-          paymentIntentClientSecret: paymentIntentClientSecret,
+          paymentIntentClientSecret: secretKey,
           googlePay: const PaymentSheetGooglePay(
             merchantCountryCode: "IN",
             testEnv: true,

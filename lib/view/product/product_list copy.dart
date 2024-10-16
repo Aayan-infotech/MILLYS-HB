@@ -77,7 +77,6 @@ class _ProductListState extends State<ProductList> {
       // Call setState to update the UI after the bottom sheet is closed
       setState(() {});
     });
-    ;
   }
 
   @override
@@ -182,7 +181,7 @@ class _ProductListState extends State<ProductList> {
                             )
                           : Center(
                               child: Text(
-                                (userCart as Cart).products.length.toString(),
+                                (userCart).products.length.toString(),
                                 style: const TextStyle(color: Colors.white),
                               ),
                             ),
@@ -253,7 +252,7 @@ class _ProductListState extends State<ProductList> {
                                     }
                                   } else {
                                     for (var cartProduct
-                                        in (userCart as Cart).products) {
+                                        in (userCart).products) {
                                       if (cartProduct.product.id ==
                                           product.id) {
                                         inCart = true;
@@ -286,8 +285,8 @@ class _ProductListState extends State<ProductList> {
                                         color: Colors.white,
                                         elevation: 1,
                                         child: Padding(
-                                          padding: EdgeInsets.all(8.0),
-                                          child: Container(
+                                          padding: const EdgeInsets.all(8.0),
+                                          child: SizedBox(
                                             height:
                                                 SizeConfig.screenHeight * .18,
                                             child: Row(
@@ -333,7 +332,7 @@ class _ProductListState extends State<ProductList> {
                                                             MainAxisAlignment
                                                                 .spaceBetween,
                                                         children: [
-                                                          Container(
+                                                          SizedBox(
                                                             width: SizeConfig
                                                                     .screenWidth *
                                                                 0.39,

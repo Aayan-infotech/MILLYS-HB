@@ -56,7 +56,7 @@ class _HomeScreenState extends State<HomeScreen> {
                       color: Colors.black.withOpacity(0.1),
                       blurRadius: 20,
                       spreadRadius: 5,
-                      offset: Offset(0, -5),
+                      offset: const Offset(0, -5),
                     ),
                   ],
                 ),
@@ -69,7 +69,6 @@ class _HomeScreenState extends State<HomeScreen> {
     ).whenComplete(() {
       if (mounted) setState(() {});
     });
-    ;
   }
 
   asyncInit() async {
@@ -488,12 +487,12 @@ class _HomeScreenState extends State<HomeScreen> {
       children: [
         Text(
           text,
-          style: TextStyle(
+          style: const TextStyle(
               fontSize: 20,
               fontWeight: FontWeight.w600,
               color: Color.fromRGBO(23, 23, 37, 1)),
         ),
-        Icon(Icons.chevron_right,
+        const Icon(Icons.chevron_right,
             size: 30, color: Color.fromRGBO(102, 112, 122, 1))
       ],
     );
@@ -540,11 +539,11 @@ class _HomeScreenState extends State<HomeScreen> {
                           width: 107,
                           height: 28,
                           decoration: BoxDecoration(
-                            color: Color.fromRGBO(53, 53, 100, 1),
+                            color: const Color.fromRGBO(53, 53, 100, 1),
                             borderRadius: BorderRadius.circular(30),
                           ),
-                          child: Center(
-                            child: const Text(
+                          child: const Center(
+                            child: Text(
                               "4% off your order ",
                               style: TextStyle(
                                 color: Colors.white,
@@ -572,7 +571,7 @@ class _HomeScreenState extends State<HomeScreen> {
                         width: 107,
                         height: 28,
                         decoration: BoxDecoration(
-                          color: Color.fromRGBO(53, 53, 100, 1),
+                          color: const Color.fromRGBO(53, 53, 100, 1),
                           borderRadius: BorderRadius.circular(30),
                         ),
                         child: const Center(
@@ -595,7 +594,7 @@ class _HomeScreenState extends State<HomeScreen> {
           Column(
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
-              Text(
+              const Text(
                 "Pizza Hut",
                 style: TextStyle(
                   fontWeight: FontWeight.w600,
@@ -605,9 +604,9 @@ class _HomeScreenState extends State<HomeScreen> {
               Row(
                 mainAxisAlignment: MainAxisAlignment.spaceBetween,
                 children: [
-                  Container(
+                  SizedBox(
                     width: MediaQuery.of(context).size.width * 0.44,
-                    child: Row(
+                    child: const Row(
                       children: [
                         Text(
                           "1.5 Km |",
@@ -631,7 +630,7 @@ class _HomeScreenState extends State<HomeScreen> {
                       ],
                     ),
                   ),
-                  Icon(
+                  const Icon(
                     Icons.favorite_outline,
                     color: Color.fromRGBO(245, 131, 94, 1),
                   )
@@ -885,12 +884,12 @@ class _HomeScreenState extends State<HomeScreen> {
                     return Container(
                       width: 8.0,
                       height: 8.0,
-                      margin: EdgeInsets.symmetric(horizontal: 2.0),
+                      margin: const EdgeInsets.symmetric(horizontal: 2.0),
                       decoration: BoxDecoration(
                         shape: BoxShape.circle,
                         color: _currentIndex == index
-                            ? Color.fromRGBO(0, 0, 0, 0.9)
-                            : Color.fromRGBO(0, 0, 0, 0.4),
+                            ? const Color.fromRGBO(0, 0, 0, 0.9)
+                            : const Color.fromRGBO(0, 0, 0, 0.4),
                       ),
                     );
                   }).toList(),
@@ -906,20 +905,20 @@ class _HomeScreenState extends State<HomeScreen> {
                 child: Row(
                   mainAxisAlignment: MainAxisAlignment.spaceBetween,
                   children: [
-                    Column(
+                    const Column(
                       crossAxisAlignment: CrossAxisAlignment.start,
                       children: [
                         Padding(
                           padding: EdgeInsets.only(left: 10, top: 10),
                           child: Text(
                             "Wishlist",
-                            style: const TextStyle(
+                            style: TextStyle(
                                 color: Colors.white,
                                 fontSize: 16,
                                 fontWeight: FontWeight.w400),
                           ),
                         ),
-                        const Padding(
+                        Padding(
                           padding: EdgeInsets.only(left: 10),
                           child: Text(
                             "Products",
@@ -977,7 +976,7 @@ class _HomeScreenState extends State<HomeScreen> {
             //         );
             //       }),
             // ),
-            if (productProvider.favProduct.length != 0)
+            if (productProvider.favProduct.isNotEmpty)
               Consumer<ProductProvider>(
                 builder: (context, productProvider, child) {
                   return SizedBox(
@@ -988,7 +987,7 @@ class _HomeScreenState extends State<HomeScreen> {
                       itemBuilder: (BuildContext context, item) {
                         Product favProduct = productProvider.favProduct[item];
                         return Padding(
-                          padding: EdgeInsets.symmetric(horizontal: 4),
+                          padding: const EdgeInsets.symmetric(horizontal: 4),
                           child: ProductCard(
                             product: favProduct,
                           ),
@@ -1036,7 +1035,7 @@ class _HomeScreenState extends State<HomeScreen> {
                 ),
               ),
             ),
-            SizedBox(
+            const SizedBox(
               height: 15,
             ),
             // Column(
@@ -1119,7 +1118,7 @@ class _HomeScreenState extends State<HomeScreen> {
                       Product recommendedProducts =
                           productProvider.recommendedProducts[item];
                       return Padding(
-                        padding: EdgeInsets.symmetric(horizontal: 4),
+                        padding: const EdgeInsets.symmetric(horizontal: 4),
                         child: ProductCard(
                           product: recommendedProducts,
                         ),
@@ -1147,7 +1146,7 @@ class _HomeScreenState extends State<HomeScreen> {
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
               Padding(
-                padding: EdgeInsets.only(left: 10, top: 10),
+                padding: const EdgeInsets.only(left: 10, top: 10),
                 child: Text(
                   subCategory.title,
                   style: const TextStyle(

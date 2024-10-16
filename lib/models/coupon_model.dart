@@ -1,4 +1,3 @@
-import 'package:flutter/material.dart';
 
 class Coupon {
   String id;
@@ -20,12 +19,12 @@ class Coupon {
   // Factory method to create a Discount object from JSON
   factory Coupon.fromJson(Map<String, dynamic> json) {
     return Coupon(
-      id: json['_id'],
-      code: json['code'],
-      discountValue: json['discountValue'],
-      expiryDate: DateTime.parse(json['expiryDate']),
-      useLimit: json['useLimit'],
-      isActive: json['isActive'],
+      id: json['_id'] ?? '',
+      code: json['code'] ?? "",
+      discountValue: json['discountValue'] ?? '',
+      expiryDate: DateTime.parse(json['expiryDate']) ?? DateTime.now(),
+      useLimit: json['useLimit'] ?? 0,
+      isActive: json['isActive'] ?? 0,
     );
   }
 

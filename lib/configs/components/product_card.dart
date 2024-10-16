@@ -41,7 +41,7 @@ class _ProductCardState extends State<ProductCard> {
               children: [
                 Text(
                   widget.product.name,
-                  style: TextStyle(
+                  style: const TextStyle(
                       color: Color.fromRGBO(0, 0, 0, 1),
                       fontWeight: FontWeight.w500,
                       fontSize: 12),
@@ -54,7 +54,7 @@ class _ProductCardState extends State<ProductCard> {
                   child: Text(
                     widget.product.description,
                     maxLines: 2,
-                    style: TextStyle(
+                    style: const TextStyle(
                         color: Color.fromRGBO(0, 0, 0, 1),
                         fontWeight: FontWeight.w400,
                         fontSize: 10),
@@ -66,14 +66,14 @@ class _ProductCardState extends State<ProductCard> {
                 (widget.product.discount == 0)
                     ? Text(
                         "\$ ${widget.product.price}",
-                        style: TextStyle(
+                        style: const TextStyle(
                             color: Color.fromRGBO(0, 0, 0, 1),
                             fontWeight: FontWeight.w500,
                             fontSize: 10),
                       )
                     : Text(
                         "\$ ${(widget.product.price - widget.product.discount).toStringAsFixed(2)}",
-                        style: TextStyle(
+                        style: const TextStyle(
                             color: Color.fromRGBO(0, 0, 0, 1),
                             fontWeight: FontWeight.w500,
                             fontSize: 10),
@@ -84,7 +84,7 @@ class _ProductCardState extends State<ProductCard> {
                       children: [
                         TextSpan(
                           text: "\$ ${widget.product.price}",
-                          style: TextStyle(
+                          style: const TextStyle(
                               color: Color.fromRGBO(187, 187, 187, 1),
                               decoration: TextDecoration.lineThrough,
                               fontSize: 12,
@@ -93,7 +93,7 @@ class _ProductCardState extends State<ProductCard> {
                         TextSpan(
                           text:
                               ' ${((widget.product.discount / widget.product.price) * 100).toStringAsFixed(2)}%Off',
-                          style: TextStyle(
+                          style: const TextStyle(
                               color: Colors.red,
                               fontSize: 10,
                               fontWeight: FontWeight.w400),

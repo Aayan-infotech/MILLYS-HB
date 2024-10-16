@@ -20,13 +20,13 @@ class OrderApi extends ApiBase {
     };
 
     return await CallHelper()
-        .postWithData('api/product/cancel/${orderId}', data, {});
+        .postWithData('api/product/cancel/$orderId', data, {});
   }
   
 
   Future<ApiResponseWithData<Map<String, dynamic>>> getAllOrders(
       String userId) async {
-    return await CallHelper().getWithData('api/cart/get/${userId}', {});
+    return await CallHelper().getWithData('api/cart/get/$userId', {});
   }
   // 
   //  Future<ApiResponseWithData<List<Category>>> getServices(

@@ -14,25 +14,25 @@ class AddressInputScreen extends StatefulWidget {
   final Address? customerAddress;
   final bool isEdit;
 
-  AddressInputScreen({
-    Key? key,
+  const AddressInputScreen({
+    super.key,
     this.isEdit = false,
     this.customerAddress,
-  }) : super(key: key);
+  });
 
   @override
   _AddressInputScreenState createState() => _AddressInputScreenState();
 }
 
 class _AddressInputScreenState extends State<AddressInputScreen> {
-  TextEditingController _houseController = TextEditingController();
-  TextEditingController _nameController = TextEditingController();
-  TextEditingController _mobileNumberController = TextEditingController();
-  TextEditingController _areaController = TextEditingController();
-  TextEditingController _stateController = TextEditingController();
-  TextEditingController _cityController = TextEditingController();
-  TextEditingController _countryController = TextEditingController();
-  TextEditingController _pinNumberController = TextEditingController();
+  final TextEditingController _houseController = TextEditingController();
+  final TextEditingController _nameController = TextEditingController();
+  final TextEditingController _mobileNumberController = TextEditingController();
+  final TextEditingController _areaController = TextEditingController();
+  final TextEditingController _stateController = TextEditingController();
+  final TextEditingController _cityController = TextEditingController();
+  final TextEditingController _countryController = TextEditingController();
+  final TextEditingController _pinNumberController = TextEditingController();
   bool isLoading = false;
   AddressType? selectedAddressType;
   final _formKey = GlobalKey<FormState>();
@@ -260,7 +260,7 @@ class _AddressInputScreenState extends State<AddressInputScreen> {
             selectedAddressType == type ? Pallete.accentColor : Colors.white,
         shape: RoundedRectangleBorder(
           borderRadius: BorderRadius.circular(30.0),
-          side: BorderSide(color: Colors.grey),
+          side: const BorderSide(color: Colors.grey),
         ),
       ),
     );

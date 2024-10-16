@@ -59,14 +59,36 @@ class CartAPIs extends ApiBase {
     Map<String, String> data = {
       'userId': userId,
     };
-    return await CallHelper().getWithData('api/cart/get/${userId}', data);
+    return await CallHelper().getWithData('api/cart/get/$userId', data);
   }
 
   Future<ApiResponseWithData<Map<String, dynamic>>> getSlot(
       String deliveryType) async {
-    // deliveryType
     Map<String, String> data = {"deliveryType": deliveryType};
 
     return await CallHelper().getWithData('api/deliveryslot/get', data);
+  }
+
+  // New method to create an order
+  Future<ApiResponseWithData<Map<String, dynamic>>> createOrder({
+    required String userId,
+    required String deliverySlotId,
+    required String addressId,
+    required String paymentMethod,
+    required String paymentId,
+  }) async {
+    Map<String, String> data = {
+      'userId': userId,
+      'deliverySlotId': deliverySlotId,
+      'addressId': addressId,
+      'paymentMethod': paymentMethod,
+      'paymentId': paymentId,
+    };
+
+    return await CallHelper().postWithData(
+      'api/product/order',
+      data,
+      {},
+    );
   }
 }

@@ -150,7 +150,7 @@ class _LoginScreenState extends State<LoginScreen> {
                         });
                       },
                     ),
-                    SizedBox(
+                    const SizedBox(
                       height: 25,
                     ),
                     SignInButton(

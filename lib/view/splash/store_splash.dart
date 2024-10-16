@@ -20,7 +20,7 @@ class _StoreSplashScreenState extends State<StoreSplashScreen>
     super.initState();
     _animationController = AnimationController(
       vsync: this,
-      duration: Duration(milliseconds: 1000),
+      duration: const Duration(milliseconds: 1000),
     );
 
     _startAnimation();
@@ -34,7 +34,7 @@ class _StoreSplashScreenState extends State<StoreSplashScreen>
   }
 
   _startAnimation() {
-    Future.delayed(Duration(milliseconds: 500), () {
+    Future.delayed(const Duration(milliseconds: 500), () {
       setState(() {
         _opacity = 1.0;
       });
@@ -42,16 +42,16 @@ class _StoreSplashScreenState extends State<StoreSplashScreen>
   }
 
   _navigateToHome() async {
-    await Future.delayed(Duration(milliseconds: 1000), () {
+    await Future.delayed(const Duration(milliseconds: 1000), () {
       setState(() {
         _opacity = 0.0;
       });
     });
-    await Future.delayed(Duration(milliseconds: 1000), () {});
+    await Future.delayed(const Duration(milliseconds: 1000), () {});
     Navigator.pushReplacement(
       context,
       PageRouteBuilder(
-        pageBuilder: (context, animation1, animation2) => NavScreen(),
+        pageBuilder: (context, animation1, animation2) => const NavScreen(),
         transitionsBuilder: (context, animation1, animation2, child) {
           return FadeTransition(
             opacity: animation1,
@@ -71,7 +71,7 @@ class _StoreSplashScreenState extends State<StoreSplashScreen>
       body: Center(
         child: AnimatedOpacity(
           opacity: _opacity,
-          duration: Duration(milliseconds: 1000),
+          duration: const Duration(milliseconds: 1000),
           child: widget.isFood
               ? Image.asset(
                   'assets/images/food_splash.png',
