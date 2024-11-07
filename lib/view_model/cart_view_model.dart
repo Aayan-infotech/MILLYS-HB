@@ -154,15 +154,16 @@ class CartProvider with ChangeNotifier {
     required String addressId,
     required String paymentMethod,
     required String paymentId,
+    required String playerId,
     required BuildContext context,
   }) async {
     ApiResponseWithData response = await CartAPIs().createOrder(
-      userId: userId,
-      deliverySlotId: deliverySlotId,
-      addressId: addressId,
-      paymentMethod: paymentMethod,
-      paymentId: paymentId,
-    );
+        userId: userId,
+        deliverySlotId: deliverySlotId,
+        addressId: addressId,
+        paymentMethod: paymentMethod,
+        paymentId: paymentId,
+        playerId: playerId);
 
     if (response.success) {
       await getCart(userId, context);

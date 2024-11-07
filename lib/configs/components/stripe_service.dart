@@ -7,11 +7,13 @@ class StripeService {
   StripeService._();
   static final StripeService instance = StripeService._();
 
-  Future<ApiResponseWithData<String>> makePayment() async {
+  Future<ApiResponseWithData<String>> makePayment(
+    double price,
+  ) async {
     try {
       // Create payment intent and get full response data
       Map<String, dynamic>? paymentIntentResponse =
-          await _createPaymentIntent(10, "usd");
+          await _createPaymentIntent(price, "usd");
 
       if (paymentIntentResponse == null) {
         return ApiResponseWithData<String>("", false,
@@ -30,10 +32,10 @@ class StripeService {
 
       // Initialize payment sheet
       await Stripe.instance.initPaymentSheet(
-        paymentSheetParameters: SetupPaymentSheetParameters(
+      paymentSheetParameters: SetupPaymentSheetParameters(
           paymentIntentClientSecret: paymentIntentClientSecret,
           googlePay: const PaymentSheetGooglePay(
-            merchantCountryCode: "IN",
+            merchantCountryCode: "SE",
             testEnv: true,
           ),
           merchantDisplayName: "Millyshb",
@@ -67,11 +69,11 @@ class StripeService {
   }
 
   Future<Map<String, dynamic>?> _createPaymentIntent(
-      int amount, String currency) async {
+      double amount, String currency) async {
     Dio dio = Dio();
     try {
       Map<String, dynamic> data = {
-        "amount": (amount * 100), // Stripe expects smallest currency unit
+        "amount": (10 * 100), // Stripe expects smallest currency unit
         "currency": currency,
       };
 

@@ -13,6 +13,9 @@ import 'package:millyshb/models/sub_category_model.dart';
 class ProductProvider with ChangeNotifier {
   List<dynamic> _products = [];
   List<dynamic> _favProducts = [];
+  List<dynamic> _discountProduct = [];
+  List<dynamic> get discountProduct => _discountProduct;
+
   List<dynamic> _recommendedProducts = [];
   List<dynamic> _category = [];
   List<dynamic> _subCategory = [];
@@ -155,29 +158,31 @@ class ProductProvider with ChangeNotifier {
       notifyListeners();
     }
   }
-    Future<void> getDiscountedProductList(String id, BuildContext context) async {
+
+  Future<void> getDiscountedProductList(String id, BuildContext context) async {
     _setLoading(true);
 
     try {
-      ApiResponseWithData response = await ProductAPIs().getDiscountedProduct(id);
+      ApiResponseWithData response =
+          await ProductAPIs().getDiscountedProduct(id);
       if (response.success) {
-        _products = response.data["status"] == 404
+        _discountProduct = response.data["status"] == 404
             ? []
             : (response.data["data"] as List)
                 .map((item) => Product.fromJson(item))
                 .toList();
+        print(_discountProduct);
       } else {
-        _products = [];
+        _discountProduct = [];
       }
     } finally {
       notifyListeners();
     }
   }
 
-
   Future<List<Product>> getListOfProduct(
       String id, BuildContext context) async {
-    _setLoading(true); // Assuming this sets a loading state in your view model
+    _setLoading(true);
     List<Product> productList = []; // Initialize an empty product list
 
     try {

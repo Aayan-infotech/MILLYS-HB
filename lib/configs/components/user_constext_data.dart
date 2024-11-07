@@ -29,8 +29,8 @@ class UserContextData {
     lstFutures
         .add(productProvider.getFavProduct(userProvider.user!.id, context));
     lstFutures.add(cartProvider.getCoupon(context));
-    // lstFutures
-    //     .add(productProvider.getOrderList(userProvider.user!.id, context));
+    lstFutures
+        .add(productProvider.getOrderList(userProvider.user!.id, context));
 
     await Future.wait(lstFutures);
   }

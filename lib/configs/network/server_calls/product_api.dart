@@ -22,7 +22,7 @@ class ProductAPIs extends ApiBase {
 
   Future<ApiResponseWithData<Map<String, dynamic>>> getDiscountedProduct(
       String id) async {
-    return await CallHelper().getWithData('api/favorite/get/$id', {});
+    return await CallHelper().getWithData('api/product/getdiscount/$id', {});
   }
 
   Future<ApiResponseWithData<Map<String, dynamic>>> getOrders(String id) async {
